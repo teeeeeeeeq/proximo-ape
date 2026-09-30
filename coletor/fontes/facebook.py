@@ -112,19 +112,26 @@ ITAJAI_SUL = ('praia brava', 'fazendinha', 'cabeçudas', 'cabecudas', 'fazenda',
 
 
 def _regiao(x):
+    """Na lista: Balneário e Camboriú entram; Itajaí entra provisório (decide depois, pela descrição)."""
     t = (x['onde'] + ' ' + x['cidade']).lower()
-    if 'camboriú' in t:
+    return 'camboriú' in t or 'itajaí' in t
+
+
+def _itajai_sul(x, desc):
+    t = (x['onde'] + ' ' + x['cidade']).lower()
+    if 'itajaí' not in t or 'camboriú' in t:
         return True
-    return 'itajaí' in t and any(b in (t + ' ' + x['titulo'].lower()) for b in ITAJAI_SUL)
+    return any(b in (t + ' ' + x['titulo'] + ' ' + (desc or '')).lower() for b in ITAJAI_SUL)
 
 
 def buscar(b, progresso=lambda m: None):
     lista = {}
-    for lo, hi in FAIXAS:
-        progresso(f'lista R$ {lo}–{hi}')
-        b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=2'
-             f'&sortBy=creation_time_descend&exact=false&latitude=-26.975&longitude=-48.645&radius=10', 9)
-        lista.update(_lista(b.js('document.documentElement.outerHTML') or ''))
+    for lat, raio in ((-26.99, 7), (-26.935, 6)):   # Balneário/Camboriú e o sul de Itajaí
+        for lo, hi in FAIXAS:
+            progresso(f'lista R$ {lo}–{hi} ({lat})')
+            b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=2'
+                 f'&sortBy=creation_time_descend&exact=false&latitude={lat}&longitude=-48.645&radius={raio}', 9)
+            lista.update(_lista(b.js('document.documentElement.outerHTML') or ''))
     if not lista:
         txt = (b.js('document.body ? document.body.innerText : ""') or '')[:160].replace('\n', ' | ')
         raise RuntimeError(f"o Facebook não mostrou anúncios sem login (página: {(b.js('document.title') or '')[:50]} | {txt})")
@@ -150,6 +157,8 @@ def buscar(b, progresso=lambda m: None):
     out = []
     for iid, x in alvo.items():
         f = cache.get(iid) or {}
+        if not _itajai_sul(x, f.get('desc')):
+            continue
         onde = [p.strip() for p in x['onde'].split(',')]
         bairro = onde[0] if len(onde) >= 3 and not re.match(r'(rua|avenida|av\.)', onde[0], re.I) else ''
         q = _quartos(x['sub'], x['titulo'], f.get('desc'))
