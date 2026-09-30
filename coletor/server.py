@@ -283,6 +283,75 @@ def rua_para_mostrar(r):
     return re.split(r'\s+-\s+de\s|\s+-\s+até\s|\s+-\s+lado', r or '')[0].strip()
 
 
+def condominio(site, texto):
+    """(valor, fonte): o do site; senão o da descrição; 0 se o texto diz que está incluso; None se ninguém diz."""
+    t = norm(texto)
+    incluso = re.search(r'(condominio|taxas)[^.\n]{0,30}inclus|inclus[oa]s?[^.\n]{0,25}(condominio|taxas)|ja com (condominio|taxas|as taxas)'
+                        r'|valor total|total com (condominio|taxas)|pacote|sem condominio|isento de condominio', t)
+    if site and site >= 50:
+        return float(site), 'site'
+    m = re.search(r'condominio[^\d\n]{0,25}?r\$?\s*(\d{1,2}\.?\d{3}|\d{2,4})(,\d{2})?\b', t)
+    if m:
+        v = float(m.group(1).replace('.', ''))
+        if 80 <= v <= 4000:
+            return v, 'descrição'
+    if incluso:
+        return 0.0, 'incluso'
+    return None, ''
+
+
+def _mesmo_predio(o):
+    if o.get('predio'):
+        return 'p:' + chave_predio(o['predio'])
+    if o.get('local_exato') and o.get('lat') is not None:
+        return 'c:%.4f,%.4f' % (o['lat'], o['lon'])   # ~10 m: mesmo prédio
+    return ''
+
+
+def estimar_condominios(itens):
+    """Sem condomínio informado: mediana do mesmo prédio; senão dos 8 anúncios mais parecidos (área e aluguel)
+    do mesmo bairro, com ou sem lazer; senão do bairro. Teste (deixa-um-de-fora): erro mediano 1% / 14% / 24%."""
+    import statistics
+    base = [o for o in itens if o.get('cond_fonte') in ('site', 'descrição') and (o.get('cond') or 0) >= 80
+            and o.get('aluguel') and o['aluguel'] <= 20000]
+    por_predio, por_grupo, por_bairro = {}, {}, {}
+    for o in base:
+        k = _mesmo_predio(o)
+        if k:
+            por_predio.setdefault(k, []).append(o)
+        z = (norm(o.get('bairro')), norm(o.get('cidade')))
+        por_grupo.setdefault(z + (bool(o.get('lazer')),), []).append(o)
+        por_bairro.setdefault(z, []).append(o)
+    for o in itens:
+        o.pop('cond_est', None)
+        o.pop('cond_base', None)
+        if o.get('cond') is None and o.get('aluguel'):
+            est, onde = None, ''
+            k = _mesmo_predio(o)
+            g = [x for x in por_predio.get(k, []) if x is not o] if k else []
+            if g:
+                if o.get('area') and all(x.get('area') for x in g):
+                    est = statistics.median(x['cond'] / x['area'] for x in g) * o['area']
+                else:
+                    est = statistics.median(x['cond'] for x in g)
+                onde = 'mesmo prédio'
+            else:
+                z = (norm(o.get('bairro')), norm(o.get('cidade')))
+                g = [x for x in por_grupo.get(z + (bool(o.get('lazer')),), []) if x is not o]
+                if len(g) < 5:
+                    g = [x for x in por_bairro.get(z, []) if x is not o]
+                if len(g) >= 5:
+                    area = o.get('area') or 0
+                    viz = sorted(g, key=lambda x: (abs(math.log((x.get('area') or 70) / area)) if area else 0)
+                                 + abs(math.log(x['aluguel'] / o['aluguel'])))[:8]
+                    est = statistics.median(x['cond'] for x in viz)
+                    onde = 'anúncios parecidos do bairro'
+            if est:
+                o['cond_est'], o['cond_base'] = int(round(min(max(est, 150), 3500) / 10) * 10), onde
+        o['fixo'] = round(o['aluguel'] + (o['cond'] if o.get('cond') is not None else o.get('cond_est') or 0) + (o.get('iptu') or 0)) \
+            if o.get('aluguel') else None
+
+
 def completar(o):
     o['bairro'] = re.sub(r'^(bairro\s+)?(d[aeo]s?\s+)', '', (o.get('bairro') or '').strip(), flags=re.I).strip()
     o['bairro'] = o['bairro'][:1].upper() + o['bairro'][1:]
@@ -292,6 +361,9 @@ def completar(o):
     txt_lazer = norm(txt)
     o['lazer'] = bool(o.get('marcado_lazer') or re.search(
         r'piscina|academia|lazer completo|area de lazer|sauna|\bspa\b|playground|brinquedoteca|quadra (poli|esport)|fitness', txt_lazer))
+    if 'cond_site' not in o:
+        o['cond_site'] = o.get('cond')
+    o['cond'], o['cond_fonte'] = condominio(o['cond_site'], txt)
     o['fixo'] = round((o['aluguel'] or 0) + (o['cond'] or 0) + (o['iptu'] or 0)) if o['aluguel'] else None
     # endereço: o que está na descrição vale mais que o cadastro do site
     if 'rua_site' not in o:
@@ -780,6 +852,7 @@ def atualizar():
         carregar_predios()
         for o in novos.values():
             completar(o)
+        estimar_condominios(list(novos.values()))
         for k, o in novos.items():
             o['visto_em'] = (antigos.get(k) or {}).get('visto_em') or agora
             if not o.get('desc') and (antigos.get(k) or {}).get('desc'):

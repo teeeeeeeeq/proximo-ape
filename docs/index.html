@@ -49,6 +49,7 @@ label.check input{accent-color:var(--sea);width:16px;height:16px}
 .fstat .e{color:var(--bad)}
 .addr{margin:0;font-size:13px;color:var(--muted)}
 .addr b{color:var(--ink);font-weight:600}
+.est{font-style:normal;color:var(--warn)}
 .hint{font-size:12px;color:var(--muted);margin:6px 0 0}
 .reset{background:none;border:0;color:var(--sea);font:600 13px var(--body);cursor:pointer;padding:0;margin-top:16px}
 .top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -131,8 +132,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     <fieldset><legend>Prédio</legend>
       <div class="row"><span>Condomínio até</span><b id="v-cond"></b></div>
       <input type="range" id="cond" min="200" max="2000" step="50">
-      <label class="check"><input type="checkbox" id="semlazer"> Esconder prédios com lazer (piscina, academia…)</label>
-      <p class="hint">Anúncios que não informam o condomínio continuam aparecendo.</p>
+      <p class="hint">Quando o anúncio não informa o condomínio, o app estima pelo mesmo prédio ou por anúncios parecidos do bairro (marcado com ~). O custo total também usa essa estimativa.</p>
     </fieldset>
 
     <fieldset><legend>Onde</legend>
@@ -192,7 +192,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
-const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 31, hum: 41, semlocal: true, cond: 900, semLazer: true, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí'], mob: ['texto', 'marcado'], temp: false, q: '', show: 'todos', sort: 'recentes' };
+const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 31, hum: 41, semlocal: true, cond: 900, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí'], mob: ['texto', 'marcado'], temp: false, q: '', show: 'todos', sort: 'recentes' };
 const CHAVE = 'apto-filtros-v2';
 let F = JSON.parse(JSON.stringify(PERFIL));
 try { const s = JSON.parse(localStorage.getItem(CHAVE) || 'null'); if (s) F = Object.assign(F, s); } catch (e) {}
@@ -238,8 +238,8 @@ function passa(o) {
   if (o.no_ar === false || o.ativo === false) return false;
   if (!o.aluguel || o.aluguel < 2000) return false;   // abaixo disso é diária ou erro
   if (o.cidade && !/camboriu|itajai/.test(norm(o.cidade))) return false;
-  if (o.cond != null && F.cond < 2000 && o.cond > F.cond) return false;
-  if (F.semLazer && o.lazer) return false;
+  const cnd = o.cond != null ? o.cond : o.cond_est;
+  if (cnd != null && F.cond < 2000 && cnd > F.cond) return false;
   if ((F.semFonte || []).includes(src(o))) return false;
   if (!F.temp && o.temporada) return false;
   if (!F.mob.includes(o.mobilia)) return false;
@@ -286,7 +286,6 @@ function card(o) {
   if (bh) facts.push(`<span class="f">Humains ${t}${bh} min${ap}</span>`);
   facts.push(`<span class="f plain">${{ texto: 'Mobiliado (no texto)', marcado: 'Mobiliado (só marcado)', semi: 'Semi-mobiliado', nao: 'Sem mobília', 'sem info': 'Mobília não informada' }[o.mobilia]}</span>`);
   if (o.temporada) facts.push('<span class="f warn">Fala em temporada</span>');
-  if (o.lazer) facts.push('<span class="f warn">Prédio com lazer</span>');
   el.innerHTML = `
     <div class="ph"><div class="strip"></div>
       ${fotos.length > 1 ? '<button class="nav p" type="button" aria-label="Foto anterior">‹</button><button class="nav n" type="button" aria-label="Próxima foto">›</button>' : ''}
@@ -294,7 +293,7 @@ function card(o) {
       <div class="badges">${novo(o) ? '<span class="badge new">Novo</span>' : ''}${o.no_ar === false ? '<span class="badge off">Saiu do ar</span>' : ''}</div></div>
     <div class="body">
       <h2 class="place">${esc(zona(o))}${o.rua ? ' · ' + esc(o.rua) : ''}<small>${esc(o.titulo)}</small></h2>
-      <div class="money"><b>${brl(o.fixo)}</b><span>aluguel ${brl(o.aluguel)}${o.cond ? ' + cond. ' + brl(o.cond) : ''}${o.iptu ? ' + IPTU ' + brl(o.iptu) : ''} · sem luz e gás</span></div>
+      <div class="money"><b>${o.cond == null && o.cond_est ? '~' : ''}${brl(o.fixo)}</b><span>aluguel ${brl(o.aluguel)}${o.cond ? ' + cond. ' + brl(o.cond) + (o.cond_fonte === 'descrição' ? ' (da descrição)' : '') : o.cond_fonte === 'incluso' ? ' · condomínio incluso' : o.cond_est ? ' + cond. <em class="est">~' + brl(o.cond_est) + ' estimado (' + esc(o.cond_base) + ')</em>' : ' · condomínio não informado'}${o.iptu ? ' + IPTU ' + brl(o.iptu) : ''} · sem luz e gás</span></div>
       <div class="facts">${facts.join('')}</div>
       ${o.predio || o.local_fonte === 'descrição' || o.local_fonte === 'prédio' ? `<p class="addr">${o.predio ? 'Prédio: <b>' + esc(o.predio) + '</b>' : ''}${o.predio && o.local_fonte !== 'site' ? ' · ' : ''}${o.local_fonte === 'prédio' ? 'localização pelo prédio citado no anúncio' : o.local_fonte === 'descrição' ? 'endereço tirado da descrição do anúncio' : ''}</p>` : ''}
       ${o.desc ? `<details><summary>Descrição</summary><p>${esc(o.desc)}</p></details>` : ''}
@@ -341,7 +340,6 @@ function pintarFiltros() {
   $('custo').value = F.custo; $('v-custo').textContent = brl(F.custo);
   $('area').value = F.area; $('v-area').textContent = F.area + ' m²';
   $('cond').value = F.cond; $('v-cond').textContent = F.cond >= 2000 ? 'qualquer' : brl(F.cond);
-  $('semlazer').checked = F.semLazer;
   $('praia').value = F.praia; $('v-praia').textContent = F.praia >= 31 ? 'qualquer' : 'até ' + F.praia + ' min';
   $('hum').value = F.hum; $('v-hum').textContent = F.hum >= 41 ? 'qualquer' : 'até ' + F.hum + ' min';
   $('semlocal').checked = F.semlocal; $('temp').checked = F.temp; $('q').value = F.q; $('sort').value = F.sort;
@@ -354,7 +352,6 @@ function pintarFiltros() {
 function mudou() { shown = 40; saveF(); pintarFiltros(); render(); }
 ['custo', 'area', 'praia', 'hum', 'cond'].forEach(id => $(id).addEventListener('input', e => { F[id] = +e.target.value; mudou(); }));
 $('semlocal').onchange = e => { F.semlocal = e.target.checked; mudou(); };
-$('semlazer').onchange = e => { F.semLazer = e.target.checked; mudou(); };
 $('temp').onchange = e => { F.temp = e.target.checked; mudou(); };
 let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value.trim(); mudou(); }, 250); });
 $('sort').onchange = e => { F.sort = e.target.value; mudou(); };
