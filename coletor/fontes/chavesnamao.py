@@ -27,16 +27,19 @@ import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
+import server
+
 NOME = 'Chaves na Mão'
 USA_CHROME = False
 
 SITE = 'https://www.chavesnamao.com.br'
-API = (SITE + '/api/realestate/listing/items/?level1=apartamentos-para-alugar&level2=sc-balneario-camboriu'
+API = (SITE + '/api/realestate/listing/items/?level1=apartamentos-para-alugar&level2=%s'
        '&level3=2-quartos&filtro=pmax:9000&pg=%d')
+CIDADES = ('sc-balneario-camboriu', 'sc-camboriu', 'sc-itajai')
 FOTO = SITE + '/imn/1200x0800/N/70/imoveis/'
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
 PRECO_MAX = 9000
-LIMITE_SEG = 250  # depois disso, para de abrir páginas de anúncio e fica com o que a API deu
+LIMITE_SEG = 330  # depois disso, para de abrir páginas de anúncio e fica com o que a API deu
 
 
 def _get(url, tentativas=3):
@@ -96,14 +99,25 @@ def _qtd(o):
 # ---------- listagem
 
 def _listar(progresso):
+    anuncios = {}
+    for c in CIDADES:
+        try:
+            anuncios.update(_listar_cidade(progresso, c))
+        except RuntimeError:
+            if c == CIDADES[0]:
+                raise
+    return list(anuncios.values())
+
+
+def _listar_cidade(progresso, cidade):
     anuncios, total, paginas, pg = {}, None, None, 0
     while True:
-        progresso(f'página {pg + 1}' + (f' de {paginas}' if paginas else ''))
+        progresso(f'{cidade[3:]}, página {pg + 1}' + (f' de {paginas}' if paginas else ''))
         try:
-            d = json.loads(_get(API % pg))
+            d = json.loads(_get(API % (cidade, pg)))
             if (d.get('metadata') or {}).get('degraded') or not isinstance(d.get('items'), list):
                 time.sleep(3)
-                d = json.loads(_get(API % pg))
+                d = json.loads(_get(API % (cidade, pg)))
         except Exception as ex:
             if pg == 0:
                 raise RuntimeError(f'o Chaves na Mão não respondeu ({str(ex)[:80]})')
@@ -124,13 +138,14 @@ def _listar(progresso):
         time.sleep(0.2)
     if not anuncios and total != 0:
         raise RuntimeError('o Chaves na Mão não devolveu anúncios')
-    return list(anuncios.values())
+    return anuncios
 
 
 def _passa(x):
     L = x.get('location') or {}
     preco = _dinheiro((x.get('prices') or {}).get('rawPrice'))
-    return (x.get('transaction') == 'RENT' and _norm((L.get('city') or {}).get('name')) == 'balneario camboriu'
+    return (x.get('transaction') == 'RENT'
+            and server.na_regiao((L.get('city') or {}).get('name'), (L.get('neighborhood') or {}).get('name'))
             and (_qtd(x.get('bedrooms')) or 0) >= 2 and (preco is None or preco <= PRECO_MAX))
 
 

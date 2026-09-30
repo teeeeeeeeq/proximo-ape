@@ -6,7 +6,7 @@ import server as s
 
 RAIZ = s.RAIZ
 CAMPOS = ('id', 'fonte', '_src', 'url', 'titulo', 'desc', 'aluguel', 'cond', 'iptu', 'fixo', 'quartos', 'suites', 'area', 'bairro', 'rua',
-          'cidade', 'praia_m', 'humains_m', 'local_exato', 'local_aprox', 'mobilia', 'temporada', 'publicado', 'anunciante', 'fotos', 'visto_em')
+          'cidade', 'praia_m', 'humains_m', 'local_exato', 'local_aprox', 'mobilia', 'temporada', 'lazer', 'publicado', 'anunciante', 'fotos', 'visto_em')
 
 
 def main():
@@ -25,6 +25,8 @@ def main():
         if o.get('no_ar') is False or o.get('ativo') is False or not o.get('aluguel') or o['aluguel'] < 2000 or o['aluguel'] > 9000:
             continue
         if o.get('quartos') and o['quartos'] < 2:
+            continue
+        if not s.na_regiao(o.get('cidade'), o.get('bairro')):
             continue
         x = {k: o.get(k) for k in CAMPOS if o.get(k) not in (None, '', [], False)}
         if x.get('desc'):

@@ -108,18 +108,28 @@ def _rua(*txts):
     return ''
 
 
+ITAJAI_SUL = ('praia brava', 'fazendinha', 'cabeçudas', 'cabecudas', 'fazenda', 'ressacada')
+
+
+def _regiao(x):
+    t = (x['onde'] + ' ' + x['cidade']).lower()
+    if 'camboriú' in t:
+        return True
+    return 'itajaí' in t and any(b in (t + ' ' + x['titulo'].lower()) for b in ITAJAI_SUL)
+
+
 def buscar(b, progresso=lambda m: None):
     lista = {}
     for lo, hi in FAIXAS:
         progresso(f'lista R$ {lo}–{hi}')
         b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=2'
-             f'&sortBy=creation_time_descend&exact=false&latitude=-27.0&longitude=-48.64&radius=9', 9)
+             f'&sortBy=creation_time_descend&exact=false&latitude=-26.975&longitude=-48.645&radius=10', 9)
         lista.update(_lista(b.js('document.documentElement.outerHTML') or ''))
     if not lista:
         txt = (b.js('document.body ? document.body.innerText : ""') or '')[:160].replace('\n', ' | ')
         raise RuntimeError(f"o Facebook não mostrou anúncios sem login (página: {(b.js('document.title') or '')[:50]} | {txt})")
     alvo = {i: x for i, x in lista.items()
-            if 'camboriú' in (x['onde'] + ' ' + x['cidade']).lower() and not re.search(r'\bcasa\b|kitnet|sala comercial|quarto para', x['titulo'], re.I)}
+            if _regiao(x) and not re.search(r'\bcasa\b|kitnet|sala comercial|quarto para', x['titulo'], re.I)}
     try:
         cache = json.load(open(CACHE))
     except Exception:
@@ -146,7 +156,7 @@ def buscar(b, progresso=lambda m: None):
         out.append(dict(
             id='F' + iid, fonte='Facebook', url=f'https://www.facebook.com/marketplace/item/{iid}/', titulo=x['titulo'],
             desc=f.get('desc', ''), ativo=not x['vendido'], aluguel=x['preco'], cond=None, iptu=None, quartos=q, suites=None, area=None,
-            bairro=bairro, rua=_rua(x['onde'], f.get('desc')), cidade=x['cidade'] or ('Camboriú' if 'camboriú' in x['onde'].lower() and 'balneário' not in x['onde'].lower() else 'Balneário Camboriú'), lat=None, lon=None, local_exato=False,
+            bairro=bairro, rua=_rua(x['onde'], f.get('desc')), cidade=x['cidade'] or ('Itajaí' if 'itajaí' in x['onde'].lower() else 'Camboriú' if 'camboriú' in x['onde'].lower() and 'balneário' not in x['onde'].lower() else 'Balneário Camboriú'), lat=None, lon=None, local_exato=False,
             marcado_mobiliado=False, publicado=time.strftime('%Y-%m-%d', time.localtime(f['criado'])) if f.get('criado') else '',
             anunciante=f.get('anunciante') or 'Facebook', fotos=f.get('fotos') or ([x['foto']] if x['foto'] else [])))
     return out

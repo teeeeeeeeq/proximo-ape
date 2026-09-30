@@ -95,6 +95,22 @@ def temporada(texto):
 RUAS = json.load(open(RUAS_ARQ)) if os.path.exists(RUAS_ARQ) else {}
 
 
+# Onde procurar: cidade -> bairros aceitos (None = a cidade toda)
+REGIOES = {
+    'balneario camboriu': None,
+    'camboriu': None,
+    'itajai': {'praia brava', 'praia brava de itajai', 'fazendinha', 'cabecudas', 'fazenda', 'ressacada'},
+}
+LAZER = ('POOL', 'GYM', 'SAUNA', 'PLAYGROUND', 'SPORTS_COURT', 'SPA', 'TENNIS_COURT', 'SQUASH', 'GAMES_ROOM', 'KIDS_AREA')
+
+
+def na_regiao(cidade, bairro):
+    c = norm(cidade).strip() or 'balneario camboriu'
+    if c not in REGIOES:
+        return False
+    return REGIOES[c] is None or norm(bairro).strip() in REGIOES[c]
+
+
 def localizar_por_rua(o):
     """Sem coordenada: estima pela rua (ruas curtas) ou só a distância da praia (avenidas paralelas ao mar)."""
     r = norm(o.get('rua') or '')
@@ -120,6 +136,11 @@ def localizar_por_rua(o):
 def completar(o):
     o['bairro'] = re.sub(r'^(bairro\s+)?(d[aeo]s?\s+)', '', (o.get('bairro') or '').strip(), flags=re.I).strip()
     o['bairro'] = o['bairro'][:1].upper() + o['bairro'][1:]
+    if norm(o['bairro']) == 'praia brava de itajai':
+        o['bairro'] = 'Praia Brava'
+    txt_lazer = norm(o.get('titulo', '') + ' ' + o.get('desc', ''))
+    o['lazer'] = bool(o.get('marcado_lazer') or re.search(
+        r'piscina|academia|lazer completo|area de lazer|sauna|\bspa\b|playground|brinquedoteca|quadra (poli|esport)|fitness', txt_lazer))
     o['fixo'] = round((o['aluguel'] or 0) + (o['cond'] or 0) + (o['iptu'] or 0)) if o['aluguel'] else None
     o.pop('local_aprox', None)
     o.pop('praia_rua', None)
@@ -149,6 +170,7 @@ def de_zap(w):
         bairro=a.get('neighborhood') or '', rua=a.get('street') or '', cidade=a.get('city') or '', lat=pt.get('lat') or pt.get('approximateLat'),
         lon=pt.get('lon') or pt.get('approximateLon'), local_exato=a.get('precision') in ('ROOFTOP', 'RANGE_INTERPOLATED'),
         marcado_mobiliado='FURNISHED' in (L.get('amenities') or []), publicado=(L.get('createdAt') or '')[:10],
+        marcado_lazer=any(x in (L.get('amenities') or []) for x in LAZER),
         anunciante=(w.get('account') or {}).get('name') or '',
         fotos=[m['url'].replace('{description}', 'foto').replace('{action}', 'fit-in').replace('{width}x{height}', '1200x900')
                for m in (w.get('medias') or []) if m.get('type') == 'IMAGE']))
@@ -165,6 +187,7 @@ def de_olx(a, det):
         bairro=ld.get('neighbourhood') or '', cidade=ld.get('municipality') or '', rua=det.get('addr') or '',
         lat=det.get('lat'), lon=det.get('lon'), local_exato=False,
         marcado_mobiliado='Mobiliado' in (P.get('re_features') or ''), publicado=det.get('publicado') or '',
+        marcado_lazer=bool(re.search(r'Piscina|Academia|Sauna|Quadra|Playground', P.get('re_complex_features') or '')),
         anunciante=det.get('user') or '', fotos=det.get('images') or [i.get('original') for i in a.get('images') or []]))
 
 
@@ -251,16 +274,17 @@ def de_zap_pagina(x):
         area=one(am.get('usableAreas')), bairro=a.get('neighborhood') or '', rua=a.get('street') or '', cidade=a.get('city') or '',
         lat=c.get('latitude'), lon=c.get('longitude'), local_exato=not a.get('isApproximateLocation', True),
         marcado_mobiliado='FURNISHED' in (am.get('values') or []), publicado='',
+        marcado_lazer=any(x in (am.get('values') or []) for x in LAZER),
         anunciante=(x.get('advertiser') or {}).get('name') or '', fotos=[f for f in fotos if f]))
 
 
 def _zap_paginas(b, progresso):
     out, dec = {}, json.JSONDecoder()
-    for quartos in ('2-quartos', '3-quartos'):
+    for quartos, (cidade, _, slug) in [(q, c) for c in CIDADES_ZAP for q in ('2-quartos', '3-quartos')]:
         total = None
         for p in range(1, 60):
-            progresso(f'{quartos}, página {p}' + (f' de {math.ceil(total / 30)}' if total else ''))
-            b.go(f'https://www.zapimoveis.com.br/aluguel/apartamentos/sc+balneario-camboriu/{quartos}/?pagina={p}', 6)
+            progresso(f'{cidade}, {quartos}, página {p}' + (f' de {math.ceil(total / 30)}' if total else ''))
+            b.go(f'https://www.zapimoveis.com.br/aluguel/apartamentos/{slug}/{quartos}/?pagina={p}', 6)
             page = b.js('document.documentElement.outerHTML') or ''
             parts = []
             for m in re.finditer(r'self\.__next_f\.push\(\[1,(".*?")\]\)</script>', page, re.S):
@@ -271,7 +295,7 @@ def _zap_paginas(b, progresso):
             t = ''.join(parts)
             i = t.find('"listings":[')
             if i < 0:
-                if p == 1 and quartos == '2-quartos':
+                if p == 1 and quartos == '2-quartos' and slug == 'sc+balneario-camboriu':
                     raise RuntimeError('a página não trouxe anúncios')
                 break
             L, _ = dec.raw_decode(t[i + len('"listings":'):])
@@ -287,18 +311,30 @@ def _zap_paginas(b, progresso):
                         pass
             if not L or not novos or (total and p * 30 >= total):
                 break
-    return list(out.values())
+    return [o for o in out.values() if na_regiao(o.get('cidade'), o.get('bairro'))]
+
+
+CIDADES_ZAP = [('Balneário Camboriú', 'BR>Santa Catarina>NULL>Balneario Camboriu', 'sc+balneario-camboriu'),
+               ('Camboriú', 'BR>Santa Catarina>NULL>Camboriu', 'sc+camboriu'),
+               ('Itajaí', 'BR>Santa Catarina>NULL>Itajai', 'sc+itajai')]
 
 
 def _zap_api(b, progresso, dominio, portal, site):
     out = []
+    for cidade, loc, _ in CIDADES_ZAP:
+        out += _zap_api_cidade(b, progresso, dominio, portal, site, cidade, loc)
+    return [o for o in out if na_regiao(o.get('cidade'), o.get('bairro'))]
+
+
+def _zap_api_cidade(b, progresso, dominio, portal, site, cidade, loc):
+    out = []
     for quartos in ('2', '3'):
         frm = 0
         while True:
-            progresso(f'{quartos} quartos, {frm} lidos ({portal})')
+            progresso(f'{cidade}, {quartos} quartos, {frm} lidos ({portal})')
             q = urllib.parse.urlencode({'business': 'RENTAL', 'categoryPage': 'RESULT', 'listingType': 'USED', 'unitTypes': 'APARTMENT',
-                                        'usageTypes': 'RESIDENTIAL', 'bedrooms': quartos, 'addressCity': 'Balneário Camboriú',
-                                        'addressState': 'Santa Catarina', 'addressLocationId': 'BR>Santa Catarina>NULL>Balneario Camboriu',
+                                        'usageTypes': 'RESIDENTIAL', 'bedrooms': quartos, 'addressCity': cidade,
+                                        'addressState': 'Santa Catarina', 'addressLocationId': loc,
                                         'size': '30', 'from': str(frm), 'portal': portal, 'sort': 'MOST_RECENT'}, quote_via=urllib.parse.quote)
             code = ("fetch('https://glue-api.zapimoveis.com.br/v4/listings?%s',{headers:{'x-domain':'%s'}})"
                     ".then(r=>r.text().then(t=>JSON.stringify({s:r.status,t:t}))).catch(e=>JSON.stringify({s:-1,t:''+e}))") % (q, dominio)
@@ -357,27 +393,30 @@ def rsc_ads(page):
 
 
 def buscar_olx(b, progresso=lambda m: None):
-    base = 'https://www.olx.com.br/imoveis/aluguel/apartamentos/estado-sc/norte-de-santa-catarina/balneario-camboriu?ros=2&sf=1'
-    ads, total = {}, None
-    for p in range(1, 21):
-        progresso(f'página {p}' + (f' de {math.ceil(total / 50)}' if total else ''))
-        b.go(base + (f'&o={p}' if p > 1 else ''), 6)
-        page = b.js('document.documentElement.outerHTML') or ''
-        got = rsc_ads(page)
-        m = re.search(r'totalOfAds\\?":(\d+)', page)
-        total = total or (int(m.group(1)) if m else None)
-        if not got:
-            if p == 1:
-                raise RuntimeError('a OLX não devolveu anúncios')
-            break
-        for a in got:
-            ads[str(a['listId'])] = a
-        if total and p * 50 >= total:
-            break
+    ads = {}
+    for cidade in ('balneario-camboriu', 'camboriu', 'itajai'):
+        base = f'https://www.olx.com.br/imoveis/aluguel/apartamentos/estado-sc/norte-de-santa-catarina/{cidade}?ros=2&sf=1'
+        total = None
+        for p in range(1, 21):
+            progresso(f'{cidade}, página {p}' + (f' de {math.ceil(total / 50)}' if total else ''))
+            b.go(base + (f'&o={p}' if p > 1 else ''), 6)
+            page = b.js('document.documentElement.outerHTML') or ''
+            got = rsc_ads(page)
+            m = re.search(r'totalOfAds\\?":(\d+)', page)
+            total = total or (int(m.group(1)) if m else None)
+            if not got:
+                if p == 1 and cidade == 'balneario-camboriu':
+                    raise RuntimeError('a OLX não devolveu anúncios')
+                break
+            for a in got:
+                ld = a.get('locationDetails') or {}
+                if na_regiao(ld.get('municipality'), ld.get('neighbourhood')):
+                    ads[str(a['listId'])] = a
+            if total and p * 50 >= total:
+                break
     # descrição, endereço e todas as fotos: só dos que ainda não temos
     cache = load('olx_detalhes.json', {})
-    faltam = [a for k, a in ads.items() if k not in cache and 'camboriu' in norm((a.get('locationDetails') or {}).get('municipality'))
-              and (num(a.get('priceValue')) or 0) <= 9000]
+    faltam = [a for k, a in ads.items() if k not in cache and (num(a.get('priceValue')) or 0) <= 9000]
     if faltam:
         b.go(faltam[0]['url'], 6)
         js = r'''(async (urls)=>Promise.all(urls.map(async u=>{try{const r=await fetch(u,{credentials:'include'});const t=await r.text();

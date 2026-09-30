@@ -47,6 +47,7 @@ label.check{display:flex;gap:8px;align-items:center;font-size:14px;margin-top:8p
 label.check input{accent-color:var(--sea);width:16px;height:16px}
 .fstat{list-style:none;padding:0;margin:10px 0 0;font-size:12.5px;color:var(--muted);display:grid;gap:3px}
 .fstat .e{color:var(--bad)}
+.hint{font-size:12px;color:var(--muted);margin:6px 0 0}
 .reset{background:none;border:0;color:var(--sea);font:600 13px var(--body);cursor:pointer;padding:0;margin-top:16px}
 .top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
 .count{font:700 20px var(--display)}
@@ -110,7 +111,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     <p class="stat" id="stat">Atualiza quando você pedir: toque abaixo e depois em "Run workflow". Leva uns 15 minutos.</p>
     <a class="refresh" id="refresh" href="https://github.com/teeeeeeeeq/proximo-ape/actions/workflows/coletar.yml" target="_blank" rel="noopener">Buscar agora no GitHub</a>
     <div class="fb">
-      <a href="https://www.facebook.com/marketplace/108416972513126/propertyrentals?minPrice=2000&amp;maxPrice=5600&amp;minBedrooms=2&amp;sortBy=creation_time_descend&amp;exact=false&amp;latitude=-26.99&amp;longitude=-48.635&amp;radius=8" target="_blank" rel="noopener">Aluguéis no Facebook Marketplace ↗</a>
+      <a href="https://www.facebook.com/marketplace/108416972513126/propertyrentals?minPrice=2000&amp;maxPrice=5600&amp;minBedrooms=2&amp;sortBy=creation_time_descend&amp;exact=false&amp;latitude=-26.975&amp;longitude=-48.645&amp;radius=10" target="_blank" rel="noopener">Aluguéis no Facebook Marketplace ↗</a>
       <a href="https://www.facebook.com/groups/aluguelanualbc/" target="_blank" rel="noopener">Grupo Aluguel Anual BC ↗</a>
     </div>
 
@@ -123,6 +124,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         <button type="button" class="chip" data-q="2">2+ quartos</button>
         <button type="button" class="chip" data-q="3">3+ quartos</button>
       </div>
+    </fieldset>
+
+    <fieldset><legend>Prédio</legend>
+      <div class="row"><span>Condomínio até</span><b id="v-cond"></b></div>
+      <input type="range" id="cond" min="200" max="2000" step="50">
+      <label class="check"><input type="checkbox" id="semlazer"> Esconder prédios com lazer (piscina, academia…)</label>
+      <p class="hint">Anúncios que não informam o condomínio continuam aparecendo.</p>
     </fieldset>
 
     <fieldset><legend>Onde</legend>
@@ -182,17 +190,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
-const PERFIL = { semFonte: [], custo: 5600, area: 65, quartos: 2, praia: 12, hum: 20, semlocal: true, bairros: ['Centro', 'Nações'], mob: ['texto', 'marcado'], temp: false, q: '', show: 'todos', sort: 'recentes' };
+const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 31, hum: 41, semlocal: true, cond: 900, semLazer: true, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí'], mob: ['texto', 'marcado'], temp: false, q: '', show: 'todos', sort: 'recentes' };
+const CHAVE = 'apto-filtros-v2';
 let F = JSON.parse(JSON.stringify(PERFIL));
-try { const s = JSON.parse(localStorage.getItem('apto-filtros') || 'null'); if (s) F = Object.assign(F, s); } catch (e) {}
+try { const s = JSON.parse(localStorage.getItem(CHAVE) || 'null'); if (s) F = Object.assign(F, s); } catch (e) {}
 let ALL = [], MARCAS = {}, ANTERIOR = null, FONTES = {}, shown = 40;
 const src = o => o._src || o.fonte;
+const cidadeCurta = o => { const c = norm(o.cidade || ''); return !c || c.includes('balneario') ? '' : c.includes('itaja') ? 'Itajaí' : c.includes('camboriu') ? 'Camboriú' : o.cidade; };
+const zona = o => o.bairro ? o.bairro + (cidadeCurta(o) ? ' · ' + cidadeCurta(o) : '') : '';
 const $ = id => document.getElementById(id);
 const brl = n => n == null ? '—' : 'R$ ' + Math.round(n).toLocaleString('pt-BR');
 const min = m => m == null ? null : Math.max(1, Math.round(m * 1.25 / 75));
 const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-function saveF() { try { localStorage.setItem('apto-filtros', JSON.stringify(F)); } catch (e) {} }
+function saveF() { try { localStorage.setItem(CHAVE, JSON.stringify(F)); } catch (e) {} }
 
 async function carregar() {
   const [lista, meta] = await Promise.all([fetch('anuncios.json', { cache: 'no-store' }).then(r => r.json()), fetch('meta.json', { cache: 'no-store' }).then(r => r.json()).catch(() => ({}))]);
@@ -224,14 +235,16 @@ function passa(o) {
   if (F.show === 'novos' && !novo(o)) return false;
   if (o.no_ar === false || o.ativo === false) return false;
   if (!o.aluguel || o.aluguel < 2000) return false;   // abaixo disso é diária ou erro
-  if (o.cidade && !norm(o.cidade).includes('camboriu')) return false;
+  if (o.cidade && !/camboriu|itajai/.test(norm(o.cidade))) return false;
+  if (o.cond != null && F.cond < 2000 && o.cond > F.cond) return false;
+  if (F.semLazer && o.lazer) return false;
   if ((F.semFonte || []).includes(src(o))) return false;
   if (!F.temp && o.temporada) return false;
   if (!F.mob.includes(o.mobilia)) return false;
   if (!o.fixo || o.fixo > F.custo) return false;
   if (o.area && o.area < F.area) return false;
   if (!o.quartos || o.quartos < F.quartos) return false;
-  if (F.bairros.length && !F.bairros.includes(o.bairro)) return false;
+  if (F.bairros.length && !F.bairros.includes(zona(o))) return false;
   if (o.praia_m == null && o.humains_m == null) { if (!F.semlocal) return false; }
   else {
     if (o.praia_m != null && F.praia < 31 && min(o.praia_m) > F.praia) return false;
@@ -271,13 +284,14 @@ function card(o) {
   if (bh) facts.push(`<span class="f">Humains ${t}${bh} min${ap}</span>`);
   facts.push(`<span class="f plain">${{ texto: 'Mobiliado (no texto)', marcado: 'Mobiliado (só marcado)', semi: 'Semi-mobiliado', nao: 'Sem mobília', 'sem info': 'Mobília não informada' }[o.mobilia]}</span>`);
   if (o.temporada) facts.push('<span class="f warn">Fala em temporada</span>');
+  if (o.lazer) facts.push('<span class="f warn">Prédio com lazer</span>');
   el.innerHTML = `
     <div class="ph"><div class="strip"></div>
       ${fotos.length > 1 ? '<button class="nav p" type="button" aria-label="Foto anterior">‹</button><button class="nav n" type="button" aria-label="Próxima foto">›</button>' : ''}
       <span class="pc">${fotos.length} fotos</span>
       <div class="badges">${novo(o) ? '<span class="badge new">Novo</span>' : ''}${o.no_ar === false ? '<span class="badge off">Saiu do ar</span>' : ''}</div></div>
     <div class="body">
-      <h2 class="place">${esc(o.bairro)}${o.rua ? ' · ' + esc(o.rua) : ''}<small>${esc(o.titulo)}</small></h2>
+      <h2 class="place">${esc(zona(o))}${o.rua ? ' · ' + esc(o.rua) : ''}<small>${esc(o.titulo)}</small></h2>
       <div class="money"><b>${brl(o.fixo)}</b><span>aluguel ${brl(o.aluguel)}${o.cond ? ' + cond. ' + brl(o.cond) : ''}${o.iptu ? ' + IPTU ' + brl(o.iptu) : ''} · sem luz e gás</span></div>
       <div class="facts">${facts.join('')}</div>
       ${o.desc ? `<details><summary>Descrição</summary><p>${esc(o.desc)}</p></details>` : ''}
@@ -309,8 +323,9 @@ function marcar(o, v) {
 }
 
 function montarBairros() {
-  const c = {}; ALL.forEach(o => { if (o.bairro && !o.temporada && (!o.cidade || norm(o.cidade).includes('camboriu'))) c[o.bairro] = (c[o.bairro] || 0) + 1; });
-  const top = Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, 14);
+  const c = {}; ALL.forEach(o => { const z = zona(o); if (z && !o.temporada) c[z] = (c[z] || 0) + 1; });
+  F.bairros.forEach(z => { if (!(z in c)) c[z] = 0; });
+  const top = Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, 24);
   $('bairros').innerHTML = top.map(([b, n]) => `<button type="button" class="chip" data-b="${esc(b)}">${esc(b)} <small>${n}</small></button>`).join('');
 }
 function montarFontes() {
@@ -322,6 +337,8 @@ function montarFontes() {
 function pintarFiltros() {
   $('custo').value = F.custo; $('v-custo').textContent = brl(F.custo);
   $('area').value = F.area; $('v-area').textContent = F.area + ' m²';
+  $('cond').value = F.cond; $('v-cond').textContent = F.cond >= 2000 ? 'qualquer' : brl(F.cond);
+  $('semlazer').checked = F.semLazer;
   $('praia').value = F.praia; $('v-praia').textContent = F.praia >= 31 ? 'qualquer' : 'até ' + F.praia + ' min';
   $('hum').value = F.hum; $('v-hum').textContent = F.hum >= 41 ? 'qualquer' : 'até ' + F.hum + ' min';
   $('semlocal').checked = F.semlocal; $('temp').checked = F.temp; $('q').value = F.q; $('sort').value = F.sort;
@@ -332,8 +349,9 @@ function pintarFiltros() {
   document.querySelectorAll('#show button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.s === F.show)));
 }
 function mudou() { shown = 40; saveF(); pintarFiltros(); render(); }
-['custo', 'area', 'praia', 'hum'].forEach(id => $(id).addEventListener('input', e => { F[id] = +e.target.value; mudou(); }));
+['custo', 'area', 'praia', 'hum', 'cond'].forEach(id => $(id).addEventListener('input', e => { F[id] = +e.target.value; mudou(); }));
 $('semlocal').onchange = e => { F.semlocal = e.target.checked; mudou(); };
+$('semlazer').onchange = e => { F.semLazer = e.target.checked; mudou(); };
 $('temp').onchange = e => { F.temp = e.target.checked; mudou(); };
 let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value.trim(); mudou(); }, 250); });
 $('sort').onchange = e => { F.sort = e.target.value; mudou(); };
