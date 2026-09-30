@@ -10,7 +10,7 @@ NOME = 'Facebook Marketplace'
 USA_CHROME = True
 
 CIDADE = '108416972513126'   # Balneário Camboriú no Marketplace
-FAIXAS = [(2000, 3200), (3200, 4000), (4000, 4700), (4700, 5500), (5500, 7000), (7000, 9000)]
+FAIXAS = [(2000, 3000), (3000, 3600), (3600, 4100), (4100, 4600), (4600, 5100), (5100, 5700), (5700, 7000)]
 CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'dados', 'facebook_fichas.json')
 PRAZO_FICHAS = 420   # segundos
 
@@ -113,13 +113,13 @@ def buscar(b, progresso=lambda m: None):
     for lo, hi in FAIXAS:
         progresso(f'lista R$ {lo}–{hi}')
         b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=2'
-             f'&sortBy=creation_time_descend&exact=false&latitude=-26.99&longitude=-48.635&radius=8', 9)
+             f'&sortBy=creation_time_descend&exact=false&latitude=-27.0&longitude=-48.64&radius=9', 9)
         lista.update(_lista(b.js('document.documentElement.outerHTML') or ''))
     if not lista:
         txt = (b.js('document.body ? document.body.innerText : ""') or '')[:160].replace('\n', ' | ')
         raise RuntimeError(f"o Facebook não mostrou anúncios sem login (página: {(b.js('document.title') or '')[:50]} | {txt})")
     alvo = {i: x for i, x in lista.items()
-            if 'balneário camboriú' in (x['onde'] + ' ' + x['cidade']).lower() and not re.search(r'\bcasa\b|kitnet|sala comercial|quarto para', x['titulo'], re.I)}
+            if 'camboriú' in (x['onde'] + ' ' + x['cidade']).lower() and not re.search(r'\bcasa\b|kitnet|sala comercial|quarto para', x['titulo'], re.I)}
     try:
         cache = json.load(open(CACHE))
     except Exception:
@@ -146,7 +146,7 @@ def buscar(b, progresso=lambda m: None):
         out.append(dict(
             id='F' + iid, fonte='Facebook', url=f'https://www.facebook.com/marketplace/item/{iid}/', titulo=x['titulo'],
             desc=f.get('desc', ''), ativo=not x['vendido'], aluguel=x['preco'], cond=None, iptu=None, quartos=q, suites=None, area=None,
-            bairro=bairro, rua=_rua(x['onde'], f.get('desc')), cidade='Balneário Camboriú', lat=None, lon=None, local_exato=False,
+            bairro=bairro, rua=_rua(x['onde'], f.get('desc')), cidade=x['cidade'] or ('Camboriú' if 'camboriú' in x['onde'].lower() and 'balneário' not in x['onde'].lower() else 'Balneário Camboriú'), lat=None, lon=None, local_exato=False,
             marcado_mobiliado=False, publicado=time.strftime('%Y-%m-%d', time.localtime(f['criado'])) if f.get('criado') else '',
             anunciante=f.get('anunciante') or 'Facebook', fotos=f.get('fotos') or ([x['foto']] if x['foto'] else [])))
     return out
