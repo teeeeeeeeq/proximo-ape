@@ -449,14 +449,20 @@ def _zap_descricoes(b, itens, progresso, prazo=330):
                 break
             if k % 20 == 0:
                 progresso(f'descrições {k} de {len(faltam)} (pausa {pausa:.1f}s)')
-            r = json.loads(b.js("fetch(%s).then(r=>r.text().then(t=>JSON.stringify({s:r.status,t:t}))).catch(e=>JSON.stringify({s:-1,t:''}))"
-                                % json.dumps(o['url'])) or '{"s":-1,"t":""}')
+            try:
+                r = json.loads(b.js("(()=>{const c=new AbortController();setTimeout(()=>c.abort(),15000);"
+                                    "return fetch(%s,{signal:c.signal}).then(r=>r.text().then(t=>JSON.stringify({s:r.status,t:t})))"
+                                    ".catch(e=>JSON.stringify({s:-1,t:''}))})()" % json.dumps(o['url'])) or '{"s":-1,"t":""}')
+            except Exception:
+                break
             if r['s'] == 429:   # o ZAP limita o volume: espera, desacelera e tenta de novo
                 seguidos += 1
                 if seguidos > 5:
                     break
                 pausa = min(pausa + 0.5, 5)
-                time.sleep(min(60 * seguidos, 180))
+                if time.time() - t0 + 60 * seguidos > prazo:
+                    break
+                time.sleep(60 * seguidos)
                 continue
             seguidos = 0
             k += 1
@@ -488,12 +494,20 @@ def buscar_zap(b, progresso=lambda m: None):
     for pagina, dominio, portal, site in origens:
         b.go(pagina, 12)
         try:
-            return _zap_descricoes(b, _zap_api(b, progresso, dominio, portal, site), progresso)
+            itens = _zap_api(b, progresso, dominio, portal, site)
+            try:
+                return _zap_descricoes(b, itens, progresso)
+            except Exception:
+                return itens
         except RuntimeError as ex:
             falhas.append(f"{portal}: {ex} (página: {(b.js('document.title') or '')[:60]})")
     # plano C: a API bloqueou (acontece em servidores); lê as próprias páginas de busca, 30 por página
     try:
-        return _zap_descricoes(b, _zap_paginas(b, progresso), progresso)
+        itens = _zap_paginas(b, progresso)
+        try:
+            return _zap_descricoes(b, itens, progresso)
+        except Exception:
+            return itens
     except RuntimeError as ex:
         falhas.append(f'páginas: {ex}')
     raise RuntimeError('; '.join(falhas))
