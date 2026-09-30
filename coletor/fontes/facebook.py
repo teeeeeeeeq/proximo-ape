@@ -116,7 +116,8 @@ def buscar(b, progresso=lambda m: None):
              f'&sortBy=creation_time_descend&exact=false&latitude=-26.99&longitude=-48.635&radius=8', 9)
         lista.update(_lista(b.js('document.documentElement.outerHTML') or ''))
     if not lista:
-        raise RuntimeError('o Facebook não mostrou anúncios sem login')
+        txt = (b.js('document.body ? document.body.innerText : ""') or '')[:160].replace('\n', ' | ')
+        raise RuntimeError(f"o Facebook não mostrou anúncios sem login (página: {(b.js('document.title') or '')[:50]} | {txt})")
     alvo = {i: x for i, x in lista.items()
             if 'balneário camboriú' in (x['onde'] + ' ' + x['cidade']).lower() and not re.search(r'\bcasa\b|kitnet|sala comercial|quarto para', x['titulo'], re.I)}
     try:

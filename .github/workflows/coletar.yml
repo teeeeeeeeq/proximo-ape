@@ -2,6 +2,11 @@ name: Coletar anúncios
 
 on:
   workflow_dispatch:   # só quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
+    inputs:
+      somente:
+        description: 'Só estas fontes (ex.: facebook, olx). Vazio = todas'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -38,6 +43,7 @@ jobs:
       - name: Buscar anúncios
         env:
           TZ: America/Sao_Paulo
+          SOMENTE: ${{ inputs.somente }}
         run: python coletor/coletar.py
 
       - name: Guardar o histórico

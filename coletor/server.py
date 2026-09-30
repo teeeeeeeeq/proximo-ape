@@ -405,6 +405,7 @@ def fontes():
     """ZAP e OLX (aqui) + cada leitor em fontes/*.py."""
     import importlib, glob
     lista = [('ZAP', True, buscar_zap), ('OLX', True, buscar_olx)]
+    somente = [x.strip().lower() for x in os.environ.get('SOMENTE', '').split(',') if x.strip()]
     for f in sorted(glob.glob(os.path.join(DIR, 'fontes', '*.py'))):
         n = os.path.basename(f)[:-3]
         if n.startswith('_'):
@@ -415,6 +416,8 @@ def fontes():
             lista.append((getattr(m, 'NOME', n), getattr(m, 'USA_CHROME', True), m.buscar))
         except Exception as ex:
             lista.append((n, False, lambda *a, ex=ex: (_ for _ in ()).throw(RuntimeError(f'leitor com defeito: {ex}'))))
+    if somente:
+        lista = [t for t in lista if any(x in norm(t[0]) for x in somente)]
     return lista
 
 
