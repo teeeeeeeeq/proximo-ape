@@ -413,42 +413,65 @@ class Chrome:
         return r.get('result', {}).get('value')
 
 
-def _zap_descricoes(b, itens, progresso, prazo=420):
-    """Busca a descrição na página de cada anúncio do ZAP que veio sem ela (guarda em dados/zap_desc.json)."""
+def _desc_da_pagina_zap(page):
+    """Descrição escrita pelo anunciante (no payload RSC da página do anúncio; a <meta> é texto padrão do site)."""
+    parts = []
+    for m in re.finditer(r'self\.__next_f\.push\(\[1,(".*?")\]\)</script>', page, re.S):
+        try:
+            parts.append(json.loads(m.group(1)))
+        except Exception:
+            pass
+    rsc = ''.join(parts)
+    cands = []
+    for m in re.finditer(r'"description":"((?:[^"\\]|\\.){40,})"', rsc):
+        try:
+            d = json.loads('"' + m.group(1) + '"')
+        except Exception:
+            continue
+        if not re.match(r'(Apartamentos?|Imóveis|Casas?) (em|para) ', d):
+            cands.append(d)
+    cn = re.search(r'"condominiumName":"([^"]{2,80})"', rsc)
+    return (clean(max(cands, key=len)) if cands else ''), (cn.group(1) if cn else '')
+
+
+def _zap_descricoes(b, itens, progresso, prazo=330):
+    """Descrição de cada anúncio novo do ZAP (página do anúncio, 1 a cada 1,3 s: o ZAP bloqueia pedidos rápidos).
+    Guarda em dados/zap_desc.json; o que não der tempo fica para a próxima busca."""
     cache = load('zap_desc.json', {})
     faltam = [o for o in itens if not o.get('desc') and o['id'] not in cache and (o.get('aluguel') or 0) <= 9000]
     if faltam:
         b.go('https://www.zapimoveis.com.br/aluguel/apartamentos/sc+balneario-camboriu/', 6)
-        js = r'''(async (urls)=>Promise.all(urls.map(async u=>{try{const r=await fetch(u);const t=await r.text();
-                 const m=t.match(/"description":"((?:[^"\\]|\\.){20,}?)"/)||t.match(/\\"description\\":\\"(.{20,}?)\\",\\"/);
-                 return {u:u,s:r.status,d:m?m[1]:null}}catch(e){return {u:u,s:-1,d:null}}})))(%s)'''
-        t0 = time.time()
-        for k in range(0, len(faltam), 6):
+        t0, bloqueios = time.time(), 0
+        for k, o in enumerate(faltam):
             if time.time() - t0 > prazo:
                 progresso(f'descrições: {len(faltam) - k} ficam para a próxima busca')
                 break
-            progresso(f'descrições {k} de {len(faltam)}')
-            chunk = faltam[k:k + 6]
-            for o, r in zip(chunk, b.js(js % json.dumps([o['url'] for o in chunk])) or []):
-                if r and r.get('d'):
-                    raw = r['d']
-                    for _ in range(3):
-                        try:
-                            raw = json.loads('"' + raw + '"')
-                        except Exception:
-                            break
-                        if '\\' not in raw:
-                            break
-                    cache[o['id']] = clean(raw)
-                elif r and r.get('s') in (404, 410):
-                    cache[o['id']] = ''
-            if k % 120 == 0:
+            if k % 20 == 0:
+                progresso(f'descrições {k} de {len(faltam)}')
+            r = json.loads(b.js("fetch(%s).then(r=>r.text().then(t=>JSON.stringify({s:r.status,t:t}))).catch(e=>JSON.stringify({s:-1,t:''}))"
+                                % json.dumps(o['url'])) or '{"s":-1,"t":""}')
+            if r['s'] == 429:
+                bloqueios += 1
+                if bloqueios > 2:
+                    break
+                time.sleep(30)
+                continue
+            if r['s'] in (404, 410):
+                cache[o['id']] = {'d': '', 'c': ''}
+            elif r['s'] == 200:
+                d, c = _desc_da_pagina_zap(r['t'])
+                cache[o['id']] = {'d': d, 'c': c}
+            if k % 40 == 0:
                 save('zap_desc.json', cache)
-            time.sleep(0.3)
+            time.sleep(1.3)
         save('zap_desc.json', cache)
     for o in itens:
-        if not o.get('desc') and cache.get(o['id']):
-            o['desc'] = cache[o['id']]
+        x = cache.get(o['id'])
+        if isinstance(x, dict):
+            if not o.get('desc') and x.get('d'):
+                o['desc'] = x['d']
+            if not o.get('predio_site') and x.get('c'):
+                o['predio_site'] = x['c']
             completar(o)
     return itens
 
