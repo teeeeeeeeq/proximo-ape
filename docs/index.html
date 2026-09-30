@@ -47,6 +47,8 @@ label.check{display:flex;gap:8px;align-items:center;font-size:14px;margin-top:8p
 label.check input{accent-color:var(--sea);width:16px;height:16px}
 .fstat{list-style:none;padding:0;margin:10px 0 0;font-size:12.5px;color:var(--muted);display:grid;gap:3px}
 .fstat .e{color:var(--bad)}
+.addr{margin:0;font-size:13px;color:var(--muted)}
+.addr b{color:var(--ink);font-weight:600}
 .hint{font-size:12px;color:var(--muted);margin:6px 0 0}
 .reset{background:none;border:0;color:var(--sea);font:600 13px var(--body);cursor:pointer;padding:0;margin-top:16px}
 .top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -276,7 +278,7 @@ function card(o) {
   el.className = 'card' + (m === 'favorito' ? ' fav' : '');
   const fotos = o.fotos || [];
   const bp = min(o.praia_m), bh = min(o.humains_m), t = o.local_exato ? '' : '~';
-  const ap = o.local_aprox === 'rua' ? ' (pela rua)' : o.local_aprox === 'avenida' ? ' (pela avenida)' : '';
+  const ap = o.local_aprox === 'rua' ? ' (pela rua)' : o.local_aprox === 'avenida' ? ' (pela avenida)' : o.local_fonte === 'prédio' ? ' (pelo prédio)' : '';
   const facts = [];
   if (o.area) facts.push(`<span class="f">${Math.round(o.area)} m²</span>`);
   if (o.quartos) facts.push(`<span class="f">${o.quartos} quartos${o.suites ? ' · ' + o.suites + ' suíte' : ''}</span>`);
@@ -294,6 +296,7 @@ function card(o) {
       <h2 class="place">${esc(zona(o))}${o.rua ? ' · ' + esc(o.rua) : ''}<small>${esc(o.titulo)}</small></h2>
       <div class="money"><b>${brl(o.fixo)}</b><span>aluguel ${brl(o.aluguel)}${o.cond ? ' + cond. ' + brl(o.cond) : ''}${o.iptu ? ' + IPTU ' + brl(o.iptu) : ''} · sem luz e gás</span></div>
       <div class="facts">${facts.join('')}</div>
+      ${o.predio || o.local_fonte === 'descrição' || o.local_fonte === 'prédio' ? `<p class="addr">${o.predio ? 'Prédio: <b>' + esc(o.predio) + '</b>' : ''}${o.predio && o.local_fonte !== 'site' ? ' · ' : ''}${o.local_fonte === 'prédio' ? 'localização pelo prédio citado no anúncio' : o.local_fonte === 'descrição' ? 'endereço tirado da descrição do anúncio' : ''}</p>` : ''}
       ${o.desc ? `<details><summary>Descrição</summary><p>${esc(o.desc)}</p></details>` : ''}
       <div class="acts"><div><a href="${esc(o.url)}" target="_blank" rel="noopener">Abrir no ${o.fonte} ↗</a>
         ${(o.outros || []).map(x => ` · <a href="${esc(x.url)}" target="_blank" rel="noopener">${x.fonte} ↗</a>`).join('')}
