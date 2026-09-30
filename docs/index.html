@@ -190,14 +190,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
-const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 31, hum: 41, semlocal: true, cond: 900, semLazer: true, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí'], mob: ['texto', 'marcado'], temp: false, q: '', show: 'todos', sort: 'recentes' };
+const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 31, hum: 41, semlocal: true, cond: 900, semLazer: true, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí'], mob: ['texto', 'marcado'], temp: false, q: '', show: 'todos', sort: 'recentes' };
 const CHAVE = 'apto-filtros-v2';
 let F = JSON.parse(JSON.stringify(PERFIL));
 try { const s = JSON.parse(localStorage.getItem(CHAVE) || 'null'); if (s) F = Object.assign(F, s); } catch (e) {}
 let ALL = [], MARCAS = {}, ANTERIOR = null, FONTES = {}, shown = 40;
 const src = o => o._src || o.fonte;
 const cidadeCurta = o => { const c = norm(o.cidade || ''); return !c || c.includes('balneario') ? '' : c.includes('itaja') ? 'Itajaí' : c.includes('camboriu') ? 'Camboriú' : o.cidade; };
-const zona = o => o.bairro ? o.bairro + (cidadeCurta(o) ? ' · ' + cidadeCurta(o) : '') : '';
+const zona = o => { const b = (o.bairro || '').replace(/\s*\(.*\)\s*$/, ''); return b ? b + (cidadeCurta(o) ? ' · ' + cidadeCurta(o) : '') : ''; };
 const $ = id => document.getElementById(id);
 const brl = n => n == null ? '—' : 'R$ ' + Math.round(n).toLocaleString('pt-BR');
 const min = m => m == null ? null : Math.max(1, Math.round(m * 1.25 / 75));
