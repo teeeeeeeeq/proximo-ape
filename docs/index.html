@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Próximo Apê</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: filter rail on the left (top on phones), results grid on the right */
+:root{
+  --bg:#F3F5F4; --surface:#FFFFFF; --ink:#16211F; --muted:#5B6A67; --line:#DCE3E1;
+  --sea:#0F6B63; --sea-soft:#DDEFEC; --sand:#B7813A; --warn:#9A4B12; --warn-soft:#FBEBDD; --good:#1D7A45; --bad:#A63A2E;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree",ui-sans-serif,system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0F1514; --surface:#18201F; --ink:#E4ECEA; --muted:#9AAAA6; --line:#2A3634;
+  --sea:#5CC2B4; --sea-soft:#17312E; --sand:#D9A460; --warn:#F0A26A; --warn-soft:#3A2517; --good:#6BCB8F; --bad:#EE8A7D; color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
+.app{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid var(--line);background:var(--surface);padding:22px 18px 30px}
+main{padding:22px 24px 60px;min-width:0}
+h1{font:700 28px/1.05 var(--display);letter-spacing:-.02em;margin:0 0 4px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+.refresh{display:block;text-align:center;text-decoration:none;width:100%;font:600 14px var(--body);background:var(--sea);color:var(--surface);border:0;border-radius:10px;padding:10px 12px;cursor:pointer}
+.refresh[disabled]{opacity:.6;cursor:progress}
+.stat{font-size:12.5px;color:var(--muted);margin:8px 0 0;min-height:18px}
+.stat.err{color:var(--bad)}
+fieldset{border:0;border-top:1px solid var(--line);margin:16px 0 0;padding:14px 0 0}
+legend{font:600 12px var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:14px;margin:8px 0 2px}
+.row b{font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--sea)}
+input[type=search]{width:100%;font:15px var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font:500 13px var(--body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:5px 10px;border-radius:99px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:var(--surface)}
+.chip small{opacity:.7;font-size:11px}
+label.check{display:flex;gap:8px;align-items:center;font-size:14px;margin-top:8px;cursor:pointer}
+label.check input{accent-color:var(--sea);width:16px;height:16px}
+.fstat{list-style:none;padding:0;margin:10px 0 0;font-size:12.5px;color:var(--muted);display:grid;gap:3px}
+.fstat .e{color:var(--bad)}
+.reset{background:none;border:0;color:var(--sea);font:600 13px var(--body);cursor:pointer;padding:0;margin-top:16px}
+.top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.count{font:700 20px var(--display)}
+.count span{font:400 14px var(--body);color:var(--muted);margin-left:6px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select{font:14px var(--body);padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.seg{display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--body);border:0;background:var(--surface);color:var(--ink);padding:7px 11px;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.card.fav{border-color:var(--good);box-shadow:0 0 0 1px var(--good)}
+.ph{position:relative;background:var(--line)}
+.strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;aspect-ratio:4/3;max-width:100%}
+.strip img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:start;cursor:zoom-in;background:var(--line)}
+.nav{position:absolute;top:50%;transform:translateY(-50%);border:0;border-radius:99px;width:34px;height:34px;background:rgba(0,0,0,.45);color:#fff;font-size:18px;cursor:pointer}
+.nav.p{left:8px}.nav.n{right:8px}
+.pc{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:2px 8px;border-radius:99px}
+.badges{position:absolute;top:8px;left:8px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{font:600 11.5px var(--body);padding:3px 8px;border-radius:99px;background:var(--surface);color:var(--ink)}
+.badge.new{background:var(--sand);color:#fff}
+.badge.off{background:var(--bad);color:#fff}
+.body{padding:14px 16px 16px;display:grid;gap:8px;flex:1}
+.place{font:700 18px/1.2 var(--display);margin:0}
+.place small{display:block;font:400 13px var(--body);color:var(--muted);margin-top:3px}
+.money{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.money b{font:700 22px var(--display)}
+.money span{font-size:12.5px;color:var(--muted)}
+.facts{display:flex;flex-wrap:wrap;gap:6px}
+.f{font-size:12.5px;padding:3px 9px;border-radius:99px;background:var(--sea-soft);font-variant-numeric:tabular-nums}
+.f.plain{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.f.warn{background:var(--warn-soft);color:var(--warn)}
+details{font-size:13.5px;color:var(--muted)}
+details summary{cursor:pointer;color:var(--ink);font-weight:500}
+details p{white-space:pre-line;margin:8px 0 0;max-height:260px;overflow:auto}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;margin-top:auto}
+.acts a{font:600 14px var(--body);color:var(--sea);text-decoration:none}
+.acts a:hover{text-decoration:underline}
+.mk{display:flex;gap:6px}
+.mk button{font:600 13px var(--body);border:1px solid var(--line);background:transparent;color:var(--ink);padding:6px 11px;border-radius:8px;cursor:pointer}
+.mk .fv[aria-pressed="true"]{background:var(--good);border-color:var(--good);color:#fff}
+.mk .ds[aria-pressed="true"]{background:var(--bad);border-color:var(--bad);color:#fff}
+.src{font-size:12px;color:var(--muted)}
+.more{display:block;margin:22px auto 0;font:600 14px var(--body);background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 18px;cursor:pointer}
+.empty{color:var(--muted);padding:40px 0}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.lb{position:fixed;inset:0;background:rgba(8,12,11,.94);z-index:20;display:flex;align-items:center;justify-content:center;padding:12px}
+.lb img{max-width:100%;max-height:90vh;border-radius:6px}
+.lb button{position:absolute;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:99px;width:46px;height:46px;font-size:22px;cursor:pointer}
+.lb .x{top:14px;right:14px}.lb .p{left:12px;top:50%}.lb .n{right:12px;top:50%}
+.lb .c{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#cfd8d6;font-size:13px}
+@media (max-width:820px){.app{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}main{padding:18px 16px 50px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <h1>Próximo Apê</h1>
+    <p class="sub" id="sub">Aluguel em Balneário Camboriú · ZAP e OLX</p>
+    <p class="stat" id="stat">Atualiza sozinho a cada 3 horas.</p>
+    <a class="refresh" id="refresh" href="https://github.com/teeeeeeeeq/proximo-ape/actions/workflows/coletar.yml" target="_blank" rel="noopener">Buscar agora no GitHub</a>
+
+    <fieldset><legend>Custo e tamanho</legend>
+      <div class="row"><span>Até (aluguel + cond. + IPTU)</span><b id="v-custo"></b></div>
+      <input type="range" id="custo" min="2000" max="9000" step="100">
+      <div class="row"><span>Área mínima</span><b id="v-area"></b></div>
+      <input type="range" id="area" min="30" max="150" step="5">
+      <div class="chips" id="quartos">
+        <button type="button" class="chip" data-q="2">2+ quartos</button>
+        <button type="button" class="chip" data-q="3">3+ quartos</button>
+      </div>
+    </fieldset>
+
+    <fieldset><legend>Onde</legend>
+      <div class="row"><span>A pé até a praia</span><b id="v-praia"></b></div>
+      <input type="range" id="praia" min="3" max="31" step="1">
+      <div class="row"><span>A pé até a Humains</span><b id="v-hum"></b></div>
+      <input type="range" id="hum" min="3" max="41" step="1">
+      <label class="check"><input type="checkbox" id="semlocal"> Incluir anúncios sem localização</label>
+      <div class="chips" id="bairros"></div>
+    </fieldset>
+
+    <fieldset><legend>Mobília</legend>
+      <div class="chips" id="mob">
+        <button type="button" class="chip" data-m="texto">Diz "mobiliado" no texto</button>
+        <button type="button" class="chip" data-m="marcado">Só marcado no site</button>
+        <button type="button" class="chip" data-m="semi">Semi</button>
+        <button type="button" class="chip" data-m="sem info">Sem informação</button>
+        <button type="button" class="chip" data-m="nao">Sem mobília</button>
+      </div>
+      <label class="check"><input type="checkbox" id="temp"> Mostrar temporada e diária</label>
+    </fieldset>
+
+    <fieldset><legend>Fontes</legend>
+      <div class="chips" id="fontes"></div>
+      <ul class="fstat" id="fstat"></ul>
+    </fieldset>
+
+    <fieldset><legend>Palavra no anúncio</legend>
+      <input type="search" id="q" placeholder="reformado, porcelanato, vista mar…">
+    </fieldset>
+    <button class="reset" type="button" id="reset">Voltar ao perfil de vocês</button>
+  </aside>
+
+  <main>
+    <div class="top">
+      <div class="count" id="count"></div>
+      <div class="tools">
+        <div class="seg" id="show">
+          <button type="button" data-s="todos">Todos</button>
+          <button type="button" data-s="novos">Novos</button>
+          <button type="button" data-s="favoritos">Favoritos</button>
+          <button type="button" data-s="descartados">Descartados</button>
+        </div>
+        <select id="sort" aria-label="Ordenar">
+          <option value="recentes">Mais recentes</option>
+          <option value="custo">Menor custo</option>
+          <option value="praia">Mais perto da praia</option>
+          <option value="hum">Mais perto da Humains</option>
+          <option value="area">Maior área</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <button class="more" id="more" type="button" hidden>Mostrar mais</button>
+  </main>
+</div>
+<div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
+
+<script>
+const PERFIL = { semFonte: [], custo: 5600, area: 65, quartos: 2, praia: 12, hum: 20, semlocal: true, bairros: ['Centro', 'Nações'], mob: ['texto', 'marcado'], temp: false, q: '', show: 'todos', sort: 'recentes' };
+let F = JSON.parse(JSON.stringify(PERFIL));
+try { const s = JSON.parse(localStorage.getItem('apto-filtros') || 'null'); if (s) F = Object.assign(F, s); } catch (e) {}
+let ALL = [], MARCAS = {}, ANTERIOR = null, FONTES = {}, shown = 40;
+const src = o => o._src || o.fonte;
+const $ = id => document.getElementById(id);
+const brl = n => n == null ? '—' : 'R$ ' + Math.round(n).toLocaleString('pt-BR');
+const min = m => m == null ? null : Math.max(1, Math.round(m * 1.25 / 75));
+const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function saveF() { try { localStorage.setItem('apto-filtros', JSON.stringify(F)); } catch (e) {} }
+
+async function carregar() {
+  const [lista, meta] = await Promise.all([fetch('anuncios.json', { cache: 'no-store' }).then(r => r.json()), fetch('meta.json', { cache: 'no-store' }).then(r => r.json()).catch(() => ({}))]);
+  const d = { anuncios: lista, ultima: meta.ultima, anterior: meta.anterior };
+  MARCAS = lerMarcas(); ANTERIOR = meta.anterior; FONTES = meta.fontes || {};
+  if (meta.erro) { $('stat').className = 'stat err'; $('stat').textContent = 'Última busca com problema: ' + meta.erro; }
+  // junta o mesmo imóvel anunciado no ZAP e na OLX (mesmo aluguel, área e bairro)
+  const byKey = new Map(), out = [];
+  d.anuncios.sort((a, b) => (a.fonte === 'ZAP' ? 0 : 1) - (b.fonte === 'ZAP' ? 0 : 1));
+  for (const o of d.anuncios) {
+    const k = o.aluguel && o.area ? [Math.round(o.aluguel), Math.round(o.area), norm(o.bairro)].join('|') : null;
+    const twin = k && byKey.get(k);
+    if (twin) { twin.outros = (twin.outros || []).concat({ fonte: o.fonte, url: o.url, id: o.id }); if (!twin.desc && o.desc) twin.desc = o.desc; continue; }
+    if (k) byKey.set(k, o); out.push(o);
+  }
+  ALL = out;
+  $('sub').textContent = `${ALL.length.toLocaleString('pt-BR')} anúncios de aluguel em Balneário · última busca em ${fmtData(d.ultima)}`;
+  montarBairros(); montarFontes(); pintarFiltros(); render();
+}
+function fmtData(s) { if (!s) return '—'; const [d, h] = s.split(' '); return d.split('-').reverse().slice(0, 2).join('/') + (h ? ' às ' + h : ''); }
+function marca(o) { return MARCAS[o.id] || (o.outros || []).map(x => MARCAS[x.id]).find(Boolean) || null; }
+function novo(o) { return ANTERIOR && o.visto_em > ANTERIOR; }
+
+function passa(o) {
+  const m = marca(o);
+  if (F.show === 'favoritos') return m === 'favorito';
+  if (F.show === 'descartados') return m === 'descartado';
+  if (m === 'descartado') return false;
+  if (F.show === 'novos' && !novo(o)) return false;
+  if (o.no_ar === false || o.ativo === false) return false;
+  if (!o.aluguel || o.aluguel < 2000) return false;   // abaixo disso é diária ou erro
+  if (o.cidade && !norm(o.cidade).includes('camboriu')) return false;
+  if ((F.semFonte || []).includes(src(o))) return false;
+  if (!F.temp && o.temporada) return false;
+  if (!F.mob.includes(o.mobilia)) return false;
+  if (!o.fixo || o.fixo > F.custo) return false;
+  if (o.area && o.area < F.area) return false;
+  if (!o.quartos || o.quartos < F.quartos) return false;
+  if (F.bairros.length && !F.bairros.includes(o.bairro)) return false;
+  if (o.praia_m == null && o.humains_m == null) { if (!F.semlocal) return false; }
+  else {
+    if (o.praia_m != null && F.praia < 31 && min(o.praia_m) > F.praia) return false;
+    if (o.humains_m != null && F.hum < 41 && min(o.humains_m) > F.hum) return false;
+    if ((o.praia_m == null || o.humains_m == null) && !F.semlocal) return false;
+  }
+  if (F.q) { const t = norm(o.titulo + ' ' + o.desc); if (!norm(F.q).split(/\s+/).filter(Boolean).every(w => t.includes(w))) return false; }
+  return true;
+}
+const SORTS = {
+  recentes: (a, b) => (b.visto_em || '').localeCompare(a.visto_em || '') || (b.publicado || '').localeCompare(a.publicado || ''),
+  custo: (a, b) => a.fixo - b.fixo,
+  praia: (a, b) => (a.praia_m ?? 1e9) - (b.praia_m ?? 1e9),
+  hum: (a, b) => (a.humains_m ?? 1e9) - (b.humains_m ?? 1e9),
+  area: (a, b) => (b.area || 0) - (a.area || 0),
+};
+
+function render() {
+  const list = ALL.filter(passa).sort(SORTS[F.sort]);
+  $('count').innerHTML = `${list.length.toLocaleString('pt-BR')} <span>${list.length === 1 ? 'apartamento' : 'apartamentos'}</span>`;
+  const g = $('grid'); g.innerHTML = '';
+  if (!list.length) g.innerHTML = '<p class="empty">Nenhum anúncio com esses filtros. Afrouxe o custo, a distância ou os bairros.</p>';
+  list.slice(0, shown).forEach(o => g.appendChild(card(o)));
+  $('more').hidden = list.length <= shown;
+}
+
+function card(o) {
+  const el = document.createElement('article'); const m = marca(o);
+  el.className = 'card' + (m === 'favorito' ? ' fav' : '');
+  const fotos = o.fotos || [];
+  const bp = min(o.praia_m), bh = min(o.humains_m), t = o.local_exato ? '' : '~';
+  const ap = o.local_aprox === 'rua' ? ' (pela rua)' : o.local_aprox === 'avenida' ? ' (pela avenida)' : '';
+  const facts = [];
+  if (o.area) facts.push(`<span class="f">${Math.round(o.area)} m²</span>`);
+  if (o.quartos) facts.push(`<span class="f">${o.quartos} quartos${o.suites ? ' · ' + o.suites + ' suíte' : ''}</span>`);
+  facts.push(bp ? `<span class="f">Praia ${t}${bp} min${ap}</span>` : '<span class="f warn">Sem localização</span>');
+  if (bh) facts.push(`<span class="f">Humains ${t}${bh} min${ap}</span>`);
+  facts.push(`<span class="f plain">${{ texto: 'Mobiliado (no texto)', marcado: 'Mobiliado (só marcado)', semi: 'Semi-mobiliado', nao: 'Sem mobília', 'sem info': 'Mobília não informada' }[o.mobilia]}</span>`);
+  if (o.temporada) facts.push('<span class="f warn">Fala em temporada</span>');
+  el.innerHTML = `
+    <div class="ph"><div class="strip"></div>
+      ${fotos.length > 1 ? '<button class="nav p" type="button" aria-label="Foto anterior">‹</button><button class="nav n" type="button" aria-label="Próxima foto">›</button>' : ''}
+      <span class="pc">${fotos.length} fotos</span>
+      <div class="badges">${novo(o) ? '<span class="badge new">Novo</span>' : ''}${o.no_ar === false ? '<span class="badge off">Saiu do ar</span>' : ''}</div></div>
+    <div class="body">
+      <h2 class="place">${esc(o.bairro)}${o.rua ? ' · ' + esc(o.rua) : ''}<small>${esc(o.titulo)}</small></h2>
+      <div class="money"><b>${brl(o.fixo)}</b><span>aluguel ${brl(o.aluguel)}${o.cond ? ' + cond. ' + brl(o.cond) : ''}${o.iptu ? ' + IPTU ' + brl(o.iptu) : ''} · sem luz e gás</span></div>
+      <div class="facts">${facts.join('')}</div>
+      ${o.desc ? `<details><summary>Descrição</summary><p>${esc(o.desc)}</p></details>` : ''}
+      <div class="acts"><div><a href="${esc(o.url)}" target="_blank" rel="noopener">Abrir no ${o.fonte} ↗</a>
+        ${(o.outros || []).map(x => ` · <a href="${esc(x.url)}" target="_blank" rel="noopener">${x.fonte} ↗</a>`).join('')}
+        <div class="src">${esc(o.anunciante)}${o.publicado ? ' · publicado ' + fmtData(o.publicado) : ''}</div></div>
+        <div class="mk"><button type="button" class="fv" aria-pressed="${m === 'favorito'}">Favorito</button><button type="button" class="ds" aria-pressed="${m === 'descartado'}">Descartar</button></div></div>
+    </div>`;
+  const strip = el.querySelector('.strip');
+  fotos.forEach((u, k) => { const i = document.createElement('img'); i.loading = 'lazy'; i.alt = ''; i.referrerPolicy = 'no-referrer'; i.src = u; i.onclick = () => abrirLb(fotos, k); strip.appendChild(i); });
+  const pc = el.querySelector('.pc'); const idx = () => Math.round(strip.scrollLeft / strip.clientWidth);
+  strip.addEventListener('scroll', () => { pc.textContent = (idx() + 1) + ' / ' + fotos.length; }, { passive: true });
+  const nv = el.querySelectorAll('.nav');
+  if (nv.length) { nv[0].onclick = () => strip.scrollTo({ left: (idx() - 1) * strip.clientWidth }); nv[1].onclick = () => strip.scrollTo({ left: (idx() + 1) * strip.clientWidth }); }
+  el.querySelector('.fv').onclick = () => marcar(o, m === 'favorito' ? null : 'favorito');
+  el.querySelector('.ds').onclick = () => marcar(o, m === 'descartado' ? null : 'descartado');
+  return el;
+}
+const MARCAS_INICIAIS = {"O1388143221": "favorito", "O1534156335": "favorito", "Z2903279796": "favorito", "Z2911080941": "favorito", "O1523651401": "favorito", "O1495126997": "descartado", "O1503060133": "descartado", "O1522252604": "descartado", "O1523724819": "descartado", "O1527608071": "descartado", "O1529063494": "descartado", "O1534086226": "descartado", "O1538462960": "descartado", "Z2895122576": "descartado", "Z2906044018": "descartado", "Z2907581442": "descartado", "Z2907924716": "descartado", "Z2908250019": "descartado", "Z2913859068": "descartado", "O1513717901": "descartado", "O1523580758": "descartado", "O1513354736": "descartado", "Z2911018619": "descartado"};
+function lerMarcas() {
+  try { const m = JSON.parse(localStorage.getItem('apto-marcas') || 'null'); if (m) return m; } catch (e) {}
+  return Object.assign({}, MARCAS_INICIAIS);
+}
+function marcar(o, v) {
+  const ids = [o.id, ...(o.outros || []).map(x => x.id)];
+  for (const id of ids) { if (v) MARCAS[id] = v; else delete MARCAS[id]; }
+  try { localStorage.setItem('apto-marcas', JSON.stringify(MARCAS)); } catch (e) {}
+  render();
+}
+
+function montarBairros() {
+  const c = {}; ALL.forEach(o => { if (o.bairro && !o.temporada && (!o.cidade || norm(o.cidade).includes('camboriu'))) c[o.bairro] = (c[o.bairro] || 0) + 1; });
+  const top = Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, 14);
+  $('bairros').innerHTML = top.map(([b, n]) => `<button type="button" class="chip" data-b="${esc(b)}">${esc(b)} <small>${n}</small></button>`).join('');
+}
+function montarFontes() {
+  const c = {}; ALL.forEach(o => { c[src(o)] = (c[src(o)] || 0) + 1; });
+  Object.keys(FONTES).forEach(n => { if (!(n in c)) c[n] = 0; });
+  $('fontes').innerHTML = Object.entries(c).sort((a, b) => b[1] - a[1]).map(([n, k]) => `<button type="button" class="chip" data-f="${esc(n)}">${esc(n)} <small>${k}</small></button>`).join('');
+  $('fstat').innerHTML = Object.entries(FONTES).map(([n, i]) => i.erro ? `<li class="e">${esc(n)}: falhou (${esc(i.erro.slice(0, 80))})</li>` : `<li>${esc(n)}: ${i.n} anúncios · ${fmtData(i.quando)}</li>`).join('');
+}
+function pintarFiltros() {
+  $('custo').value = F.custo; $('v-custo').textContent = brl(F.custo);
+  $('area').value = F.area; $('v-area').textContent = F.area + ' m²';
+  $('praia').value = F.praia; $('v-praia').textContent = F.praia >= 31 ? 'qualquer' : 'até ' + F.praia + ' min';
+  $('hum').value = F.hum; $('v-hum').textContent = F.hum >= 41 ? 'qualquer' : 'até ' + F.hum + ' min';
+  $('semlocal').checked = F.semlocal; $('temp').checked = F.temp; $('q').value = F.q; $('sort').value = F.sort;
+  document.querySelectorAll('#quartos .chip').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.q === F.quartos)));
+  document.querySelectorAll('#bairros .chip').forEach(b => b.setAttribute('aria-pressed', String(F.bairros.includes(b.dataset.b))));
+  document.querySelectorAll('#mob .chip').forEach(b => b.setAttribute('aria-pressed', String(F.mob.includes(b.dataset.m))));
+  document.querySelectorAll('#fontes .chip').forEach(b => b.setAttribute('aria-pressed', String(!(F.semFonte || []).includes(b.dataset.f))));
+  document.querySelectorAll('#show button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.s === F.show)));
+}
+function mudou() { shown = 40; saveF(); pintarFiltros(); render(); }
+['custo', 'area', 'praia', 'hum'].forEach(id => $(id).addEventListener('input', e => { F[id] = +e.target.value; mudou(); }));
+$('semlocal').onchange = e => { F.semlocal = e.target.checked; mudou(); };
+$('temp').onchange = e => { F.temp = e.target.checked; mudou(); };
+let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value.trim(); mudou(); }, 250); });
+$('sort').onchange = e => { F.sort = e.target.value; mudou(); };
+$('quartos').onclick = e => { const b = e.target.closest('.chip'); if (b) { F.quartos = +b.dataset.q; mudou(); } };
+$('bairros').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.b; F.bairros = F.bairros.includes(v) ? F.bairros.filter(x => x !== v) : F.bairros.concat(v); mudou(); };
+$('mob').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.m; F.mob = F.mob.includes(v) ? F.mob.filter(x => x !== v) : F.mob.concat(v); mudou(); };
+$('fontes').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.f; const s = F.semFonte || []; F.semFonte = s.includes(v) ? s.filter(x => x !== v) : s.concat(v); mudou(); };
+$('show').onclick = e => { const b = e.target.closest('button'); if (b) { F.show = b.dataset.s; mudou(); } };
+$('reset').onclick = () => { F = JSON.parse(JSON.stringify(PERFIL)); mudou(); };
+$('more').onclick = () => { shown += 40; render(); };
+
+let lbF = [], lbK = 0; const lb = $('lb');
+function abrirLb(f, k) { lbF = f; lbK = k; mostrarLb(); lb.hidden = false; }
+function mostrarLb() { $('lbimg').src = lbF[lbK]; $('lbc').textContent = (lbK + 1) + ' / ' + lbF.length; }
+lb.querySelector('.x').onclick = () => lb.hidden = true;
+lb.querySelector('.p').onclick = () => { lbK = (lbK - 1 + lbF.length) % lbF.length; mostrarLb(); };
+lb.querySelector('.n').onclick = () => { lbK = (lbK + 1) % lbF.length; mostrarLb(); };
+lb.onclick = e => { if (e.target === lb) lb.hidden = true; };
+document.addEventListener('keydown', e => { if (lb.hidden) return; if (e.key === 'Escape') lb.hidden = true; if (e.key === 'ArrowRight') lb.querySelector('.n').click(); if (e.key === 'ArrowLeft') lb.querySelector('.p').click(); });
+
+carregar();
+</script>
+</body>
+</html>
