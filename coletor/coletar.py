@@ -32,8 +32,15 @@ def main():
         x['fotos'] = (o.get('fotos') or [])[:15]
         pub.append(x)
     meta = s.load('meta.json', {})
-    info = dict(ultima=s.STATUS['ultima'], anterior=meta_antes.get('ultima'), fontes=meta.get('fontes', {}), erro=s.STATUS['erro'])
+    parcial = bool(os.environ.get('SOMENTE', '').strip())
+    # "Novos" compara com a última busca COMPLETA; rodadas parciais não mexem nessa referência
+    completa_antes = meta_antes.get('completa') or meta_antes.get('ultima')
+    info = dict(ultima=s.STATUS['ultima'], anterior=(meta_antes.get('anterior') if parcial else completa_antes),
+                fontes=meta.get('fontes', {}), erro=s.STATUS['erro'])
     meta['ultima'] = s.STATUS['ultima']
+    meta['anterior'] = info['anterior']
+    if not parcial:
+        meta['completa'] = s.STATUS['ultima']
     s.save('meta.json', meta)
     os.makedirs(os.path.join(RAIZ, 'docs'), exist_ok=True)
     pub.sort(key=lambda x: x.get('visto_em') or '', reverse=True)
