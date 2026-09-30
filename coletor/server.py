@@ -218,27 +218,43 @@ class Chrome:
 
 
 def buscar_zap(b, progresso=lambda m: None):
+    """ZAP e VivaReal têm o mesmo estoque e a mesma API. Tenta pela página do ZAP; se bloquear, pela do VivaReal."""
+    origens = [('https://www.zapimoveis.com.br/aluguel/apartamentos/sc+balneario-camboriu/2-quartos/', '.zapimoveis.com.br', 'ZAP', 'https://www.zapimoveis.com.br'),
+               ('https://www.vivareal.com.br/aluguel/santa-catarina/balneario-camboriu/apartamento_residencial/', '.vivareal.com.br', 'VIVAREAL', 'https://www.vivareal.com.br')]
+    falhas = []
+    for pagina, dominio, portal, site in origens:
+        b.go(pagina, 12)
+        try:
+            return _zap_api(b, progresso, dominio, portal, site)
+        except RuntimeError as ex:
+            falhas.append(f"{portal}: {ex} (página: {(b.js('document.title') or '')[:60]})")
+    raise RuntimeError('; '.join(falhas))
+
+
+def _zap_api(b, progresso, dominio, portal, site):
     out = []
-    b.go('https://www.zapimoveis.com.br/aluguel/apartamentos/sc+balneario-camboriu/2-quartos/', 10)
     for quartos in ('2', '3'):
         frm = 0
         while True:
-            progresso(f'{quartos} quartos, {frm} lidos')
+            progresso(f'{quartos} quartos, {frm} lidos ({portal})')
             q = urllib.parse.urlencode({'business': 'RENTAL', 'categoryPage': 'RESULT', 'listingType': 'USED', 'unitTypes': 'APARTMENT',
                                         'usageTypes': 'RESIDENTIAL', 'bedrooms': quartos, 'addressCity': 'Balneário Camboriú',
                                         'addressState': 'Santa Catarina', 'addressLocationId': 'BR>Santa Catarina>NULL>Balneario Camboriu',
-                                        'size': '30', 'from': str(frm), 'portal': 'ZAP', 'sort': 'MOST_RECENT'}, quote_via=urllib.parse.quote)
-            code = ("fetch('https://glue-api.zapimoveis.com.br/v4/listings?%s',{headers:{'x-domain':'.zapimoveis.com.br'}})"
-                    ".then(r=>r.text().then(t=>JSON.stringify({s:r.status,t:t}))).catch(e=>JSON.stringify({s:-1,t:''+e}))") % q
+                                        'size': '30', 'from': str(frm), 'portal': portal, 'sort': 'MOST_RECENT'}, quote_via=urllib.parse.quote)
+            code = ("fetch('https://glue-api.zapimoveis.com.br/v4/listings?%s',{headers:{'x-domain':'%s'}})"
+                    ".then(r=>r.text().then(t=>JSON.stringify({s:r.status,t:t}))).catch(e=>JSON.stringify({s:-1,t:''+e}))") % (q, dominio)
             r = json.loads(b.js(code) or '{"s":-1,"t":""}')
             if r['s'] != 200:
                 time.sleep(5)
                 r = json.loads(b.js(code) or '{"s":-1,"t":""}')
                 if r['s'] != 200:
-                    raise RuntimeError(f'o ZAP respondeu {r["s"]}')
+                    raise RuntimeError(f"a API respondeu {r['s']} {r['t'][:60]}")
             d = json.loads(r['t'])
             L = d['search']['result']['listings']
-            out += [de_zap(w) for w in L]
+            for w in L:
+                o = de_zap(w)
+                o['url'] = site + (w.get('link') or {}).get('href', '')
+                out.append(o)
             frm += 30
             if not L or frm >= d['search']['totalCount'] or frm >= 1500:
                 break

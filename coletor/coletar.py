@@ -28,14 +28,15 @@ def main():
             continue
         x = {k: o.get(k) for k in CAMPOS if o.get(k) not in (None, '', [], False)}
         if x.get('desc'):
-            x['desc'] = x['desc'][:1800]
-        x['fotos'] = (o.get('fotos') or [])[:24]
+            x['desc'] = x['desc'][:1000]
+        x['fotos'] = (o.get('fotos') or [])[:15]
         pub.append(x)
     meta = s.load('meta.json', {})
     info = dict(ultima=s.STATUS['ultima'], anterior=meta_antes.get('ultima'), fontes=meta.get('fontes', {}), erro=s.STATUS['erro'])
     meta['ultima'] = s.STATUS['ultima']
     s.save('meta.json', meta)
     os.makedirs(os.path.join(RAIZ, 'docs'), exist_ok=True)
+    pub.sort(key=lambda x: x.get('visto_em') or '', reverse=True)
     json.dump(pub, open(os.path.join(RAIZ, 'docs', 'anuncios.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
     json.dump(info, open(os.path.join(RAIZ, 'docs', 'meta.json'), 'w'), ensure_ascii=False)
     print(f"{len(pub)} anúncios publicados; fontes: " + '; '.join(f"{n}: {i.get('n', 0)}{' ERRO ' + i['erro'] if i.get('erro') else ''}" for n, i in info['fontes'].items()))
