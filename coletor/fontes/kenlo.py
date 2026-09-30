@@ -10,6 +10,8 @@ Não precisa de navegador: urllib puro.
 import html, json, re, time, unicodedata, urllib.parse, urllib.request
 from collections import Counter
 
+import server
+
 NOME = 'Imobiliárias (Kenlo)'
 USA_CHROME = False
 FONTE = 'Imobiliárias (Kenlo)'
@@ -23,10 +25,12 @@ SITES = (
     ('setor', 'Setor Imobiliária', 'www.setorimobiliaria.com.br'),
     ('santini', 'Vinicius Santini', 'www.viniciussantini.com'),
     ('viva', 'Viva Imóveis Itajaí', 'www.vivaimoveisitajai.com.br'),
+    ('cati', 'Cati Imóveis', 'www.catiimoveis.com.br'),
 )
+CIDADES = ('balneario-camboriu', 'camboriu', 'itajai')   # Itajaí: só os bairros do sul (server.na_regiao)
 MAX_ALUGUEL = 9000
 # quadrado em volta de Balneário Camboriú: coordenada fora disso é geocodificação errada
-BC_LAT, BC_LON = (-27.07, -26.93), (-48.70, -48.57)
+BC_LAT, BC_LON = (-27.08, -26.89), (-48.74, -48.56)   # BC, Camboriú e o sul de Itajaí
 # pontos genéricos que o Kenlo usa quando não acha o endereço (centro da cidade / do bairro Centro)
 PONTOS_GENERICOS = {(-26.99107, -48.63521), (-26.99309, -48.63563)}
 
@@ -93,7 +97,8 @@ def eh_candidato(x):
     fins = [fins] if isinstance(fins, str) else fins
     if 'FOR_RENT' not in fins:
         return False
-    if norm(x.get('city')) != 'balneario camboriu' or 'APARTMENT' not in str(x.get('property_type') or ''):
+    if not server.na_regiao(x.get('city'), x.get('neighborhood_display') or x.get('neighborhood')) \
+            or 'APARTMENT' not in str(x.get('property_type') or ''):
         return False
     q = primeiro(x.get('bedrooms'))
     if q is None or q < 2:
@@ -173,22 +178,27 @@ def buscar(chrome, progresso):
     for slug, nome_site, dom in SITES:
         try:
             achados = {}
-            for caminho, rot in (('para-alugar/apartamento/balneario-camboriu', 'aluguel'),
-                                 ('apartamento/balneario-camboriu?finalidade=temporada', 'temporada')):
-                for x in listar(dom, caminho, progresso, f'{nome_site} ({rot})'):
-                    if x.get('property_full_reference') and eh_candidato(x):
-                        achados.setdefault(x['property_full_reference'], x)
-                time.sleep(0.4)
             coords = {}
-            try:
-                d = get_json(f'https://{dom}/api/listings/balneario-camboriu?localidade=1')
-                for c in d.get('coordinates') or []:
-                    la, lo = primeiro(c.get('latitude')), primeiro(c.get('longitude'))
-                    if la is not None and lo is not None:
-                        coords[c.get('property_full_reference')] = (la, lo)
-                        todas_coords.append((dom, round(la, 5), round(lo, 5)))
-            except Exception:
-                pass
+            for cid in CIDADES:
+                for caminho, rot in ((f'para-alugar/apartamento/{cid}', 'aluguel'),
+                                     (f'apartamento/{cid}?finalidade=temporada', 'temporada')):
+                    try:
+                        for x in listar(dom, caminho, progresso, f'{nome_site} ({cid}, {rot})'):
+                            if x.get('property_full_reference') and eh_candidato(x):
+                                achados.setdefault(x['property_full_reference'], x)
+                    except Exception:
+                        if cid == CIDADES[0]:
+                            raise
+                    time.sleep(0.4)
+                try:
+                    d = get_json(f'https://{dom}/api/listings/{cid}?localidade=1')
+                    for c in d.get('coordinates') or []:
+                        la, lo = primeiro(c.get('latitude')), primeiro(c.get('longitude'))
+                        if la is not None and lo is not None:
+                            coords[c.get('property_full_reference')] = (la, lo)
+                            todas_coords.append((dom, round(la, 5), round(lo, 5)))
+                except Exception:
+                    pass
             lidos.append((slug, nome_site, dom, achados, coords))
             ok += 1
         except Exception as ex:
