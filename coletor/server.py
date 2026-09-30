@@ -228,7 +228,66 @@ def buscar_zap(b, progresso=lambda m: None):
             return _zap_api(b, progresso, dominio, portal, site)
         except RuntimeError as ex:
             falhas.append(f"{portal}: {ex} (página: {(b.js('document.title') or '')[:60]})")
+    # plano C: a API bloqueou (acontece em servidores); lê as próprias páginas de busca, 30 por página
+    try:
+        return _zap_paginas(b, progresso)
+    except RuntimeError as ex:
+        falhas.append(f'páginas: {ex}')
     raise RuntimeError('; '.join(falhas))
+
+
+def de_zap_pagina(x):
+    r = (x.get('prices') or {}).get('rental') or {}
+    a = x.get('address') or {}
+    c = a.get('coordinates') or {}
+    am = x.get('amenities') or {}
+    one = lambda v: (v or [None])[0] if isinstance(v, list) else v
+    fotos = [(m.get('dangerousSrc') or '').replace('{description}', 'foto').replace('{action}', 'fit-in').replace('{width}x{height}', '1200x900')
+             for m in ((x.get('medias') or {}).get('images') or [])]
+    return completar(dict(
+        id='Z' + str(x['id']), fonte='ZAP', url=x.get('href') or '', titulo=clean(x.get('title')), desc='',
+        ativo=r.get('period') in ('MONTHLY', None), aluguel=num(r.get('value')), cond=num(r.get('condominium')) or None,
+        iptu=round((num(r.get('iptu')) or 0) / 12) or None, quartos=one(am.get('bedrooms')), suites=one(am.get('suites')),
+        area=one(am.get('usableAreas')), bairro=a.get('neighborhood') or '', rua=a.get('street') or '', cidade=a.get('city') or '',
+        lat=c.get('latitude'), lon=c.get('longitude'), local_exato=not a.get('isApproximateLocation', True),
+        marcado_mobiliado='FURNISHED' in (am.get('values') or []), publicado='',
+        anunciante=(x.get('advertiser') or {}).get('name') or '', fotos=[f for f in fotos if f]))
+
+
+def _zap_paginas(b, progresso):
+    out, dec = {}, json.JSONDecoder()
+    for quartos in ('2-quartos', '3-quartos'):
+        total = None
+        for p in range(1, 60):
+            progresso(f'{quartos}, página {p}' + (f' de {math.ceil(total / 30)}' if total else ''))
+            b.go(f'https://www.zapimoveis.com.br/aluguel/apartamentos/sc+balneario-camboriu/{quartos}/?pagina={p}', 6)
+            page = b.js('document.documentElement.outerHTML') or ''
+            parts = []
+            for m in re.finditer(r'self\.__next_f\.push\(\[1,(".*?")\]\)</script>', page, re.S):
+                try:
+                    parts.append(json.loads(m.group(1)))
+                except Exception:
+                    pass
+            t = ''.join(parts)
+            i = t.find('"listings":[')
+            if i < 0:
+                if p == 1 and quartos == '2-quartos':
+                    raise RuntimeError('a página não trouxe anúncios')
+                break
+            L, _ = dec.raw_decode(t[i + len('"listings":'):])
+            m = re.search(r'"totalCount":(\d+)', t)
+            total = total or (int(m.group(1)) if m else None)
+            novos = 0
+            for x in L:
+                if x.get('business') == 'RENTAL' and str(x.get('id')) not in out:
+                    try:
+                        out[str(x['id'])] = de_zap_pagina(x)
+                        novos += 1
+                    except Exception:
+                        pass
+            if not L or not novos or (total and p * 30 >= total):
+                break
+    return list(out.values())
 
 
 def _zap_api(b, progresso, dominio, portal, site):
@@ -416,6 +475,9 @@ def atualizar():
             raise RuntimeError('; '.join(erros) or 'nada encontrado')
         for k, o in novos.items():
             o['visto_em'] = (antigos.get(k) or {}).get('visto_em') or agora
+            if not o.get('desc') and (antigos.get(k) or {}).get('desc'):
+                o['desc'] = antigos[k]['desc']
+                completar(o)
             o['no_ar'] = True
         rotulo = {n: n for n in ok}
         for k, o in antigos.items():
