@@ -1,9 +1,7 @@
 name: Coletar anúncios
 
 on:
-  schedule:
-    - cron: '17 */3 * * *'   # a cada 3 horas
-  workflow_dispatch:
+  workflow_dispatch:   # só quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
 
 permissions:
   contents: write
