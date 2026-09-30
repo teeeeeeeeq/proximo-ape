@@ -441,21 +441,25 @@ def _zap_descricoes(b, itens, progresso, prazo=330):
     faltam = [o for o in itens if not o.get('desc') and o['id'] not in cache and (o.get('aluguel') or 0) <= 9000]
     if faltam:
         b.go('https://www.zapimoveis.com.br/aluguel/apartamentos/sc+balneario-camboriu/', 6)
-        t0, bloqueios = time.time(), 0
-        for k, o in enumerate(faltam):
+        t0, seguidos, pausa, k = time.time(), 0, 1.3, 0
+        while k < len(faltam):
+            o = faltam[k]
             if time.time() - t0 > prazo:
                 progresso(f'descrições: {len(faltam) - k} ficam para a próxima busca')
                 break
             if k % 20 == 0:
-                progresso(f'descrições {k} de {len(faltam)}')
+                progresso(f'descrições {k} de {len(faltam)} (pausa {pausa:.1f}s)')
             r = json.loads(b.js("fetch(%s).then(r=>r.text().then(t=>JSON.stringify({s:r.status,t:t}))).catch(e=>JSON.stringify({s:-1,t:''}))"
                                 % json.dumps(o['url'])) or '{"s":-1,"t":""}')
-            if r['s'] == 429:
-                bloqueios += 1
-                if bloqueios > 2:
+            if r['s'] == 429:   # o ZAP limita o volume: espera, desacelera e tenta de novo
+                seguidos += 1
+                if seguidos > 5:
                     break
-                time.sleep(30)
+                pausa = min(pausa + 0.5, 5)
+                time.sleep(min(60 * seguidos, 180))
                 continue
+            seguidos = 0
+            k += 1
             if r['s'] in (404, 410):
                 cache[o['id']] = {'d': '', 'c': ''}
             elif r['s'] == 200:
@@ -463,7 +467,7 @@ def _zap_descricoes(b, itens, progresso, prazo=330):
                 cache[o['id']] = {'d': d, 'c': c}
             if k % 40 == 0:
                 save('zap_desc.json', cache)
-            time.sleep(1.3)
+            time.sleep(pausa)
         save('zap_desc.json', cache)
     for o in itens:
         x = cache.get(o['id'])
