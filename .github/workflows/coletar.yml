@@ -1,7 +1,9 @@
 name: Coletar anúncios
 
 on:
-  workflow_dispatch:   # só quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
+  schedule:
+    - cron: '7 1,13 * * *'   # 10h07 e 22h07 em Brasília (UTC-3); o GitHub às vezes atrasa alguns minutos
+  workflow_dispatch:   # e quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
     inputs:
       somente:
         description: 'Só estas fontes (ex.: facebook, olx). Vazio = todas'
