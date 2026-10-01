@@ -23,7 +23,7 @@ UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
 HUMAINS = (-26.98307, -48.64116)
 # O perfil: só o aluguel. Os leitores já pedem aos sites só essa faixa (e descartam o resto antes de abrir as fichas),
 # o que deixa cada busca bem mais rápida; fora dela o app não mostra nada.
-ALUGUEL_MIN, ALUGUEL_MAX = 3500, 5500
+ALUGUEL_MIN, ALUGUEL_MAX = 3500, 6000
 FAIXA = f'{ALUGUEL_MIN}-{ALUGUEL_MAX}'
 
 

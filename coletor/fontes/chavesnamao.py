@@ -3,7 +3,7 @@
 Como lê (verificado em 30/09/2026), sem Chrome e sem login:
   - Listagem: API JSON do próprio site, a mesma que a página usa no mapa:
       /api/realestate/listing/items/?level1=apartamentos-para-alugar&level2=sc-balneario-camboriu
-                                     &level3=2-quartos&filtro=pmax:5500&pg=N
+                                     &level3=2-quartos&filtro=pmax:6000&pg=N
     "2-quartos" no site quer dizer 2 ou mais. 15 anúncios por página, pg começa em 0. Depois do último
     resultado de verdade vem um item {"recommendedCount": ...} seguido de recomendações: ignoramos dali em diante.
     Já traz descrição, preço, condomínio, IPTU, endereço e coordenada, mas só as 5 primeiras fotos.

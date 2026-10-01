@@ -1,6 +1,6 @@
 """O perfil (o que o app mostra), o Claude conferindo as fotos e o aviso por e-mail.
 
-Perfil: aluguel de R$ 3.500 a 5.500, só o aluguel (server.ALUGUEL_MIN/MAX; os leitores já buscam só essa faixa),
+Perfil: aluguel de R$ 3.500 a 6.000, só o aluguel (server.ALUGUEL_MIN/MAX; os leitores já buscam só essa faixa),
 2+ quartos (ou 1 quarto com escritório citado ou 55 m²+), pelo menos semimobiliado ("planejados" sem dizer se é
 mobiliado conta; "sem mobília" não), até 10 min de carro da Humains (em Itajaí, 15), até 10 min a pé da praia, sem
 temporada e sem recusa de animais. Sem localização fica, com o aviso de que falta o endereço.
