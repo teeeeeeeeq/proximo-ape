@@ -3,7 +3,9 @@
 
   python3 coletor/rotina.py fila                    baixa a fila (branch fila-claude) e os vereditos já feitos (branch
                                                     avaliacoes) e lista o que falta: o pedido, as folhas de fotos e o anúncio
-  python3 coletor/rotina.py gravar CHAVE 'JSON'     confere o formato da resposta e guarda o veredito
+  python3 coletor/rotina.py gravar CHAVE <<'FIM'    confere o formato da resposta (o JSON, nas linhas seguintes) e
+  {...}                                             guarda o veredito
+  FIM
   python3 coletor/rotina.py enviar                  commit e push da branch avaliacoes
 
 A busca seguinte (GitHub Actions) junta os vereditos ao app e manda o aviso por e-mail (alerta.py).
@@ -54,7 +56,7 @@ def fila():
                        for c, p in f['resposta']['properties'].items())
     print('\nO PEDIDO (siga à risca):\n' + f['pedido'])
     print(f"\nPara cada anúncio: abra as folhas com a ferramenta Read (as fotos têm o número no canto) e leia o anúncio; depois:\n"
-          f"  python3 coletor/rotina.py gravar '<chave>' '{{{campos}}}'\n")
+          f"  python3 coletor/rotina.py gravar '<chave>' <<'FIM'\n  {{{campos}}}\n  FIM\n")
     for n, i in enumerate(faltam, 1):
         print(f"=== {n}. chave: {i['chave']}  ({len(i['fotos'])} fotos)")
         print('folhas: ' + ' '.join(os.path.join(FILA, x) for x in i['folhas']))
@@ -103,8 +105,8 @@ if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     if cmd == 'fila':
         fila()
-    elif cmd == 'gravar' and len(sys.argv) == 4:
-        gravar(sys.argv[2], sys.argv[3])
+    elif cmd == 'gravar' and len(sys.argv) in (3, 4):
+        gravar(sys.argv[2], sys.argv[3] if len(sys.argv) == 4 else sys.stdin.read())
     elif cmd == 'enviar':
         enviar()
     else:
