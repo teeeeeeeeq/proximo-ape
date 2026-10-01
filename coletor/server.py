@@ -144,6 +144,46 @@ REGIOES = {
 LAZER = ('POOL', 'GYM', 'SAUNA', 'PLAYGROUND', 'SPORTS_COURT', 'SPA', 'TENNIS_COURT', 'SQUASH', 'GAMES_ROOM', 'KIDS_AREA')
 
 
+# Bairros com o nome que os sites mais usam (o filtro do app compara o texto exato) e grafias alternativas
+BAIRROS = {
+    'balneario camboriu': ['Centro', 'Pioneiros', 'Nações', 'Praia dos Amores', 'Ariribá', 'Barra Sul', 'Barra Norte', 'Vila Real',
+                           'Nova Esperança', 'Municípios', 'São Judas Tadeu', 'Estados', 'Barra', 'Jardim Iate Clube', 'Iate Clube',
+                           'Várzea do Ranchinho', 'Praia do Estaleirinho', 'Praia do Estaleiro', 'Praia das Taquaras', 'Praia de Laranjeiras'],
+    'camboriu': ['Tabuleiro', 'São Francisco de Assis', 'Santa Regina', 'Centro', 'Areias', 'Monte Alegre', 'Rio Pequeno', 'Lídia Duarte',
+                 'Cedro', 'Várzea do Ranchinho', 'Conde Vila Verde'],
+    'itajai': ['Praia Brava', 'Fazenda', 'Fazendinha', 'Ressacada', 'Cabeçudas'],
+}
+_REFERENCIA = {'Barra Sul', 'Barra Norte', 'Praia Brava'}   # citados como ponto de referência: só valem se nada mais for citado
+_GRAFIAS = {'taboleiro': 'Tabuleiro', 'nacoes': 'Nações', 'bairro das nacoes': 'Nações', 'dos municipios': 'Municípios'}
+_PERTO_DE = r'(?:proxim\w*|perto|pertinho|ao lado|vizinh\w*|divisa|a \d+ ?(?:m|km|min\w*|metros|quadras?)|minutos?|passos)\W+(?:\w+\W+){0,2}$'
+
+
+def bairro_canonico(bairro, cidade):
+    """'Taboleiro' -> 'Tabuleiro', 'Nacoes' -> 'Nações': o mesmo bairro escrito igual em todas as fontes."""
+    n = norm(bairro).strip()
+    for b in BAIRROS.get(norm(cidade).strip() or 'balneario camboriu', []):
+        if norm(b) == n:
+            return b
+    return _GRAFIAS.get(n, bairro)
+
+
+def bairro_do_texto(texto, cidade):
+    """Bairro citado no anúncio quando o site não diz ("localizado no bairro Santa Regina", "no Centro de Balneário").
+    Nome de uma palavra só vale depois de 'bairro'/'no'/'na'/'em'; nome composto vale em qualquer lugar; nunca logo
+    depois de "próximo ao", "a 5 min do"..."""
+    t = norm(texto)
+    achados = []
+    for b in BAIRROS.get(norm(cidade).strip() or 'balneario camboriu', []):
+        nb = norm(b)
+        antes = r'(?:bairro|no|na|nos|nas|em)\s+(?:bairro\s+)?(?:d[aeo]s?\s+)?' if ' ' not in nb else ''
+        for m in re.finditer(r'\b' + antes + '(?P<n>' + re.escape(nb) + r')\b(?!\s+(?:sul|norte)\b)', t):   # "Barra" não é "Barra Sul"
+            if not re.search(_PERTO_DE, t[max(0, m.start() - 30):m.start()]):
+                # o primeiro citado; empate ("na Barra Sul"): o nome mais longo
+                achados.append((b in _REFERENCIA, m.start('n'), -len(nb), b))
+                break
+    return min(achados)[3] if achados else ''
+
+
 def na_regiao(cidade, bairro):
     c = norm(cidade).strip() or 'balneario camboriu'
     if c not in REGIOES:
@@ -454,7 +494,9 @@ def estimar_condominios(itens):
 
 
 def completar(o):
-    o['bairro'] = re.sub(r'^(bairro\s+)?(d[aeo]s?\s+)', '', (o.get('bairro') or '').strip(), flags=re.I).strip()
+    if 'bairro_site' not in o:
+        o['bairro_site'] = o.get('bairro') or ''
+    o['bairro'] = re.sub(r'^(bairro\s+)?(d[aeo]s?\s+)', '', o['bairro_site'].strip(), flags=re.I).strip()
     o['bairro'] = o['bairro'][:1].upper() + o['bairro'][1:]
     if norm(o['bairro']) == 'praia brava de itajai':
         o['bairro'] = 'Praia Brava'
@@ -462,6 +504,7 @@ def completar(o):
     if mq:
         o['bairro'], o['quadras_bairro'] = mq.group(2), int(mq.group(1))
     txt = (o.get('titulo') or '') + '\n' + (o.get('desc') or '')
+    o['bairro'] = bairro_canonico(o['bairro'], o.get('cidade')) or bairro_do_texto(txt, o.get('cidade'))
     txt_lazer = norm(txt)
     o['lazer'] = bool(o.get('marcado_lazer') or re.search(
         r'piscina|academia|lazer completo|area de lazer|sauna|\bspa\b|playground|brinquedoteca|quadra (poli|esport)|fitness', txt_lazer))

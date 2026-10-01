@@ -13,7 +13,8 @@ USA_CHROME = True
 CIDADE = '108416972513126'   # Balneário Camboriú no Marketplace
 FAIXAS = [(2000, 3000), (3000, 3600), (3600, 4100), (4100, 4600), (4600, 5100), (5100, 5700), (5700, 7000)]
 CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'dados', 'facebook_fichas.json')
-PRAZO_FICHAS = 420   # segundos
+PRAZO_FICHAS = 900   # segundos por busca abrindo páginas de anúncio (~120 páginas)
+RENOVA_H = 36        # as fotos do Facebook vêm com link que vence em ~5 dias: relê o anúncio antes
 ROLAGENS = 4         # vezes que rola cada busca para carregar mais anúncios (logado)
 _SAMESITE = {'lax': 'Lax', 'strict': 'Strict', 'no_restriction': 'None', 'none': 'None'}
 
@@ -106,17 +107,24 @@ def _lista(page):
     return out
 
 
+def _vence(fotos):
+    """Quando o primeiro link de foto vence (parâmetro oe=, hora em hexa), ou None."""
+    ts = [int(m.group(1), 16) for u in fotos or [] for m in [re.search(r'[?&]oe=([0-9A-Fa-f]{8})', u)] if m]
+    return min(ts) if ts else None
+
+
 def _ficha(page, iid=''):
     """Da página do anúncio: descrição, data, fotos grandes, grupo/vendedor, local aproximado."""
     d = re.search(r'"redacted_description":\{"text":"((?:[^"\\]|\\.)*)"\}', page)
-    t = re.search(r'"redacted_description":\{"text":"(?:[^"\\]|\\.)*"\},"creation_time":(\d+)', page)
+    t = re.search(r'"redacted_description":\{"text":"(?:[^"\\]|\\.)*"\},"creation_time":(\d+)', page) \
+        or re.search(r'"creation_time":(\d{10})\b', page)   # logado, a data não vem colada na descrição
     fotos = []
     ph = re.search(r'"listing_photos":\[(.*?)\],"', page)
     if ph:
         fotos = [_s(u) for u in re.findall(r'"image":\{"height":\d+,"width":\d+,"uri":"((?:[^"\\]|\\.)*)"', ph.group(1))]
     grupo = re.search(r'"origin_group":\{"id":"\d+","name":"((?:[^"\\]|\\.)*)"', page)
     vend = re.search(r'"marketplace_listing_seller":\{"__typename":"User","name":"((?:[^"\\]|\\.)*)"', page)
-    return dict(desc=_s(d.group(1)) if d else '', criado=int(t.group(1)) if t else None, fotos=fotos,
+    return dict(desc=_s(d.group(1)) if d else '', criado=int(t.group(1)) if t and 1.5e9 < int(t.group(1)) < time.time() + 86400 else None, fotos=fotos,
                 anunciante=('grupo ' + _s(grupo.group(1))) if grupo else (_s(vend.group(1)) if vend else 'Facebook'))
 
 
@@ -226,7 +234,11 @@ def buscar(b, progresso=lambda m: None):
     except Exception:
         cache = {}
     t0 = time.time()
-    faltam = [i for i in alvo if i not in cache]
+    # primeiro os que nunca foram lidos (ou vieram vazios), depois os que estão com as fotos para vencer
+    novos = [i for i in alvo if not (cache.get(i) or {}).get('desc') and not (cache.get(i) or {}).get('fotos')]
+    vencendo = sorted((i for i in alvo if i not in novos and (_vence(cache[i].get('fotos')) or 9e9) < time.time() + RENOVA_H * 3600),
+                      key=lambda i: _vence(cache[i].get('fotos')))
+    faltam = novos + vencendo
     for k, iid in enumerate(faltam):
         if time.time() - t0 > PRAZO_FICHAS:
             break
