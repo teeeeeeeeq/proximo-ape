@@ -326,6 +326,10 @@ def condominio(site, texto):
     t = norm(texto)
     incluso = re.search(r'(condominio|taxas)[^.\n]{0,30}inclus|inclus[oa]s?[^.\n]{0,25}(condominio|taxas)|ja com (condominio|taxas|as taxas)'
                         r'|valor total|total com (condominio|taxas)|pacote|sem condominio|isento de condominio', t)
+    nao_incluso = re.search(r'(nao|sem)\s+(\w+\s+){0,2}inclus|nao estao inclus|\+\s*(as\s+)?taxas|mais\s+(as\s+)?taxas|\+\s*condominio'
+                            r'|mais\s+condominio|taxas a parte|taxas por conta|fora (as )?taxas|alem das taxas', t)
+    if nao_incluso:
+        incluso = None
     if site and site >= 50:
         return float(site), 'site'
     m = re.search(r'condominio[^\d\n]{0,25}?r\$?\s*(\d{1,2}\.?\d{3}|\d{2,4})(,\d{2})?\b', t)
