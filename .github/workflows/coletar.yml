@@ -2,7 +2,7 @@ name: Coletar anúncios
 
 on:
   schedule:
-    - cron: '7 1,13 * * *'   # 10h07 e 22h07 em Brasília (UTC-3); o GitHub às vezes atrasa alguns minutos
+    - cron: '17 */3 * * *'   # a cada 3 horas (o GitHub às vezes atrasa alguns minutos)
   workflow_dispatch:   # e quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
     inputs:
       somente:
@@ -46,6 +46,7 @@ jobs:
         env:
           TZ: America/Sao_Paulo
           SOMENTE: ${{ inputs.somente }}
+          FACEBOOK_COOKIES: ${{ secrets.FACEBOOK_COOKIES }}   # sessão do Facebook (Settings → Secrets → Actions); vazio = sem login
         run: python coletor/coletar.py
 
       - name: Guardar o histórico
