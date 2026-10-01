@@ -278,7 +278,8 @@ function card(o) {
   el.className = 'card' + (m === 'favorito' ? ' fav' : '');
   const fotos = o.fotos || [];
   const bp = min(o.praia_m), bh = min(o.humains_m), t = o.local_exato ? '' : '~';
-  const ap = o.local_aprox === 'rua' ? ' (pela rua)' : o.local_aprox === 'avenida' ? ' (pela avenida)' : o.local_fonte === 'prédio' ? ' (pelo prédio)' : '';
+  const ap = o.local_aprox === 'rua' ? ' (pela rua)' : o.local_aprox === 'avenida' ? ' (pela avenida)' : o.local_aprox === 'texto' ? ' (pelo anúncio)'
+    : o.local_aprox === 'bairro' ? ' (média do bairro)' : o.local_fonte === 'prédio' ? ' (pelo prédio)' : '';
   const facts = [];
   if (o.area) facts.push(`<span class="f">${Math.round(o.area)} m²</span>`);
   if (o.quartos) facts.push(`<span class="f">${o.quartos} quartos${o.suites ? ' · ' + o.suites + ' suíte' : ''}</span>`);

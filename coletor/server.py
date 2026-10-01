@@ -165,7 +165,7 @@ def _extenso(t):
 
 
 def nome_rua(r):
-    r = _extenso(norm(r))
+    r = _extenso(re.sub(r'\b(rua|av)(\d)', r'\1 \2', norm(r)))
     r = re.split(r'\s+-\s+|,|;|\(|\bn[o0]?[º°.]?\s*\d|\bnumero\b|\bno\s+\d', r)[0]
     r = re.sub(r'^r\.?\s+', 'rua ', r.strip())
     r = re.sub(r'^av\.?\s+', 'avenida ', r)
@@ -197,7 +197,7 @@ _FORTE = r'(endereco|localizad[oa]|situad[oa]|fica na|fica no|fica em|localizaca
 
 def ruas_da_descricao(texto):
     """[(rua, forte)] na ordem em que aparecem; só nomes que existem no mapa de ruas."""
-    t = _extenso(norm(texto))
+    t = _extenso(re.sub(r'\b(rua|av)(\d)', r'\1 \2', norm(texto)))
     out = []
     for m in re.finditer(_RUA_INI, t):
         resto = re.split(r'[,;.\n|()!?:/]|\s-\s|\s–\s', t[m.end():m.end() + 70])[0].split()
@@ -277,6 +277,44 @@ def predio_da_descricao(texto, extra=(), cidade=''):
 
 
 carregar_predios()
+
+
+def praia_pelo_texto(texto):
+    """Distância da praia que o próprio anúncio declara ("a 180 m da praia", "quadra mar", "5 minutos da praia")."""
+    t = norm(texto)
+    m = re.search(r'(\d{1,2}\.\d{3}|\d{2,4})\s*(m|mts|metros)\b[^.\n]{0,15}?\b(da|do|ate a|ate o|de)\s+(praia|mar|areia|orla|beira[ -]mar)', t)
+    if m:
+        v = int(m.group(1).replace('.', ''))
+        if 5 <= v <= 3000:
+            return v
+    m = re.search(r'(\d{1,2})\s*(min|minutos)\b[^.\n]{0,12}?(a pe|caminhando|andando)?[^.\n]{0,6}\b(da|do|ate a)\s+(praia|mar)', t)
+    if m and not re.search(r'carro|onibus|bicicleta|bike|uber|de moto', m.group(0) + t[m.end():m.end() + 15]):
+        return int(m.group(1)) * 75
+    if re.search(r'frente (ao |para o |pro )?mar|beira[ -]mar|pe na areia|vista frontal (para o|pro) mar', t):
+        return 30
+    if re.search(r'(uma|1|primeira) quadra (do|da) (mar|praia)|quadra[ -]mar|1a quadra', t):
+        return 100
+    if re.search(r'(duas|2|segunda) quadras? (do|da) (mar|praia)|2a quadra', t):
+        return 230
+    if re.search(r'(tres|3|terceira) quadras? (do|da) (mar|praia)|3a quadra', t):
+        return 350
+    return None
+
+
+def localizar_pelo_bairro(itens):
+    """Último recurso: anúncio sem rua nem pista recebe a distância típica do bairro (dos anúncios com local exato)."""
+    import statistics
+    ref = {}
+    for o in itens:
+        if o.get('local_exato') and o.get('praia_m') is not None and o.get('humains_m') is not None and o.get('bairro'):
+            ref.setdefault((norm(o['bairro']), norm(o.get('cidade')) or 'balneario camboriu'), []).append(o)
+    for o in itens:
+        if o.get('praia_m') is None and o.get('bairro'):
+            g = ref.get((norm(o['bairro']), norm(o.get('cidade')) or 'balneario camboriu'), [])
+            if len(g) >= 3:
+                o['praia_m'] = round(statistics.median(x['praia_m'] for x in g))
+                o['humains_m'] = round(statistics.median(x['humains_m'] for x in g))
+                o['local_aprox'] = 'bairro'
 
 
 def rua_para_mostrar(r):
@@ -395,6 +433,10 @@ def completar(o):
         o['humains_m'] = round(dist((o['lat'], o['lon']), HUMAINS))
     else:
         o['praia_m'], o['humains_m'] = o.get('praia_rua'), None
+        if o['praia_m'] is None:
+            p = praia_pelo_texto(txt)
+            if p is not None:
+                o['praia_m'], o['local_aprox'] = p, 'texto'
     o['mobilia'] = mobilia(o['titulo'] + ' ' + o['desc'], o.get('marcado_mobiliado'))
     o['temporada'] = temporada(o['titulo'] + ' ' + o['desc'])
     return o
@@ -853,6 +895,7 @@ def atualizar():
         for o in novos.values():
             completar(o)
         estimar_condominios(list(novos.values()))
+        localizar_pelo_bairro(list(novos.values()))
         for k, o in novos.items():
             o['visto_em'] = (antigos.get(k) or {}).get('visto_em') or agora
             if not o.get('desc') and (antigos.get(k) or {}).get('desc'):
