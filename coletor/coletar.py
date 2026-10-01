@@ -6,7 +6,8 @@ import server as s
 
 RAIZ = s.RAIZ
 CAMPOS = ('id', 'fonte', '_src', 'url', 'titulo', 'desc', 'aluguel', 'pacote', 'cond', 'cond_fonte', 'cond_est', 'cond_base', 'iptu', 'fixo', 'quartos', 'suites', 'area', 'bairro', 'rua',
-          'cidade', 'praia_m', 'humains_m', 'local_exato', 'local_aprox', 'local_fonte', 'predio', 'mobilia', 'temporada', 'lazer', 'publicado', 'anunciante', 'fotos', 'visto_em')
+          'cidade', 'praia_m', 'humains_m', 'local_exato', 'local_aprox', 'local_fonte', 'predio', 'mobilia', 'temporada', 'lazer', 'publicado', 'anunciante', 'fotos', 'visto_em',
+          'baixou_de', 'baixou_em', 'atualizado')
 
 
 def main():
@@ -27,6 +28,8 @@ def main():
         if o.get('quartos') and o['quartos'] < 2:
             continue
         if not s.na_regiao(o.get('cidade'), o.get('bairro')):
+            continue
+        if s.nao_aceita_animais((o.get('titulo') or '') + '\n' + (o.get('desc') or '')):  # texto inteiro: a recusa costuma vir no fim
             continue
         x = {k: o.get(k) for k in CAMPOS if o.get(k) not in (None, '', [], False)}
         if x.get('desc'):

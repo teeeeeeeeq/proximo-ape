@@ -74,6 +74,9 @@ select{font:14px var(--body);padding:7px 10px;border:1px solid var(--line);borde
 .badge{font:600 11.5px var(--body);padding:3px 8px;border-radius:99px;background:var(--surface);color:var(--ink)}
 .badge.new{background:var(--sand);color:#fff}
 .badge.off{background:var(--bad);color:#fff}
+.badge.drop{background:var(--good);color:#fff}
+.money s{color:var(--muted)}
+.money .drop{color:var(--good);font-weight:600}
 .body{padding:14px 16px 16px;display:grid;gap:8px;flex:1}
 .place{font:700 18px/1.2 var(--display);margin:0}
 .place small{display:block;font:400 13px var(--body);color:var(--muted);margin-top:3px}
@@ -103,7 +106,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .lb button{position:absolute;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:99px;width:46px;height:46px;font-size:22px;cursor:pointer}
 .lb .x{top:14px;right:14px}.lb .p{left:12px;top:50%}.lb .n{right:12px;top:50%}
 .lb .c{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#cfd8d6;font-size:13px}
-@media (max-width:820px){.app{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}main{padding:18px 16px 50px}.grid{grid-template-columns:1fr}}
+@media (max-width:820px){.app{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}main{padding:18px 16px 50px}.grid{grid-template-columns:1fr}
+  .tools,.seg{max-width:100%}.seg{overflow-x:auto}.seg button{flex:1 0 auto;padding:7px 5px;font-size:12.5px;white-space:nowrap}}
 </style>
 </head>
 <body>
@@ -111,7 +115,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   <aside>
     <h1>Próximo Apê</h1>
     <p class="sub" id="sub">Aluguel em Balneário Camboriú · ZAP e OLX</p>
-    <p class="stat" id="stat">Atualiza quando você pedir: toque abaixo e depois em "Run workflow". Leva uns 15 minutos.</p>
+    <p class="stat" id="stat">Atualiza sozinho a cada 3 horas. Para buscar agora, toque abaixo e depois em "Run workflow" (leva uns 15 minutos).</p>
     <a class="refresh" id="refresh" href="https://github.com/teeeeeeeeq/proximo-ape/actions/workflows/coletar.yml" target="_blank" rel="noopener">Buscar agora no GitHub</a>
     <div class="fb">
       <a href="https://www.facebook.com/marketplace/108416972513126/propertyrentals?minPrice=2000&amp;maxPrice=5600&amp;minBedrooms=2&amp;sortBy=creation_time_descend&amp;exact=false&amp;latitude=-26.975&amp;longitude=-48.645&amp;radius=10" target="_blank" rel="noopener">Aluguéis no Facebook Marketplace ↗</a>
@@ -132,7 +136,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     <fieldset><legend>Prédio</legend>
       <div class="row"><span>Condomínio até</span><b id="v-cond"></b></div>
       <input type="range" id="cond" min="200" max="2000" step="50">
-      <p class="hint">Quando o anúncio não informa o condomínio, o app estima pelo mesmo prédio ou por anúncios parecidos do bairro (marcado com ~). O custo total também usa essa estimativa.</p>
+      <p class="hint">Quando o anúncio não informa o condomínio, o app estima pelo mesmo prédio ou por anúncios parecidos do bairro (marcado com ~). A estimativa aparece no custo do card, mas não esconde anúncio: os filtros de custo e de condomínio só usam o que o anúncio informa.</p>
     </fieldset>
 
     <fieldset><legend>Onde</legend>
@@ -155,6 +159,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       <label class="check"><input type="checkbox" id="temp"> Mostrar temporada e diária</label>
     </fieldset>
 
+    <fieldset><legend>Anúncio</legend>
+      <div class="row"><span>Mexido pela última vez</span><b id="v-dias"></b></div>
+      <input type="range" id="dias" min="3" max="61" step="1">
+      <p class="hint">A data mais recente entre publicação, atualização no site e mudança de preço. Sem data no site, conta desde quando o app viu o anúncio pela primeira vez.</p>
+    </fieldset>
+
     <fieldset><legend>Fontes</legend>
       <div class="chips" id="fontes"></div>
       <ul class="fstat" id="fstat"></ul>
@@ -173,6 +183,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
         <div class="seg" id="show">
           <button type="button" data-s="todos">Todos</button>
           <button type="button" data-s="novos">Novos</button>
+          <button type="button" data-s="baixaram">Baixaram</button>
           <button type="button" data-s="favoritos">Favoritos</button>
           <button type="button" data-s="descartados">Descartados</button>
         </div>
@@ -192,11 +203,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
-const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 31, hum: 41, semlocal: true, cond: 900, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí'], mob: ['texto', 'marcado'], temp: false, q: '', show: 'todos', sort: 'recentes' };
+const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 31, hum: 41, semlocal: true, cond: 900, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí', 'Praia dos Amores'], mob: ['texto', 'marcado'], temp: false, dias: 21, q: '', show: 'todos', sort: 'recentes' };
 const CHAVE = 'apto-filtros-v2';
 let F = JSON.parse(JSON.stringify(PERFIL));
 try { const s = JSON.parse(localStorage.getItem(CHAVE) || 'null'); if (s) F = Object.assign(F, s); } catch (e) {}
-let ALL = [], MARCAS = {}, ANTERIOR = null, FONTES = {}, shown = 40;
+// filtros salvos antes de a Praia dos Amores entrar no perfil: entra uma vez (se tirar depois, fica tirada)
+if (!(F.ajustes || []).includes('amores')) { if (F.bairros.length && !F.bairros.includes('Praia dos Amores')) F.bairros.push('Praia dos Amores'); F.ajustes = (F.ajustes || []).concat('amores'); }
+let ALL = [], MARCAS = {}, FONTES = {}, PRIMEIRA = {}, shown = 40;
 const src = o => o._src || o.fonte;
 const cidadeCurta = o => { const c = norm(o.cidade || ''); return !c || c.includes('balneario') ? '' : c.includes('itaja') ? 'Itajaí' : c.includes('camboriu') ? 'Camboriú' : o.cidade; };
 const zona = o => { const b = (o.bairro || '').replace(/\s*\(.*\)\s*$/, ''); return b ? b + (cidadeCurta(o) ? ' · ' + cidadeCurta(o) : '') : ''; };
@@ -210,40 +223,60 @@ function saveF() { try { localStorage.setItem(CHAVE, JSON.stringify(F)); } catch
 async function carregar() {
   const [lista, meta] = await Promise.all([fetch('anuncios.json', { cache: 'no-store' }).then(r => r.json()), fetch('meta.json', { cache: 'no-store' }).then(r => r.json()).catch(() => ({}))]);
   const d = { anuncios: lista, ultima: meta.ultima, anterior: meta.anterior };
-  MARCAS = lerMarcas(); ANTERIOR = meta.anterior; FONTES = meta.fontes || {};
+  MARCAS = lerMarcas(); FONTES = meta.fontes || {};
   if (meta.erro) { $('stat').className = 'stat err'; $('stat').textContent = 'Última busca com problema: ' + meta.erro; }
-  // junta o mesmo imóvel anunciado no ZAP e na OLX (mesmo aluguel, área e bairro)
+  // junta o mesmo imóvel anunciado no ZAP e na OLX (mesmo aluguel, área e bairro; e a mesma baixa de preço, se houve)
   const byKey = new Map(), out = [];
   d.anuncios.sort((a, b) => (a.fonte === 'ZAP' ? 0 : 1) - (b.fonte === 'ZAP' ? 0 : 1));
   for (const o of d.anuncios) {
-    const k = o.aluguel && o.area ? [Math.round(o.aluguel), Math.round(o.area), norm(o.bairro)].join('|') : null;
+    const k = o.aluguel && o.area ? [Math.round(o.aluguel), Math.round(o.area), norm(o.bairro), Math.round(o.baixou_de || 0)].join('|') : null;
     const twin = k && byKey.get(k);
     if (twin) { twin.outros = (twin.outros || []).concat({ fonte: o.fonte, url: o.url, id: o.id }); if (!twin.desc && o.desc) twin.desc = o.desc; continue; }
     if (k) byKey.set(k, o); out.push(o);
   }
   ALL = out;
+  PRIMEIRA = {};   // primeira leitura de cada fonte (o que veio nela não é "novo")
+  ALL.forEach(o => { const s = src(o); if (o.visto_em && !(PRIMEIRA[s] <= o.visto_em)) PRIMEIRA[s] = o.visto_em; });
   $('sub').textContent = `${ALL.length.toLocaleString('pt-BR')} anúncios de aluguel em Balneário · última busca em ${fmtData(d.ultima)}`;
   montarBairros(); montarFontes(); pintarFiltros(); render();
 }
 function fmtData(s) { if (!s) return '—'; const [d, h] = s.split(' '); return d.split('-').reverse().slice(0, 2).join('/') + (h ? ' às ' + h : ''); }
 function marca(o) { return MARCAS[o.id] || (o.outros || []).map(x => MARCAS[x.id]).find(Boolean) || null; }
-function novo(o) { return ANTERIOR && o.visto_em > ANTERIOR; }
+// horas desde 'aaaa-mm-dd hh:mm' (hora de Brasília, como o coletor grava) ou 'aaaa-mm-dd'
+const horas = s => s ? (Date.now() - new Date(s.length > 10 ? s.replace(' ', 'T') : s + 'T12:00')) / 36e5 : Infinity;
+const ha = h => h < 1 ? 'agora há pouco' : h < 24 ? 'há ' + Math.floor(h) + ' h' : h < 48 ? 'ontem' : 'há ' + Math.floor(h / 24) + ' dias';
+// quando o anúncio entrou no ar: a primeira vez que o coletor viu, se o site não disser que ele é bem mais antigo
+// (fonte nova ou anúncio que voltou ao filtro não é "novo")
+function chegou(o) {
+  if (!o.visto_em || o.visto_em <= PRIMEIRA[src(o)]) return null;   // veio na primeira leitura da fonte: já estava no ar
+  const pub = o.publicado ? new Date(o.publicado + 'T00:00') : null;
+  return pub && new Date(o.visto_em.replace(' ', 'T')) - pub > 2 * 864e5 ? null : o.visto_em;
+}
+const NOVO_H = 72;
+function novo(o) { return horas(chegou(o)) < NOVO_H; }
+function baixou(o) { return o.baixou_de > o.aluguel; }
+function baixouAgora(o) { return baixou(o) && horas(o.baixou_em) < NOVO_H; }
+const idade = o => horas(o.atualizado || (o.visto_em || '').slice(0, 10)) / 24;
+// o que aconteceu por último com o anúncio: entrou no ar, baixou de preço ou foi mexido no site
+const novidade = o => [chegou(o) || '', baixou(o) ? o.baixou_em : '', o.atualizado || ''].sort().pop();
 
 function passa(o) {
   const m = marca(o);
   if (F.show === 'favoritos') return m === 'favorito';
   if (F.show === 'descartados') return m === 'descartado';
   if (m === 'descartado') return false;
-  if (F.show === 'novos' && !novo(o)) return false;
+  if (F.show === 'novos' && !novo(o) && !baixouAgora(o)) return false;
+  if (F.show === 'baixaram' && !baixou(o)) return false;
   if (o.no_ar === false || o.ativo === false) return false;
   if (!o.aluguel || o.aluguel < 2000) return false;   // abaixo disso é diária ou erro
   if (o.cidade && !/camboriu|itajai/.test(norm(o.cidade))) return false;
-  const cnd = o.cond != null ? o.cond : o.cond_est;
-  if (cnd != null && F.cond < 2000 && cnd > F.cond) return false;
+  if (o.cond != null && F.cond < 2000 && o.cond > F.cond) return false;   // condomínio estimado não esconde
+  if (F.dias < 61 && idade(o) > F.dias) return false;
   if ((F.semFonte || []).includes(src(o))) return false;
   if (!F.temp && o.temporada) return false;
   if (!F.mob.includes(o.mobilia)) return false;
-  if (!o.fixo || o.fixo > F.custo) return false;
+  const custo = o.cond == null && o.cond_est ? o.fixo - o.cond_est : o.fixo;   // só o que o anúncio informa
+  if (!custo || custo > F.custo) return false;
   if (o.area && o.area < F.area) return false;
   if (!o.quartos || o.quartos < F.quartos) return false;
   if (F.bairros.length && !F.bairros.includes(zona(o))) return false;
@@ -257,7 +290,7 @@ function passa(o) {
   return true;
 }
 const SORTS = {
-  recentes: (a, b) => (b.visto_em || '').localeCompare(a.visto_em || '') || (b.publicado || '').localeCompare(a.publicado || ''),
+  recentes: (a, b) => novidade(b).localeCompare(novidade(a)) || (b.publicado || '').localeCompare(a.publicado || ''),
   custo: (a, b) => a.fixo - b.fixo,
   praia: (a, b) => (a.praia_m ?? 1e9) - (b.praia_m ?? 1e9),
   hum: (a, b) => (a.humains_m ?? 1e9) - (b.humains_m ?? 1e9),
@@ -291,16 +324,16 @@ function card(o) {
     <div class="ph"><div class="strip"></div>
       ${fotos.length > 1 ? '<button class="nav p" type="button" aria-label="Foto anterior">‹</button><button class="nav n" type="button" aria-label="Próxima foto">›</button>' : ''}
       <span class="pc">${fotos.length} fotos</span>
-      <div class="badges">${novo(o) ? '<span class="badge new">Novo</span>' : ''}${o.no_ar === false ? '<span class="badge off">Saiu do ar</span>' : ''}</div></div>
+      <div class="badges">${novo(o) ? `<span class="badge new">${horas(chegou(o)) < 6 ? 'Acabou de chegar' : 'Novo · ' + ha(horas(chegou(o)))}</span>` : ''}${baixou(o) ? `<span class="badge drop">Baixou ${brl(o.baixou_de - o.aluguel)}</span>` : ''}${o.no_ar === false ? '<span class="badge off">Saiu do ar</span>' : ''}</div></div>
     <div class="body">
       <h2 class="place">${esc(zona(o))}${o.rua ? ' · ' + esc(o.rua) : ''}<small>${esc(o.titulo)}</small></h2>
-      <div class="money"><b>${o.cond == null && o.cond_est ? '~' : ''}${brl(o.fixo)}</b><span>aluguel ${brl(o.aluguel)}${o.cond && o.cond_fonte === 'pacote' ? ' + taxas ' + brl(o.cond) + ' (pacote do anúncio: ' + brl(o.pacote) + ')' : o.cond ? ' + cond. ' + brl(o.cond) + (o.cond_fonte === 'descrição' ? ' (da descrição)' : '') : o.cond_fonte === 'incluso' ? ' · condomínio incluso' : o.cond_est ? ' + cond. <em class="est">~' + brl(o.cond_est) + ' estimado (' + esc(o.cond_base) + ')</em>' : ' · condomínio não informado'}${o.iptu ? ' + IPTU ' + brl(o.iptu) : ''} · sem luz e gás</span></div>
+      <div class="money"><b>${o.cond == null && o.cond_est ? '~' : ''}${brl(o.fixo)}</b><span>aluguel ${baixou(o) ? `<s>${brl(o.baixou_de)}</s> ` : ''}${brl(o.aluguel)}${baixou(o) ? ` <span class="drop">(baixou em ${fmtData(o.baixou_em)})</span>` : ''}${o.cond && o.cond_fonte === 'pacote' ? ' + taxas ' + brl(o.cond) + ' (pacote do anúncio: ' + brl(o.pacote) + ')' : o.cond ? ' + cond. ' + brl(o.cond) + (o.cond_fonte === 'descrição' ? ' (da descrição)' : '') : o.cond_fonte === 'incluso' ? ' · condomínio incluso' : o.cond_est ? ' + cond. <em class="est">~' + brl(o.cond_est) + ' estimado (' + esc(o.cond_base) + ')</em>' : ' · condomínio não informado'}${o.iptu ? ' + IPTU ' + brl(o.iptu) : ''} · sem luz e gás</span></div>
       <div class="facts">${facts.join('')}</div>
       ${o.predio || o.local_fonte === 'descrição' || o.local_fonte === 'prédio' ? `<p class="addr">${o.predio ? 'Prédio: <b>' + esc(o.predio) + '</b>' : ''}${o.predio && o.local_fonte !== 'site' ? ' · ' : ''}${o.local_fonte === 'prédio' ? 'localização pelo prédio citado no anúncio' : o.local_fonte === 'descrição' ? 'endereço tirado da descrição do anúncio' : ''}</p>` : ''}
       ${o.desc ? `<details><summary>Descrição</summary><p>${esc(o.desc)}</p></details>` : ''}
       <div class="acts"><div><a href="${esc(o.url)}" target="_blank" rel="noopener">Abrir no ${o.fonte} ↗</a>
         ${(o.outros || []).map(x => ` · <a href="${esc(x.url)}" target="_blank" rel="noopener">${x.fonte} ↗</a>`).join('')}
-        <div class="src">${esc(o.anunciante)}${o.publicado ? ' · publicado ' + fmtData(o.publicado) : ''}</div></div>
+        <div class="src">${esc(o.anunciante)}${o.publicado ? ' · publicado ' + fmtData(o.publicado) : ''}${o.atualizado && o.atualizado !== o.publicado ? ' · mexido ' + fmtData(o.atualizado) : ''}${!o.atualizado && o.visto_em ? ' · no app desde ' + fmtData(o.visto_em.slice(0, 10)) : ''}</div></div>
         <div class="mk"><button type="button" class="fv" aria-pressed="${m === 'favorito'}">Favorito</button><button type="button" class="ds" aria-pressed="${m === 'descartado'}">Descartar</button></div></div>
     </div>`;
   const strip = el.querySelector('.strip');
@@ -313,15 +346,22 @@ function card(o) {
   el.querySelector('.ds').onclick = () => marcar(o, m === 'descartado' ? null : 'descartado');
   return el;
 }
-const MARCAS_INICIAIS = {"O1388143221": "favorito", "O1534156335": "favorito", "Z2903279796": "favorito", "Z2911080941": "favorito", "O1523651401": "favorito", "O1495126997": "descartado", "O1503060133": "descartado", "O1522252604": "descartado", "O1523724819": "descartado", "O1527608071": "descartado", "O1529063494": "descartado", "O1534086226": "descartado", "O1538462960": "descartado", "Z2895122576": "descartado", "Z2906044018": "descartado", "Z2907581442": "descartado", "Z2907924716": "descartado", "Z2908250019": "descartado", "Z2913859068": "descartado", "O1513717901": "descartado", "O1523580758": "descartado", "O1513354736": "descartado", "Z2911018619": "descartado"};
+const MARCAS_INICIAIS = {"O1388143221": "favorito", "O1534156335": "favorito", "Z2903279796": "favorito", "Z2911080941": "favorito", "O1523651401": "favorito", "O1495126997": "descartado", "O1503060133": "descartado", "O1522252604": "descartado", "O1523724819": "descartado", "O1527608071": "descartado", "O1529063494": "descartado", "O1534086226": "descartado", "Z2895122576": "descartado", "Z2906044018": "descartado", "Z2907581442": "descartado", "Z2907924716": "descartado", "Z2908250019": "descartado", "Z2913859068": "descartado", "O1513717901": "descartado", "O1523580758": "descartado", "O1513354736": "descartado", "Z2911018619": "descartado"};
 function lerMarcas() {
-  try { const m = JSON.parse(localStorage.getItem('apto-marcas') || 'null'); if (m) return m; } catch (e) {}
-  return Object.assign({}, MARCAS_INICIAIS);
+  let m = null;
+  try { m = JSON.parse(localStorage.getItem('apto-marcas') || 'null'); } catch (e) {}
+  m = m || Object.assign({}, MARCAS_INICIAIS);
+  // ajustes pedidos depois que as marcas já estavam salvas no navegador; cada um roda uma vez
+  const feitos = F.ajustes || [];
+  if (!feitos.includes('amores-desdescartado')) { if (m.O1538462960 === 'descartado') delete m.O1538462960; feitos.push('amores-desdescartado'); }
+  F.ajustes = feitos; saveF(); salvarMarcas(m);
+  return m;
 }
+function salvarMarcas(m) { try { localStorage.setItem('apto-marcas', JSON.stringify(m)); } catch (e) {} }
 function marcar(o, v) {
   const ids = [o.id, ...(o.outros || []).map(x => x.id)];
   for (const id of ids) { if (v) MARCAS[id] = v; else delete MARCAS[id]; }
-  try { localStorage.setItem('apto-marcas', JSON.stringify(MARCAS)); } catch (e) {}
+  salvarMarcas(MARCAS);
   render();
 }
 
@@ -343,6 +383,7 @@ function pintarFiltros() {
   $('cond').value = F.cond; $('v-cond').textContent = F.cond >= 2000 ? 'qualquer' : brl(F.cond);
   $('praia').value = F.praia; $('v-praia').textContent = F.praia >= 31 ? 'qualquer' : 'até ' + F.praia + ' min';
   $('hum').value = F.hum; $('v-hum').textContent = F.hum >= 41 ? 'qualquer' : 'até ' + F.hum + ' min';
+  $('dias').value = F.dias; $('v-dias').textContent = F.dias >= 61 ? 'qualquer data' : 'até ' + F.dias + ' dias atrás';
   $('semlocal').checked = F.semlocal; $('temp').checked = F.temp; $('q').value = F.q; $('sort').value = F.sort;
   document.querySelectorAll('#quartos .chip').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.q === F.quartos)));
   document.querySelectorAll('#bairros .chip').forEach(b => b.setAttribute('aria-pressed', String(F.bairros.includes(b.dataset.b))));
@@ -351,7 +392,7 @@ function pintarFiltros() {
   document.querySelectorAll('#show button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.s === F.show)));
 }
 function mudou() { shown = 40; saveF(); pintarFiltros(); render(); }
-['custo', 'area', 'praia', 'hum', 'cond'].forEach(id => $(id).addEventListener('input', e => { F[id] = +e.target.value; mudou(); }));
+['custo', 'area', 'praia', 'hum', 'cond', 'dias'].forEach(id => $(id).addEventListener('input', e => { F[id] = +e.target.value; mudou(); }));
 $('semlocal').onchange = e => { F.semlocal = e.target.checked; mudou(); };
 $('temp').onchange = e => { F.temp = e.target.checked; mudou(); };
 let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value.trim(); mudou(); }, 250); });
@@ -361,7 +402,7 @@ $('bairros').onclick = e => { const b = e.target.closest('.chip'); if (!b) retur
 $('mob').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.m; F.mob = F.mob.includes(v) ? F.mob.filter(x => x !== v) : F.mob.concat(v); mudou(); };
 $('fontes').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.f; const s = F.semFonte || []; F.semFonte = s.includes(v) ? s.filter(x => x !== v) : s.concat(v); mudou(); };
 $('show').onclick = e => { const b = e.target.closest('button'); if (b) { F.show = b.dataset.s; mudou(); } };
-$('reset').onclick = () => { F = JSON.parse(JSON.stringify(PERFIL)); mudou(); };
+$('reset').onclick = () => { F = Object.assign(JSON.parse(JSON.stringify(PERFIL)), { ajustes: F.ajustes }); mudou(); };
 $('more').onclick = () => { shown += 40; render(); };
 
 let lbF = [], lbK = 0; const lb = $('lb');

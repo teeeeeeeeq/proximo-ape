@@ -1,8 +1,9 @@
-"""Facebook Marketplace (sem login): aluguéis perto de Balneário Camboriú.
+"""Facebook Marketplace: aluguéis perto de Balneário Camboriú.
 
-Sem login o Marketplace mostra só os 24 anúncios mais recentes de cada busca, então a leitura
-divide por faixa de preço. A descrição e as fotos grandes vêm da página de cada anúncio, que é
-aberta uma vez e guardada em dados/facebook_fichas.json.
+Com o segredo FACEBOOK_COOKIES (a sessão de uma conta, exportada do navegador do celular), entra logado;
+sem ele, tenta sem login (hoje o Facebook não mostra nada assim). Cada busca mostra poucos anúncios de cada vez,
+então a leitura divide por faixa de preço e rola a página. A descrição e as fotos grandes vêm da página de cada
+anúncio, que é aberta uma vez e guardada em dados/facebook_fichas.json.
 """
 import json, os, re, time
 
@@ -13,6 +14,61 @@ CIDADE = '108416972513126'   # Balneário Camboriú no Marketplace
 FAIXAS = [(2000, 3000), (3000, 3600), (3600, 4100), (4100, 4600), (4600, 5100), (5100, 5700), (5700, 7000)]
 CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'dados', 'facebook_fichas.json')
 PRAZO_FICHAS = 420   # segundos
+ROLAGENS = 4         # vezes que rola cada busca para carregar mais anúncios (logado)
+_SAMESITE = {'lax': 'Lax', 'strict': 'Strict', 'no_restriction': 'None', 'none': 'None'}
+
+
+def _cookies():
+    """Sessão do segredo FACEBOOK_COOKIES: o JSON que a extensão Cookie-Editor exporta
+    ([{"name": "c_user", "value": "...", "domain": ".facebook.com", ...}]) ou o texto "c_user=...; xs=...".
+    Vazio = sem login."""
+    raw = (os.environ.get('FACEBOOK_COOKIES') or '').strip()
+    if not raw:
+        return []
+    try:
+        lst = json.loads(raw)
+        lst = lst.get('cookies', [lst]) if isinstance(lst, dict) else lst
+        pares = [(c.get('name'), c.get('value'), c) for c in lst if isinstance(c, dict)]
+    except ValueError:
+        pares = [(k.strip(), v.strip(), {}) for k, _, v in (p.partition('=') for p in raw.split(';')) if k.strip()]
+    out = []
+    for nome, valor, c in pares:
+        dom = c.get('domain') or '.facebook.com'
+        if not nome or valor is None or 'facebook.com' not in dom:
+            continue
+        ck = dict(name=nome, value=str(valor), domain=dom, path=c.get('path') or '/', secure=True,
+                  httpOnly=bool(c.get('httpOnly', nome in ('xs', 'fr', 'sb', 'datr'))))
+        exp = c.get('expirationDate') or c.get('expires')
+        if isinstance(exp, (int, float)) and exp > 0:
+            ck['expires'] = exp
+        if str(c.get('sameSite') or '').lower() in _SAMESITE:
+            ck['sameSite'] = _SAMESITE[str(c['sameSite']).lower()]
+        out.append(ck)
+    nomes = {c['name'] for c in out}
+    if not {'c_user', 'xs'} <= nomes:
+        raise RuntimeError('o segredo FACEBOOK_COOKIES não tem os cookies c_user e xs: exporte de novo, com a conta aberta no navegador')
+    return out
+
+
+def _cards(itens):
+    """Cards que a página desenhou ao rolar (o que veio depois do HTML inicial): [{h: href, t: innerText}]."""
+    out = {}
+    for it in itens or []:
+        m = re.search(r'/marketplace/item/(\d+)', it.get('h') or '')
+        linhas = [l.strip() for l in (it.get('t') or '').split('\n') if l.strip()]
+        if not m or not linhas:
+            continue
+        precos = [l for l in linhas if re.match(r'R\$\s*[\d.,]+', l)]
+        resto = [l for l in linhas if l not in precos]
+        if not precos or not resto:
+            continue
+        onde = resto[-1] if len(resto) > 1 else ''
+        cidade = next((c for c in ('Balneário Camboriú', 'Camboriú', 'Itajaí') if c.lower() in onde.lower()), '')
+        # 'R$ 4.200R$ 4.500' (com o preço antigo riscado): o primeiro é o atual
+        out[m.group(1)] = dict(titulo=resto[0], sub='', onde=onde, cidade=cidade,
+                               preco=_num(re.match(r'R\$\s*([\d.]+(?:,\d+)?)', precos[0]).group(1)),
+                               vendido=bool(re.search(r'\b(alugado|vendido|pendente)\b', ' '.join(linhas), re.I)), foto='')
+    return out
 
 
 def _s(raw):
@@ -124,7 +180,26 @@ def _itajai_sul(x, desc):
     return any(b in (t + ' ' + x['titulo'] + ' ' + (desc or '')).lower() for b in ITAJAI_SUL)
 
 
+def _sessao(b, ck):
+    """Põe a sessão no navegador e confere se o Facebook aceitou. As mensagens não levam texto da página:
+    logado, ele traz nome e dados da conta, e o erro vai para o meta.json publicado."""
+    b.cmd('Network.setCookies', cookies=ck)
+    b.go('https://www.facebook.com/marketplace/', 8)
+    url = b.js('location.href') or ''
+    if '/checkpoint' in url:
+        raise RuntimeError('o Facebook pediu para confirmar a conta (checkpoint): abra o Facebook no celular, confirme, '
+                           'e exporte os cookies de novo')
+    uid = next(c['value'] for c in ck if c['name'] == 'c_user')
+    page = b.js('document.documentElement.outerHTML') or ''
+    if f'"USER_ID":"{uid}"' not in page and f'"actorID":"{uid}"' not in page:
+        raise RuntimeError('o Facebook não aceitou a sessão (cookies vencidos ou derrubados): exporte os cookies de novo')
+
+
 def buscar(b, progresso=lambda m: None):
+    ck = _cookies()
+    if ck:
+        progresso('entrando na conta')
+        _sessao(b, ck)
     lista = {}
     for lat, raio in ((-26.99, 7), (-26.935, 6)):   # Balneário/Camboriú e o sul de Itajaí
         for lo, hi in FAIXAS:
@@ -132,7 +207,16 @@ def buscar(b, progresso=lambda m: None):
             b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=2'
                  f'&sortBy=creation_time_descend&exact=false&latitude={lat}&longitude=-48.645&radius={raio}', 9)
             lista.update(_lista(b.js('document.documentElement.outerHTML') or ''))
+            for _ in range(ROLAGENS if ck else 0):
+                b.js('window.scrollTo(0, document.body.scrollHeight)')
+                time.sleep(2.5)
+            if ck:
+                cards = _cards(b.js('[...document.querySelectorAll(\'a[href*="/marketplace/item/"]\')]'
+                                    '.map(a => ({h: a.getAttribute("href"), t: a.innerText}))'))
+                lista.update({i: x for i, x in cards.items() if i not in lista})
     if not lista:
+        if ck:
+            raise RuntimeError('logado, mas o Marketplace não mostrou anúncios (a página pode ter mudado)')
         txt = (b.js('document.body ? document.body.innerText : ""') or '')[:160].replace('\n', ' | ')
         raise RuntimeError(f"o Facebook não mostrou anúncios sem login (página: {(b.js('document.title') or '')[:50]} | {txt})")
     alvo = {i: x for i, x in lista.items()
