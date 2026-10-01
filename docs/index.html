@@ -275,7 +275,7 @@ function chegou(o) {
 }
 const NOVO_H = 72;
 function novo(o) { return horas(chegou(o)) < NOVO_H; }
-function baixou(o) { return o.baixou_de > o.aluguel; }
+function baixou(o) { return o.baixou_de > o.aluguel && o.baixou_de <= 1.6 * o.aluguel; }   // acima disso é preço de venda riscado
 function baixouAgora(o) { return baixou(o) && horas(o.baixou_em) < NOVO_H; }
 const idade = o => horas(o.atualizado || (o.visto_em || '').slice(0, 10)) / 24;
 // o que aconteceu por último com o anúncio: entrou no ar, baixou de preço ou foi mexido no site
