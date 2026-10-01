@@ -809,12 +809,18 @@ def de_zap_pagina(x):
 
 def _zap_paginas(b, progresso):
     out, dec = {}, json.JSONDecoder()
-    for quartos, (cidade, _, slug) in [(q, c) for c in CIDADES_ZAP for q in ('2-quartos', '3-quartos', '1-quarto')]:
+    # 2 e 3 quartos de todas as cidades antes; 1 quarto por último (se o site barrar no meio, os de 2+ já vieram)
+    for quartos, (cidade, _, slug) in [(q, c) for q in ('2-quartos', '3-quartos', '1-quarto') for c in CIDADES_ZAP]:
         total = None
         for p in range(1, 60):
             progresso(f'{cidade}, {quartos}, página {p}' + (f' de {math.ceil(total / 30)}' if total else ''))
-            b.go(f'https://www.zapimoveis.com.br/aluguel/apartamentos/{slug}/{quartos}/?pagina={p}', 6)
+            url = f'https://www.zapimoveis.com.br/aluguel/apartamentos/{slug}/{quartos}/?pagina={p}'
+            b.go(url, 6)
             page = b.js('document.documentElement.outerHTML') or ''
+            if '"listings":[' not in page.replace('\\"', '"'):   # veio sem anúncios: espera e tenta de novo uma vez
+                time.sleep(10)
+                b.go(url, 10)
+                page = b.js('document.documentElement.outerHTML') or ''
             parts = []
             for m in re.finditer(r'self\.__next_f\.push\(\[1,(".*?")\]\)</script>', page, re.S):
                 try:
@@ -932,6 +938,11 @@ def buscar_olx(b, progresso=lambda m: None):
             b.go(base + (f'&o={p}' if p > 1 else ''), 6)
             page = b.js('document.documentElement.outerHTML') or ''
             got = rsc_ads(page)
+            if not got and p == 1:   # primeira página vazia: o site às vezes demora ou barra por um instante
+                time.sleep(15)
+                b.go(base, 10)
+                page = b.js('document.documentElement.outerHTML') or ''
+                got = rsc_ads(page)
             m = re.search(r'totalOfAds\\?":(\d+)', page)
             total = total or (int(m.group(1)) if m else None)
             if not got:
@@ -1001,7 +1012,9 @@ def porta_livre():
 
 
 def rodar_fonte(nome, usa_chrome, fn, andamento):
-    prog = lambda m: andamento.__setitem__(nome, m)
+    def prog(m):
+        andamento[nome] = m
+        print(time.strftime('%H:%M:%S'), f'[{nome}]', m, flush=True)   # aparece no log do GitHub Actions
     prog('começando')
     if usa_chrome:
         with Chrome(port=porta_livre()) as b:
@@ -1049,7 +1062,7 @@ def atualizar():
         antigos = load('anuncios.json', {})
         meta = load('meta.json', {})
         info = meta.get('fontes', {})
-        novos, erros, ok = {}, [], set()
+        novos, erros, ok, parciais = {}, [], set(), set()
         lista = fontes()
         with ThreadPoolExecutor(max_workers=3) as ex:
             futs = {ex.submit(rodar_fonte, n, c, f, andamento): n for n, c, f in lista}
@@ -1067,7 +1080,14 @@ def atualizar():
                         except Exception:
                             pass
                     ok.add(n)
-                    info[n] = dict(n=len(itens), quando=agora, erro='')
+                    base = (info.get(n) or {}).get('base') or (info.get(n) or {}).get('n') or 0
+                    ja_parcial = (info.get(n) or {}).get('parcial')
+                    if base and len(itens) < 0.6 * base and not ja_parcial:   # site barrou no meio: não apaga o resto
+                        parciais.add(n)
+                        info[n] = dict(n=len(itens), base=base, parcial=True, quando=agora,
+                                       erro=f'veio só {len(itens)} de ~{base}; os que faltaram continuam no app até a próxima busca')
+                    else:   # (duas vezes seguidas menor: aceita, o estoque mudou mesmo)
+                        info[n] = dict(n=len(itens), base=len(itens), quando=agora, erro='')
                 except Exception as e:
                     erros.append(f'{n}: {e}')
                     info[n] = dict((info.get(n) or {}), erro=str(e)[:200], quando=agora)
@@ -1088,7 +1108,7 @@ def atualizar():
                 completar(o)
             o['no_ar'] = True
             registrar_preco(o, antigos.get(k), agora, meta.get('ultima'))
-        rotulo = {n: n for n in ok}
+        rotulo = {n: n for n in ok if n not in parciais}
         for k, o in antigos.items():
             if k not in novos:
                 o['no_ar'] = False if o.get('_src', o.get('fonte')) in rotulo else o.get('no_ar', True)
