@@ -1,7 +1,7 @@
 """Aviso por e-mail de apartamento novo que serve (o GitHub manda o e-mail de uma issue que menciona o dono do repositório).
 
 Serve: 2+ quartos, mobiliado ou semimobiliado (os quartos podem estar vazios; "planejados" sem dizer se é mobiliado
-conta), aluguel perto do apê do Piatã (R$ 4.000 a 5.000, só o aluguel), até R$ 6.000 com tudo (aluguel + condomínio,
+conta), aluguel de R$ 3.500 a 5.000 (só o aluguel), até R$ 6.000 com tudo (aluguel + condomínio,
 estimado se o anúncio não diz + IPTU + seguro-fiança de 10% do aluguel), até 10 min a pé da praia e até 10 min de carro
 da Humains. Recusa de animais já não chega aqui (coletar.py).
 
@@ -24,7 +24,7 @@ import server as s
 DONO = 'teeeeeeeeq'
 APP = 'https://teeeeeeeeq.github.io/proximo-ape/'
 TOTAL_MAX = 6000
-ALUGUEL_MIN, ALUGUEL_MAX = 4000, 5000   # perto do Piatã: R$ 4.500 só o aluguel
+ALUGUEL_MIN, ALUGUEL_MAX = 3500, 5000   # só o aluguel (o do Piatã era R$ 4.500)
 SEGURO = 0.10        # seguro-fiança: 10% do aluguel
 PRAIA_A_PE = 10      # minutos
 HUMAINS_CARRO = 10   # minutos
