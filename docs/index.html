@@ -140,10 +140,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     </fieldset>
 
     <fieldset><legend>Onde</legend>
-      <div class="row"><span>A pé até a praia</span><b id="v-praia"></b></div>
-      <input type="range" id="praia" min="3" max="31" step="1">
-      <div class="row"><span>A pé até a Humains</span><b id="v-hum"></b></div>
-      <input type="range" id="hum" min="3" max="41" step="1">
+      <div class="row"><span>De carro até a praia</span><b id="v-praia"></b></div>
+      <input type="range" id="praia" min="1" max="15" step="1">
+      <div class="row"><span>De carro até a Humains</span><b id="v-hum"></b></div>
+      <input type="range" id="hum" min="2" max="30" step="1">
+      <p class="hint">Tempo estimado pela distância: as ruas dão volta e no Centro o trânsito é lento.</p>
       <label class="check"><input type="checkbox" id="semlocal"> Incluir anúncios sem localização</label>
       <div class="chips" id="bairros"></div>
     </fieldset>
@@ -203,10 +204,23 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
-const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 31, hum: 41, semlocal: true, cond: 900, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí', 'Praia dos Amores'], mob: ['texto', 'marcado'], temp: false, dias: 21, q: '', show: 'todos', sort: 'recentes' };
+const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 15, hum: 30, dist: 'carro', semlocal: true, cond: 900, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí', 'Praia dos Amores'], mob: ['texto', 'marcado'], temp: false, dias: 21, q: '', show: 'todos', sort: 'recentes' };
 const CHAVE = 'apto-filtros-v2';
+// minutos de carro pela distância em linha reta: as ruas dão ~35% de volta, os primeiros 2 km saem a ~20 km/h
+// (sinais e trânsito do Centro), o resto a ~35 km/h, e 1 min para sair e estacionar
+const carro = m => { if (m == null) return null; const r = m * 1.35; return Math.max(1, Math.round(1 + Math.min(r, 2000) / 333 + Math.max(r - 2000, 0) / 583)); };
+const PRAIA_MAX = 15, HUM_MAX = 30;   // no fim do controle = qualquer distância
 let F = JSON.parse(JSON.stringify(PERFIL));
-try { const s = JSON.parse(localStorage.getItem(CHAVE) || 'null'); if (s) F = Object.assign(F, s); } catch (e) {}
+try {
+  const s = JSON.parse(localStorage.getItem(CHAVE) || 'null');
+  if (s && s.dist !== 'carro') {   // salvo quando o filtro era a pé (até 31 e 41 min = qualquer): passa para carro
+    const conv = (v, velho, max) => v >= velho ? max : Math.min(max - 1, carro(v * 75 / 1.25));
+    if (s.praia != null) s.praia = conv(s.praia, 31, PRAIA_MAX);
+    if (s.hum != null) s.hum = conv(s.hum, 41, HUM_MAX);
+    s.dist = 'carro';
+  }
+  if (s) F = Object.assign(F, s);
+} catch (e) {}
 // filtros salvos antes de a Praia dos Amores entrar no perfil: entra uma vez (se tirar depois, fica tirada)
 if (!(F.ajustes || []).includes('amores')) { if (F.bairros.length && !F.bairros.includes('Praia dos Amores')) F.bairros.push('Praia dos Amores'); F.ajustes = (F.ajustes || []).concat('amores'); }
 let ALL = [], MARCAS = {}, FONTES = {}, PRIMEIRA = {}, shown = 40;
@@ -215,7 +229,6 @@ const cidadeCurta = o => { const c = norm(o.cidade || ''); return !c || c.includ
 const zona = o => { const b = (o.bairro || '').replace(/\s*\(.*\)\s*$/, ''); return b ? b + (cidadeCurta(o) ? ' · ' + cidadeCurta(o) : '') : ''; };
 const $ = id => document.getElementById(id);
 const brl = n => n == null ? '—' : 'R$ ' + Math.round(n).toLocaleString('pt-BR');
-const min = m => m == null ? null : Math.max(1, Math.round(m * 1.25 / 75));
 const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function saveF() { try { localStorage.setItem(CHAVE, JSON.stringify(F)); } catch (e) {} }
@@ -282,8 +295,8 @@ function passa(o) {
   if (F.bairros.length && !F.bairros.includes(zona(o))) return false;
   if (o.praia_m == null && o.humains_m == null) { if (!F.semlocal) return false; }
   else {
-    if (o.praia_m != null && F.praia < 31 && min(o.praia_m) > F.praia) return false;
-    if (o.humains_m != null && F.hum < 41 && min(o.humains_m) > F.hum) return false;
+    if (o.praia_m != null && F.praia < PRAIA_MAX && carro(o.praia_m) > F.praia) return false;
+    if (o.humains_m != null && F.hum < HUM_MAX && carro(o.humains_m) > F.hum) return false;
     if ((o.praia_m == null || o.humains_m == null) && !F.semlocal) return false;
   }
   if (F.q) { const t = norm(o.titulo + ' ' + o.desc); if (!norm(F.q).split(/\s+/).filter(Boolean).every(w => t.includes(w))) return false; }
@@ -310,14 +323,14 @@ function card(o) {
   const el = document.createElement('article'); const m = marca(o);
   el.className = 'card' + (m === 'favorito' ? ' fav' : '');
   const fotos = o.fotos || [];
-  const bp = min(o.praia_m), bh = min(o.humains_m), t = o.local_exato ? '' : '~';
+  const bp = carro(o.praia_m), bh = carro(o.humains_m), t = o.local_exato ? '' : '~';
   const ap = o.local_aprox === 'rua' ? ' (pela rua)' : o.local_aprox === 'avenida' ? ' (pela avenida)' : o.local_aprox === 'texto' ? ' (pelo anúncio)'
     : o.local_aprox === 'bairro' ? ' (média do bairro)' : o.local_fonte === 'prédio' ? ' (pelo prédio)' : '';
   const facts = [];
   if (o.area) facts.push(`<span class="f">${Math.round(o.area)} m²</span>`);
   if (o.quartos) facts.push(`<span class="f">${o.quartos} quartos${o.suites ? ' · ' + o.suites + ' suíte' : ''}</span>`);
-  facts.push(bp ? `<span class="f">Praia ${t}${bp} min${ap}</span>` : '<span class="f warn">Sem localização</span>');
-  if (bh) facts.push(`<span class="f">Humains ${t}${bh} min${ap}</span>`);
+  facts.push(bp ? `<span class="f">Praia ${t}${bp} min de carro${ap}</span>` : '<span class="f warn">Sem localização</span>');
+  if (bh) facts.push(`<span class="f">Humains ${t}${bh} min de carro${ap}</span>`);
   facts.push(`<span class="f plain">${{ texto: 'Mobiliado (no texto)', marcado: 'Mobiliado (só marcado)', semi: 'Semi-mobiliado', nao: 'Sem mobília', 'sem info': 'Mobília não informada' }[o.mobilia]}</span>`);
   if (o.temporada) facts.push('<span class="f warn">Fala em temporada</span>');
   el.innerHTML = `
@@ -381,8 +394,8 @@ function pintarFiltros() {
   $('custo').value = F.custo; $('v-custo').textContent = brl(F.custo);
   $('area').value = F.area; $('v-area').textContent = F.area + ' m²';
   $('cond').value = F.cond; $('v-cond').textContent = F.cond >= 2000 ? 'qualquer' : brl(F.cond);
-  $('praia').value = F.praia; $('v-praia').textContent = F.praia >= 31 ? 'qualquer' : 'até ' + F.praia + ' min';
-  $('hum').value = F.hum; $('v-hum').textContent = F.hum >= 41 ? 'qualquer' : 'até ' + F.hum + ' min';
+  $('praia').value = F.praia; $('v-praia').textContent = F.praia >= PRAIA_MAX ? 'qualquer' : 'até ' + F.praia + ' min';
+  $('hum').value = F.hum; $('v-hum').textContent = F.hum >= HUM_MAX ? 'qualquer' : 'até ' + F.hum + ' min';
   $('dias').value = F.dias; $('v-dias').textContent = F.dias >= 61 ? 'qualquer data' : 'até ' + F.dias + ' dias atrás';
   $('semlocal').checked = F.semlocal; $('temp').checked = F.temp; $('q').value = F.q; $('sort').value = F.sort;
   document.querySelectorAll('#quartos .chip').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.q === F.quartos)));

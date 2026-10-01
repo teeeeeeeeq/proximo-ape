@@ -524,6 +524,8 @@ def completar(o):
         o['rua_site'], o['lat_site'], o['lon_site'] = o.get('rua') or '', o.get('lat'), o.get('lon')
         o['exato_site'] = bool(o.get('local_exato'))
     rua, lat, lon, exato, fonte = rua_para_mostrar(o['rua_site']), o['lat_site'], o['lon_site'], o['exato_site'], 'site'
+    if lat is not None and not (-27.15 < lat < -26.85 and -48.80 < (lon or 0) < -48.50):   # 0,0 do OLX sem mapa, ponto em outra cidade
+        lat, lon, exato = None, None, False
     nome_predio, pos = predio_da_descricao(txt, (o.get('predio_site'),), o.get('cidade'))
     ruas = ruas_da_descricao(txt)
     forte = [r for r, f in ruas if f]
