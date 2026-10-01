@@ -2,7 +2,7 @@
 Ramalho, I3, Imóveis na Brava, Mega Sul, Nobilitá, Plaza, TAB e Terra).
 
 Os doze sites são o mesmo sistema e usam, no próprio domínio, as mesmas rotas que o navegador usa:
-  POST /busca  (FORM_DATA[finalidade]=rent|season, cidade 8357 = Balneário Camboriú, dormitorio=2 -> "2 ou mais")
+  POST /busca  (FORM_DATA[finalidade]=rent|season, cidade 8357 = Balneário Camboriú, dormitorio=1 -> "1 ou mais")
        -> JSON com o HTML da grade de resultados (18 por vez). Paginação: uns sites andam com LIMIT=<deslocamento>,
           outros (Guilherme) com pg=<página>; mandamos o que a primeira resposta indicar e paramos quando não vem nada novo.
   GET  <link do anúncio>  -> página do imóvel, com um JSON-LD "RealEstateListing" (descrição, fotos, coordenada,
@@ -174,7 +174,7 @@ class Site:
 
     def grade(self, finalidade, deslocamento, pagina):
         form = [('SESSION_ID', self.sid), ('DOMAIN', self.dominio_cfg), ('url', ''), ('SHOW_SEARCH', 'true'),
-                ('FORM_DATA[finalidade]', finalidade), ('FORM_DATA[cidade][]', CIDADE_BC), ('FORM_DATA[dormitorio]', '2'),
+                ('FORM_DATA[finalidade]', finalidade), ('FORM_DATA[cidade][]', CIDADE_BC), ('FORM_DATA[dormitorio]', '1'),
                 ('searchMap', '0'), ('GRID_ONLY', '1'), ('LIMIT', str(deslocamento))]
         if pagina > 1:
             form.append(('pg', str(pagina)))
@@ -259,7 +259,7 @@ def passa_cartao(c, finalidade):
     if c['cidade'] and norm(c['cidade']).strip() != 'balneario camboriu':
         return False
     q = inteiro(c['quartos'])
-    if q is not None and q < 2:
+    if q is not None and q < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
         return False
     v, tem = preco_mensal(c['precos'], finalidade)
     if finalidade == 'season' and not tem:
@@ -483,7 +483,7 @@ def buscar(chrome, progresso):
                     if c['id'] not in vistos:
                         vistos.add(c['id'])
                         fila.append((site, c, fin))
-                progresso(f'Apresenta.me: {site.imob}: {len(achados)} apartamentos de 2+ quartos em BC')
+                progresso(f'Apresenta.me: {site.imob}: {len(achados)} apartamentos de 1+ quartos em BC')
         except Exception as ex:
             with trava:
                 erros.append(f'{site.imob}: {str(ex)[:60]}')
@@ -522,7 +522,7 @@ def buscar(chrome, progresso):
                 o = montar(site, c, fin, f)
                 if f and f.get('cidade') and norm(f['cidade']).strip() != 'balneario camboriu':
                     continue
-                if o['quartos'] is not None and o['quartos'] < 2:
+                if o['quartos'] is not None and o['quartos'] < 1:
                     continue
                 if o['aluguel'] is not None and o['aluguel'] > PRECO_MAX:
                     continue  # a ficha desmentiu a grade

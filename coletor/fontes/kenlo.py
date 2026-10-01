@@ -92,7 +92,7 @@ def listar(dom, caminho, progresso, rotulo):
 
 
 def eh_candidato(x):
-    """Filtro básico antes de abrir o anúncio: BC, apartamento, aluguel, 2+ quartos, até R$ 9.000."""
+    """Filtro básico antes de abrir o anúncio: BC, apartamento, aluguel, 1+ quartos, até R$ 9.000."""
     fins = x.get('property_purposes') or []
     fins = [fins] if isinstance(fins, str) else fins
     if 'FOR_RENT' not in fins:
@@ -101,7 +101,7 @@ def eh_candidato(x):
             or 'APARTMENT' not in str(x.get('property_type') or ''):
         return False
     q = primeiro(x.get('bedrooms'))
-    if q is None or q < 2:
+    if q is None or q < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
         return False
     diaria = str(x.get('rent_payment') or '').upper() in ('DAILY', 'WEEKLY')
     aluguel = valor(x.get('rent_price'), 100)

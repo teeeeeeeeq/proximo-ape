@@ -361,7 +361,7 @@ def loft_candidato(a):
     if not e_bc(a.get('Cidade')) or not e_apto(a.get('Categoria')):
         return False
     q = loft_quartos(a, f"{a.get('TituloSite') or ''} {a.get('DescricaoWebResumo') or ''}")
-    if q is not None and q < 2:
+    if q is not None and q < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
         return False
     v = valor(a.get('ValorLocacao'))
     return v is None or v <= PRECO_MAX
@@ -460,7 +460,7 @@ def ler_loft(progresso, res, erros, t0):
             o = loft_montar(slug, base, imob, a, cam, ficha)
             if o['aluguel'] and o['aluguel'] > PRECO_MAX:
                 continue  # a ficha desmentiu a lista
-            if o['quartos'] is None or o['quartos'] < 2:
+            if o['quartos'] is None or o['quartos'] < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
                 continue
             res.append(o)
         except Exception:
@@ -500,7 +500,7 @@ def vg_candidato(c):
     if not e_bc(c['cidade']) or not e_apto(c['titulo'].split(' ')[0] if c['titulo'] else ''):
         return False
     q = max(c['quartos'] or 0, c['suites'] or 0)
-    if q and q < 2:
+    if q and q < 1:
         return False
     return c['aluguel'] is None or c['aluguel'] <= PRECO_MAX
 
@@ -619,7 +619,7 @@ def ler_vg(progresso, res, erros, t0):
             if d and (not e_bc(d.get('Cidade')) or not e_apto(d.get('Categoria'))):
                 continue  # a ficha desmentiu o card
             o = vg_montar(slug, base, imob, c, d)
-            if (o['aluguel'] and o['aluguel'] > PRECO_MAX) or o['quartos'] is None or o['quartos'] < 2 or not o['url']:
+            if (o['aluguel'] and o['aluguel'] > PRECO_MAX) or o['quartos'] is None or o['quartos'] < 1 or not o['url']:
                 continue
             res.append(o)
         except Exception:

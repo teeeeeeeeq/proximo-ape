@@ -215,7 +215,7 @@ def buscar(b, progresso=lambda m: None):
     for lat, raio in ((-26.99, 7), (-26.935, 6)):   # Balneário/Camboriú e o sul de Itajaí
         for lo, hi in FAIXAS:
             progresso(f'lista R$ {lo}–{hi} ({lat})')
-            b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=2'
+            b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=1'
                  f'&sortBy=creation_time_descend&exact=false&latitude={lat}&longitude=-48.645&radius={raio}', 9)
             lista.update(_lista(b.js('document.documentElement.outerHTML') or ''))
             for _ in range(ROLAGENS if ck else 0):

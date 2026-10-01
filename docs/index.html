@@ -130,6 +130,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       <div class="chips" id="quartos">
         <button type="button" class="chip" data-q="2">2+ quartos</button>
         <button type="button" class="chip" data-q="3">3+ quartos</button>
+        <button type="button" class="chip" id="esc">1 quarto com espaço para escritório</button>
       </div>
     </fieldset>
 
@@ -204,7 +205,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
-const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, praia: 15, hum: 30, dist: 'carro', semlocal: true, cond: 900, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí', 'Praia dos Amores'], mob: ['texto', 'marcado'], temp: false, dias: 21, q: '', show: 'todos', sort: 'recentes' };
+const PERFIL = { semFonte: [], custo: 5600, area: 45, quartos: 2, esc: true, praia: 15, hum: 30, dist: 'carro', semlocal: true, cond: 900, bairros: ['Centro', 'Nações', 'Tabuleiro · Camboriú', 'Monte Alegre · Camboriú', 'Praia Brava · Itajaí', 'Fazendinha · Itajaí', 'Cabeçudas · Itajaí', 'Fazenda · Itajaí', 'Praia dos Amores'], mob: ['texto', 'marcado'], temp: false, dias: 21, q: '', show: 'todos', sort: 'recentes' };
 const CHAVE = 'apto-filtros-v2';
 // minutos de carro pela distância em linha reta: as ruas dão ~35% de volta, os primeiros 2 km saem a ~20 km/h
 // (sinais e trânsito do Centro), o resto a ~35 km/h, e 1 min para sair e estacionar
@@ -291,7 +292,8 @@ function passa(o) {
   const custo = o.cond == null && o.cond_est ? o.fixo - o.cond_est : o.fixo;   // só o que o anúncio informa
   if (!custo || custo > F.custo) return false;
   if (o.area && o.area < F.area) return false;
-  if (!o.quartos || o.quartos < F.quartos) return false;
+  // 1 quarto só chega aqui com espaço para escritório (citado no anúncio ou 55 m²+): entra com a opção ligada
+  if (!o.quartos || o.quartos < F.quartos) { if (!(o.quartos === 1 && F.esc && F.quartos <= 2)) return false; }
   if (F.bairros.length && !F.bairros.includes(zona(o))) return false;
   if (o.praia_m == null && o.humains_m == null) { if (!F.semlocal) return false; }
   else {
@@ -328,7 +330,9 @@ function card(o) {
     : o.local_aprox === 'bairro' ? ' (média do bairro)' : o.local_fonte === 'prédio' ? ' (pelo prédio)' : '';
   const facts = [];
   if (o.area) facts.push(`<span class="f">${Math.round(o.area)} m²</span>`);
-  if (o.quartos) facts.push(`<span class="f">${o.quartos} quartos${o.suites ? ' · ' + o.suites + ' suíte' : ''}</span>`);
+  if (o.quartos) facts.push(`<span class="f">${o.quartos} ${o.quartos === 1 ? 'quarto' : 'quartos'}${o.suites ? ' · ' + o.suites + ' suíte' : ''}</span>`);
+  if (o.escritorio) facts.push('<span class="f">Cita escritório / home office</span>');
+  else if (o.quartos === 1) facts.push('<span class="f">Sala grande (55 m²+) para escritório</span>');
   facts.push(bp ? `<span class="f">Praia ${t}${bp} min de carro${ap}</span>` : '<span class="f warn">Sem localização</span>');
   if (bh) facts.push(`<span class="f">Humains ${t}${bh} min de carro${ap}</span>`);
   facts.push(`<span class="f plain">${{ texto: 'Mobiliado (no texto)', marcado: 'Mobiliado (só marcado)', semi: 'Semi-mobiliado', nao: 'Sem mobília', 'sem info': 'Mobília não informada' }[o.mobilia]}</span>`);
@@ -398,7 +402,8 @@ function pintarFiltros() {
   $('hum').value = F.hum; $('v-hum').textContent = F.hum >= HUM_MAX ? 'qualquer' : 'até ' + F.hum + ' min';
   $('dias').value = F.dias; $('v-dias').textContent = F.dias >= 61 ? 'qualquer data' : 'até ' + F.dias + ' dias atrás';
   $('semlocal').checked = F.semlocal; $('temp').checked = F.temp; $('q').value = F.q; $('sort').value = F.sort;
-  document.querySelectorAll('#quartos .chip').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.q === F.quartos)));
+  document.querySelectorAll('#quartos .chip[data-q]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.q === F.quartos)));
+  $('esc').setAttribute('aria-pressed', String(!!F.esc));
   document.querySelectorAll('#bairros .chip').forEach(b => b.setAttribute('aria-pressed', String(F.bairros.includes(b.dataset.b))));
   document.querySelectorAll('#mob .chip').forEach(b => b.setAttribute('aria-pressed', String(F.mob.includes(b.dataset.m))));
   document.querySelectorAll('#fontes .chip').forEach(b => b.setAttribute('aria-pressed', String(!(F.semFonte || []).includes(b.dataset.f))));
@@ -410,7 +415,7 @@ $('semlocal').onchange = e => { F.semlocal = e.target.checked; mudou(); };
 $('temp').onchange = e => { F.temp = e.target.checked; mudou(); };
 let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value.trim(); mudou(); }, 250); });
 $('sort').onchange = e => { F.sort = e.target.value; mudou(); };
-$('quartos').onclick = e => { const b = e.target.closest('.chip'); if (b) { F.quartos = +b.dataset.q; mudou(); } };
+$('quartos').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; if (b.id === 'esc') F.esc = !F.esc; else F.quartos = +b.dataset.q; mudou(); };
 $('bairros').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.b; F.bairros = F.bairros.includes(v) ? F.bairros.filter(x => x !== v) : F.bairros.concat(v); mudou(); };
 $('mob').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.m; F.mob = F.mob.includes(v) ? F.mob.filter(x => x !== v) : F.mob.concat(v); mudou(); };
 $('fontes').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.f; const s = F.semFonte || []; F.semFonte = s.includes(v) ? s.filter(x => x !== v) : s.concat(v); mudou(); };
