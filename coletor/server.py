@@ -321,11 +321,29 @@ def rua_para_mostrar(r):
     return re.split(r'\s+-\s+de\s|\s+-\s+até\s|\s+-\s+lado', r or '')[0].strip()
 
 
+def pacote_do_texto(texto, aluguel):
+    """Maior valor mensal "com tudo" declarado no texto (pacote, total, com taxas). Ignora venda, caução, seguro e diária."""
+    if not aluguel:
+        return None
+    t = norm(texto)
+    melhor = None
+    for m in re.finditer(r'r\$\s*(\d{1,2}\.?\d{3}|\d{4,5})(,\d{2})?', t):
+        v = float(m.group(1).replace('.', ''))
+        if not (aluguel < v <= aluguel * 2.2):
+            continue
+        antes, depois = t[max(0, m.start() - 45):m.start()], t[m.end():m.end() + 30]
+        if re.search(r'venda|vendo|compra|caucao|deposito|fianca|seguro|diaria|por dia|temporada|reveillon|natal', antes + depois):
+            continue
+        if re.search(r'pacote|total|com (as )?taxas|com condominio|ja com|valor final|tudo incluso|incluindo|inclusos?\b', antes + depois[:20]):
+            melhor = max(melhor or 0, v)
+    return melhor
+
+
 def condominio(site, texto):
     """(valor, fonte): o do site; senão o da descrição; 0 se o texto diz que está incluso; None se ninguém diz."""
     t = norm(texto)
     incluso = re.search(r'(condominio|taxas)[^.\n]{0,30}inclus|inclus[oa]s?[^.\n]{0,25}(condominio|taxas)|ja com (condominio|taxas|as taxas)'
-                        r'|valor total|total com (condominio|taxas)|pacote|sem condominio|isento de condominio', t)
+                        r'|total com (condominio|taxas)|sem condominio|isento de condominio', t)
     nao_incluso = re.search(r'(nao|sem)\s+(\w+\s+){0,2}inclus|nao estao inclus|\+\s*(as\s+)?taxas|mais\s+(as\s+)?taxas|\+\s*condominio'
                             r'|mais\s+condominio|taxas a parte|taxas por conta|fora (as )?taxas|alem das taxas', t)
     if nao_incluso:
@@ -390,8 +408,8 @@ def estimar_condominios(itens):
                     onde = 'anúncios parecidos do bairro'
             if est:
                 o['cond_est'], o['cond_base'] = int(round(min(max(est, 150), 3500) / 10) * 10), onde
-        o['fixo'] = round(o['aluguel'] + (o['cond'] if o.get('cond') is not None else o.get('cond_est') or 0) + (o.get('iptu') or 0)) \
-            if o.get('aluguel') else None
+        o['fixo'] = round(max(o['aluguel'] + (o['cond'] if o.get('cond') is not None else o.get('cond_est') or 0) + (o.get('iptu') or 0),
+                              o.get('pacote') or 0)) if o.get('aluguel') else None
 
 
 def completar(o):
@@ -409,7 +427,13 @@ def completar(o):
     if 'cond_site' not in o:
         o['cond_site'] = o.get('cond')
     o['cond'], o['cond_fonte'] = condominio(o['cond_site'], txt)
-    o['fixo'] = round((o['aluguel'] or 0) + (o['cond'] or 0) + (o['iptu'] or 0)) if o['aluguel'] else None
+    pac = max(o.get('pacote_site') if 'pacote_site' in o else (o.get('pacote') or 0), pacote_do_texto(txt, o.get('aluguel')) or 0)
+    if 'pacote_site' not in o:
+        o['pacote_site'] = o.get('pacote') or 0
+    o['pacote'] = pac if o.get('aluguel') and pac > o['aluguel'] else None
+    if o['pacote'] and (o['cond'] is None or o['cond_fonte'] == 'incluso'):
+        o['cond'], o['cond_fonte'] = max(o['pacote'] - o['aluguel'] - (o.get('iptu') or 0), 0), 'pacote'
+    o['fixo'] = round(max((o['aluguel'] or 0) + (o['cond'] or 0) + (o['iptu'] or 0), o.get('pacote') or 0)) if o['aluguel'] else None
     # endereço: o que está na descrição vale mais que o cadastro do site
     if 'rua_site' not in o:
         o['rua_site'], o['lat_site'], o['lon_site'] = o.get('rua') or '', o.get('lat'), o.get('lon')

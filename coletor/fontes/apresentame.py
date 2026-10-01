@@ -386,6 +386,14 @@ def montar(site, c, finalidade, f):
     if aluguel is None:
         aluguel, _ = preco_mensal(c['precos'], finalidade)
     cond = f.get('cond') or next((v for cls, r, v in c['precos'] if norm(r).startswith('condom')), None)
+    pacotes = [v for cls, r, v in (f.get('precos') or []) + c['precos'] if 'pacote' in norm(r) and 'Venda' not in cls and v]
+    pacote = max(pacotes) if pacotes else None
+    if pacote and aluguel and pacote > aluguel:
+        vt_pacote = f"Pacote de locação (mensal): R$ {pacote:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+    else:
+        pacote, vt_pacote = None, ''
+    if cond is None and f.get('taxa') and not pacote:
+        cond = f.get('taxa')
     iptu = iptu_mensal(f.get('iptu_txt') or '', f.get('iptu_rot') or '', aluguel) if f.get('iptu_txt') else \
         iptu_mensal(str(next((v for cls, r, v in c['precos'] if norm(r) == 'iptu'), '') or ''), '', aluguel)
     # a grade traz o número do cadastro; a ficha varia por modelo de site (a da Terra conta só os quartos sem suíte)
@@ -421,6 +429,8 @@ def montar(site, c, finalidade, f):
         vt.append(f"{f.get('iptu_rot') or 'IPTU'}: R$ {f['iptu_txt']}")
     if f.get('taxa'):
         vt.append(f"Taxas diversas: R$ {f['taxa']:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    if vt_pacote:
+        vt.append(vt_pacote)
     if vt:
         partes.append('Valores e taxas:\n' + '\n'.join(vt))
     ficha = []
@@ -442,7 +452,7 @@ def montar(site, c, finalidade, f):
         id=f"AP{site.slug}{c['id']}", fonte=NOME, url=c['link'] or L.get('url') or f"{site.base}/imovel/{c['id']}",
         titulo=titulo, desc='\n\n'.join(p for p in partes if p).strip(),
         ativo=not re.search(r'\b(alugad[oa]|locad[oa]|indisponivel)\b', status),
-        aluguel=aluguel, cond=cond, iptu=iptu, quartos=quartos, suites=suites, area=area,
+        aluguel=aluguel, cond=cond, iptu=iptu, pacote=pacote, quartos=quartos, suites=suites, area=area,
         bairro=caixa(c['bairro'] or f.get('bairro')), rua=caixa(c['rua'] or f.get('rua') or rua_sem_numero(rua_ld)),
         cidade=caixa(c['cidade'] or f.get('cidade')) or 'Balneário Camboriú',
         lat=lat, lon=lon, local_exato=lat is not None,
