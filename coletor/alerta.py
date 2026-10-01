@@ -6,7 +6,9 @@ mobiliado conta; "sem mobília" não), até 10 min de carro da Humains (em Itaja
 temporada e sem recusa de animais. Sem localização fica, com o aviso de que falta o endereço.
 
 O Claude confere as fotos de todos os anúncios do perfil, uma vez cada (o mesmo imóvel em sites diferentes conta uma
-vez; dados/avaliacoes.json). Ele olha a cozinha integrada à sala (o mais importante), se a cozinha é bonita e bem
+vez; dados/avaliacoes.json). Com a chave ANTHROPIC_API_KEY, pela API, aqui mesmo. Sem ela, pelo plano do dono: a busca
+monta uma fila (folhas com as fotos numeradas e o texto de cada anúncio, na branch fila-claude), uma rotina do Claude Code
+confere de hora em hora (coletor/rotina.py) e grava os vereditos na branch avaliacoes, que a busca seguinte usa. Ele olha a cozinha integrada à sala (o mais importante), se a cozinha é bonita e bem
 montada, se o piso tem cara de antigo e qual foto melhor mostra a cozinha com a sala. Quando faltam fotos de dentro,
 estima a chance de ser como o do Piatã (prédio, preço, texto). Veredito:
   piata     - integrada "sim", cozinha "bonita", piso não "antigo": aparece primeiro no app e vai por e-mail;
@@ -15,7 +17,7 @@ estima a chance de ser como o do Piatã (prédio, preço, texto). Veredito:
 O e-mail é uma issue que menciona o dono do repositório (o GitHub manda o e-mail); cada imóvel vai uma vez só
 (dados/avisos.json).
 """
-import base64, io, json, os, re, time, urllib.request
+import base64, io, json, os, re, shutil, time, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 import server as s
@@ -35,6 +37,8 @@ MAX_IA_DIA = 250     # e por dia: teto de gasto (~US$ 0,05 cada, ~US$ 12 no dia 
 PARALELO = 3         # conferidos ao mesmo tempo
 GUARDA_DIAS = 30     # avaliações mais velhas que isso são refeitas
 VERSAO = 3           # muda quando o que se pede ao Claude muda: o que foi avaliado antes é avaliado de novo
+FILA_MAX = 30        # sem a chave da API: anúncios por rodada da rotina do Claude (os mais recentes primeiro)
+FILA_FOTOS = 12      # fotos por anúncio na fila, em duas folhas de 6 (512 x 384 cada foto)
 
 
 def a_pe(m):
@@ -209,6 +213,100 @@ def avaliar_ia(o, cliente):
     return v
 
 
+def _imagem(url):
+    """A foto como imagem do Pillow (para as folhas da fila); None se não deu."""
+    try:
+        from PIL import Image
+        with urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20) as r:
+            im = Image.open(io.BytesIO(r.read(8_000_000)))
+            im.load()
+        return im.convert('RGB')
+    except Exception:
+        return None
+
+
+def _folha(imagens, primeira):
+    """Até 6 fotos numeradas (a partir de `primeira`) numa folha de 3 x 2."""
+    from PIL import Image, ImageDraw, ImageFont
+    W, H = 512, 384
+    folha = Image.new('RGB', (W * 3, H * 2), 'white')
+    try:
+        fonte = ImageFont.load_default(size=40)
+    except Exception:
+        fonte = ImageFont.load_default()
+    d = ImageDraw.Draw(folha)
+    for i, im in enumerate(imagens):
+        im = im.copy()
+        im.thumbnail((W - 6, H - 6))
+        x0, y0 = (i % 3) * W, (i // 3) * H
+        folha.paste(im, (x0 + (W - im.width) // 2, y0 + (H - im.height) // 2))
+        d.rectangle([x0 + 4, y0 + 4, x0 + 70, y0 + 54], fill='black')
+        d.text((x0 + 14, y0 + 6), str(primeira + i), fill='white', font=fonte)
+    return folha
+
+
+def montar_fila(grupos, faltam, pasta):
+    """Sem a chave da API, quem confere é a rotina do Claude (pelo plano do dono). Para os que faltam (os mais recentes
+    primeiro, até FILA_MAX): folhas com as fotos numeradas e o texto do anúncio em `pasta` (o workflow publica na branch
+    fila-claude), com o pedido e o formato da resposta, que a rotina segue."""
+    shutil.rmtree(pasta, ignore_errors=True)
+    os.makedirs(pasta)
+    itens = []
+    for k in faltam[:FILA_MAX * 3]:
+        if len(itens) >= FILA_MAX:
+            break
+        o, n = grupos[k][0], len(itens) + 1
+        urls = _urls(o)
+        if len(urls) > FILA_FOTOS:   # espalhadas pelo anúncio: a cozinha costuma vir lá pelo meio
+            urls = [urls[round(i * (len(urls) - 1) / (FILA_FOTOS - 1))] for i in range(FILA_FOTOS)]
+        with ThreadPoolExecutor(6) as ex:
+            ims = [(u, im) for u, im in zip(urls, ex.map(_imagem, urls)) if im]
+        if not ims:
+            continue
+        folhas = []
+        for j in range(0, len(ims), 6):
+            nome = f"{n:03d}-{'ab'[j // 6]}.jpg"
+            _folha([im for _, im in ims[j:j + 6]], j + 1).save(os.path.join(pasta, nome), 'JPEG', quality=82)
+            folhas.append(nome)
+        itens.append(dict(chave=k, id=o['id'], url=o.get('url'), folhas=folhas, fotos=[u for u, _ in ims], anuncio=_ficha(o)[:2500]))
+    with open(os.path.join(pasta, 'fila.json'), 'w') as f:
+        json.dump(dict(gerada=time.strftime('%Y-%m-%d %H:%M'), versao=VERSAO, pedido=_PEDIDO, resposta=_RESPOSTA, itens=itens),
+                  f, ensure_ascii=False, indent=1)
+    return len(itens)
+
+
+def _urls(o):
+    return list(dict.fromkeys(u for u in (o.get('fotos') or []) if isinstance(u, str) and u.startswith('http')))
+
+
+def _pronto(o, agora):
+    """Dá para conferir: 2+ fotos, ou 1 só num anúncio que o app já vê há um dia (no Facebook, as outras fotos chegam
+    quando o leitor abre a página do anúncio, às vezes uma ou duas buscas depois)."""
+    n = len(_urls(o))
+    if n >= 2:
+        return True
+    try:
+        visto = time.mktime(time.strptime((o.get('visto_em') or '')[:16], '%Y-%m-%d %H:%M'))
+    except ValueError:
+        return n == 1
+    return n == 1 and agora - visto > 86400
+
+
+def _da_rotina(avals):
+    """Junta os vereditos que a rotina do Claude gravou na branch avaliacoes (o workflow baixa em dados/avaliacoes_rotina.json)."""
+    novos = 0
+    for k, v in s.load('avaliacoes_rotina.json', {}).items():
+        if not isinstance(v, dict) or v.get('versao') != VERSAO:
+            continue
+        if any(c not in v or ('enum' in p and v[c] not in p['enum']) for c, p in _RESPOSTA['properties'].items()):
+            continue
+        if k in avals and (avals[k].get('quando') or '') >= (v.get('quando') or ''):
+            continue
+        avals[k] = dict(v, v=veredito(v))
+        novos += 1
+    return novos
+
+
 def _cliente():
     if not os.environ.get('ANTHROPIC_API_KEY'):
         return None
@@ -222,10 +320,18 @@ def conferir(grupos, agora):
     avals = s.load('avaliacoes.json', {})
     limite = time.strftime('%Y-%m-%d', time.localtime(agora - GUARDA_DIAS * 86400))
     avals = {k: v for k, v in avals.items() if (v.get('quando') or '') >= limite and v.get('versao') == VERSAO}
+    vindos = _da_rotina(avals)
+    if vindos:
+        s.save('avaliacoes.json', avals)
     cliente = _cliente()
-    faltam = sorted((k for k in grupos if k not in avals), key=lambda k: max(x.get('visto_em') or '' for x in grupos[k]), reverse=True)
+    faltam = sorted((k for k in grupos if k not in avals and _pronto(grupos[k][0], agora)),
+                    key=lambda k: max(x.get('visto_em') or '' for x in grupos[k]), reverse=True)
     if not cliente:
-        print(f'Claude: sem ANTHROPIC_API_KEY; {len(faltam)} anúncio(s) do perfil sem conferir')
+        if os.environ.get('SOMENTE', '').strip().lower() == 'nenhuma':   # rodada só para publicar: a fila fica como está
+            print(f'Claude: {vindos} veredito(s) novo(s) da rotina; {len(faltam)} ainda sem conferir')
+            return avals
+        n = montar_fila(grupos, faltam, os.path.join(s.RAIZ, 'fila'))
+        print(f'Claude: {vindos} veredito(s) novo(s) da rotina; {len(faltam)} sem conferir, {n} na fila para a próxima rodada da rotina')
         return avals
     hoje = time.strftime('%Y-%m-%d', time.localtime(agora))
     vez = max(0, min(MAX_IA, MAX_IA_DIA - sum((v.get('quando') or '').startswith(hoje) for v in avals.values())))
@@ -353,7 +459,7 @@ def avisar(grupos, avals, pasta):
     else:
         titulo = f"{len(novos)} apês como o do Piatã (aluguel a partir de {_brl(o['aluguel'])})"
     corpo = [f"@{DONO} {'apareceu um apartamento' if len(novos) == 1 else f'apareceram {len(novos)} apartamentos'} "
-             f"como o do Piatã, conferido(s) pelo Claude nas fotos: cozinha integrada à sala, cozinha bonita e bem montada, "
+             f"como o do Piatã, {'conferido' if len(novos) == 1 else 'conferidos'} pelo Claude nas fotos: cozinha integrada à sala, cozinha bonita e bem montada, "
              f"piso sem cara de antigo. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2+ quartos, até "
              f"{PRAIA_A_PE} min a pé da praia e {HUMAINS_CARRO} min de carro da Humains ({HUMAINS_CARRO_ITAJAI} em Itajaí).", '']
     corpo += [_bloco(g, avals[_chave(g[0])]) + '\n' for g in novos[:MAX_POR_AVISO]]

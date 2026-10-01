@@ -6,7 +6,7 @@ on:
   workflow_dispatch:   # e quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
     inputs:
       somente:
-        description: 'Só estas fontes (ex.: facebook, olx). Vazio = todas'
+        description: 'Só estas fontes (ex.: facebook, olx). Vazio = todas; "nenhuma" = só publicar (vereditos novos do Claude e o aviso)'
         required: false
         default: ''
 
@@ -35,6 +35,9 @@ jobs:
           git clone --depth 1 --branch dados "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" /tmp/estado || true
           mkdir -p dados
           cp /tmp/estado/*.json dados/ 2>/dev/null || true
+          # vereditos que a rotina do Claude (pelo plano do dono) gravou sobre as fotos da fila
+          git clone --depth 1 --branch avaliacoes "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" /tmp/avaliacoes \
+            && cp /tmp/avaliacoes/avaliacoes.json dados/avaliacoes_rotina.json || true
           ls -la dados
 
       - uses: actions/setup-python@v5
@@ -50,6 +53,22 @@ jobs:
           FACEBOOK_COOKIES: ${{ secrets.FACEBOOK_COOKIES }}   # sessão do Facebook (Settings → Secrets → Actions); vazio = sem login
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}  # o Claude confere as fotos; vazio = ninguém confere (e não sai aviso)
         run: python coletor/coletar.py
+
+      - name: Fila de fotos para a rotina do Claude
+        continue-on-error: true   # sem a chave da API, a rotina do Claude Code confere as fotos daqui (coletor/rotina.py)
+        run: |
+          if [ -f fila/fila.json ]; then
+            cd fila
+            git init -q -b fila-claude
+            git config user.name "coletor"
+            git config user.email "coletor@users.noreply.github.com"
+            git add -A
+            git commit -qm "fila $(TZ=America/Sao_Paulo date +'%d/%m %H:%M')"
+            git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" fila-claude
+            du -sh .
+          else
+            echo "sem fila nesta rodada"
+          fi
 
       - name: Avisar apartamento como o do Piatã (e-mail pelo GitHub)
         continue-on-error: true   # se falhar, a busca segue

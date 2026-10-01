@@ -13,7 +13,10 @@ CAMPOS = ('id', 'fonte', '_src', 'url', 'titulo', 'desc', 'aluguel', 'pacote', '
 
 def main():
     meta_antes = s.load('meta.json', {})
-    s.atualizar()
+    if os.environ.get('SOMENTE', '').strip().lower() == 'nenhuma':   # só publica (vereditos novos da rotina do Claude e o aviso)
+        s.STATUS.update(ultima=meta_antes.get('ultima'), erro='')
+    else:
+        s.atualizar()
     if s.STATUS['erro'] and not s.STATUS['ultima']:
         print('falhou:', s.STATUS['erro'])
         sys.exit(1)
