@@ -52,6 +52,12 @@ def main():
     os.makedirs(os.path.join(RAIZ, 'docs'), exist_ok=True)
     pub.sort(key=lambda x: x.get('visto_em') or '', reverse=True)
     json.dump(pub, open(os.path.join(RAIZ, 'docs', 'anuncios.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
+    try:   # aviso por e-mail (issue no GitHub) de apartamento novo que serve; uma falha aqui não derruba a busca
+        import alerta
+        n = alerta.preparar(anuncios, [x['id'] for x in pub], os.path.join(RAIZ, 'dados'))
+        print(f'aviso: {n} apartamento(s) novo(s) que servem' if n else 'aviso: nada novo que sirva')
+    except Exception as ex:
+        print('aviso falhou:', ex)
     json.dump(info, open(os.path.join(RAIZ, 'docs', 'meta.json'), 'w'), ensure_ascii=False)
     print(f"{len(pub)} anúncios publicados; fontes: " + '; '.join(f"{n}: {i.get('n', 0)}{' ERRO ' + i['erro'] if i.get('erro') else ''}" for n, i in info['fontes'].items()))
 

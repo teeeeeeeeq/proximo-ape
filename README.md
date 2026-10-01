@@ -5,5 +5,6 @@ Busca de apartamentos para alugar em Balneário Camboriú. A cada 3 horas (e qua
 - Buscar agora: aba **Actions** → *Coletar anúncios* → **Run workflow**.
 - Cada leitor fica em `coletor/fontes/<nome>.py` e expõe `buscar(chrome, progresso) -> list[dict]`.
 - O histórico (quando cada anúncio apareceu) fica na branch `dados`.
+- Aviso por e-mail: quando aparece apartamento novo que serve (`coletor/alerta.py`), a busca abre uma issue que menciona o dono do repositório e o GitHub manda o e-mail. Os já avisados ficam em `dados/alertas.json`.
 
 Ruas e linha da praia: © OpenStreetMap contributors (ODbL).

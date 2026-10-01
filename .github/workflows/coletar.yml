@@ -14,6 +14,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write   # aviso de apartamento novo: uma issue que menciona o dono (o GitHub manda por e-mail)
 
 concurrency:
   group: coletar
@@ -48,6 +49,18 @@ jobs:
           SOMENTE: ${{ inputs.somente }}
           FACEBOOK_COOKIES: ${{ secrets.FACEBOOK_COOKIES }}   # sessão do Facebook (Settings → Secrets → Actions); vazio = sem login
         run: python coletor/coletar.py
+
+      - name: Avisar apartamento novo (e-mail pelo GitHub)
+        continue-on-error: true   # se falhar, a busca segue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f dados/alerta.md ]; then
+            gh issue create --repo "${{ github.repository }}" --title "$(cat dados/alerta_titulo.txt)" --body-file dados/alerta.md
+            rm -f dados/alerta.md dados/alerta_titulo.txt
+          else
+            echo "nada novo que sirva"
+          fi
 
       - name: Guardar o histórico
         run: |
