@@ -1047,7 +1047,8 @@ def registrar_preco(o, antigo, agora, antes):
             o['baixou_de'], o['baixou_em'] = hist[i][1], hist[-1][0]
     # o próprio site mostra o preço antigo riscado (OLX, Facebook): baixa que aconteceu antes de o app começar a olhar
     antes_site = o.get('preco_antes_site')
-    if not o.get('baixou_de') and antes_site and o.get('aluguel') and antes_site - o['aluguel'] >= BAIXA_MIN:
+    # (riscado acima de 1,6x o aluguel não é baixa: é o preço de venda ou de outra modalidade — "R$ 650.000 -> R$ 3.800")
+    if not o.get('baixou_de') and antes_site and o.get('aluguel') and BAIXA_MIN <= antes_site - o['aluguel'] and antes_site <= 1.6 * o['aluguel']:
         ja = (antigo or {}).get('baixou_de') == antes_site and (antigo or {}).get('baixou_em')
         o['baixou_de'], o['baixou_em'] = antes_site, ja or agora
 
