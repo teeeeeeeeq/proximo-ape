@@ -784,6 +784,7 @@ def buscar_zap(b, progresso=lambda m: None):
                 return itens
         except RuntimeError as ex:
             falhas.append(f"{portal}: {ex} (página: {(b.js('document.title') or '')[:60]})")
+            progresso(f'API do {portal} não serviu: {ex}')
     # plano C: a API bloqueou (acontece em servidores); lê as próprias páginas de busca, 30 por página
     try:
         itens = _zap_paginas(b, progresso)
@@ -889,15 +890,15 @@ def _zap_api_cidade(b, progresso, dominio, portal, site, cidade, loc):
             if r['s'] != 200:
                 time.sleep(5)
                 r = json.loads(b.js(code) or '{"s":-1,"t":""}')
-                if r['s'] != 200 and preco:   # a API recusou o filtro de preço: segue sem ele (a faixa é conferida aqui)
-                    preco = {}
-                    continue
                 if r['s'] != 200:
                     raise RuntimeError(f"a API respondeu {r['s']} {r['t'][:60]}")
             d = json.loads(r['t'])
             L = d['search']['result']['listings']
-            for w in L:
-                o = de_zap(w)
+            pagina = [de_zap(w) for w in L]
+            fora = sum(not na_faixa(o.get('aluguel')) for o in pagina)
+            if frm == 0 and fora > len(pagina) / 4:   # a API ignorou o filtro de preço: as páginas de busca respeitam
+                raise RuntimeError(f'a API ignorou o filtro de preço ({fora} de {len(pagina)} fora da faixa)')
+            for w, o in zip(L, pagina):
                 o['url'] = site + (w.get('link') or {}).get('href', '')
                 out.append(o)
             frm += 30
