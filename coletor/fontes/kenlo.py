@@ -28,7 +28,7 @@ SITES = (
     ('cati', 'Cati Imóveis', 'www.catiimoveis.com.br'),
 )
 CIDADES = ('balneario-camboriu', 'camboriu', 'itajai')   # Itajaí: só os bairros do sul (server.na_regiao)
-MAX_ALUGUEL = 9000
+MIN_ALUGUEL, MAX_ALUGUEL = server.ALUGUEL_MIN, server.ALUGUEL_MAX
 # quadrado em volta de Balneário Camboriú: coordenada fora disso é geocodificação errada
 BC_LAT, BC_LON = (-27.08, -26.89), (-48.74, -48.56)   # BC, Camboriú e o sul de Itajaí
 # pontos genéricos que o Kenlo usa quando não acha o endereço (centro da cidade / do bairro Centro)
@@ -92,7 +92,7 @@ def listar(dom, caminho, progresso, rotulo):
 
 
 def eh_candidato(x):
-    """Filtro básico antes de abrir o anúncio: BC, apartamento, aluguel, 1+ quartos, até R$ 9.000."""
+    """Filtro básico antes de abrir o anúncio: BC, apartamento, aluguel, 1+ quartos, aluguel na faixa do perfil."""
     fins = x.get('property_purposes') or []
     fins = [fins] if isinstance(fins, str) else fins
     if 'FOR_RENT' not in fins:
@@ -105,7 +105,7 @@ def eh_candidato(x):
         return False
     diaria = str(x.get('rent_payment') or '').upper() in ('DAILY', 'WEEKLY')
     aluguel = valor(x.get('rent_price'), 100)
-    return diaria or aluguel is None or aluguel <= MAX_ALUGUEL
+    return diaria or aluguel is None or MIN_ALUGUEL <= aluguel <= MAX_ALUGUEL
 
 
 def rua_de(endereco, tipo, bairro):

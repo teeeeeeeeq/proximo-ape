@@ -24,7 +24,8 @@ USA_CHROME = False
 FONTE = 'Viva Balneário'
 BASE = 'https://www.vivabalneario.com.br'
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
-MAX_ALUGUEL = 9000
+import server
+MIN_ALUGUEL, MAX_ALUGUEL = server.ALUGUEL_MIN, server.ALUGUEL_MAX
 DIAS_PARADO = 730     # sem atualização há mais que isso: anúncio abandonado
 PAUSA = 0.25          # entre pedidos de cada conexão
 PARALELO = 3          # conexões ao mesmo tempo
@@ -426,7 +427,7 @@ def montar(c, d):
             valor = anual
         else:
             aviso = preco_temporada(d['acao'], d['titulo'], d['desc'], valor) or ''
-        if valor > MAX_ALUGUEL:
+        if not MIN_ALUGUEL <= valor <= MAX_ALUGUEL:
             return None
         if not aviso or aviso.startswith('Aluguel anual'):
             aluguel = valor
@@ -481,15 +482,15 @@ def buscar(chrome, progresso):
         raise RuntimeError(f'o Viva Balneário não respondeu ({str(ex)[:60]})')
     if not cards:
         raise RuntimeError('o Viva Balneário não devolveu nenhum anúncio (o site mudou?)')
-    # pelo card só sai preço mensal acima de R$ 9.000; os quartos do card não contam as suítes ('1 suíte + 1 dormitório' = 1,
+    # pelo card só sai preço mensal fora da faixa do perfil; os quartos do card não contam as suítes ('1 suíte + 1 dormitório' = 1,
     # '2 suítes' = 0), então 0 ou 1 quarto no card ainda é lido e decidido pelo texto em montar()
     alvo = []
     for c in cards:
         v = reais(c['preco'])
-        if v and v > MAX_ALUGUEL and not re.search(r'/\s*dia', c['preco']):
+        if v and not MIN_ALUGUEL <= v <= MAX_ALUGUEL and not re.search(r'/\s*dia', c['preco']):
             continue
         alvo.append(c)
-    progresso(f'{len(cards)} apartamentos para alugar no portal, {len(alvo)} com preço até R$ 9.000; lendo os anúncios')
+    progresso(f'{len(cards)} apartamentos para alugar no portal, {len(alvo)} na faixa de aluguel; lendo os anúncios')
     out, falhas, sem_data = [], [], []
     conta = dict(lidos=0, parados=0)
     lock = threading.Lock()

@@ -21,6 +21,17 @@ def _achar_chrome():
 CHROME = _achar_chrome()
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
 HUMAINS = (-26.98307, -48.64116)
+# O perfil: só o aluguel. Os leitores já pedem aos sites só essa faixa (e descartam o resto antes de abrir as fichas),
+# o que deixa cada busca bem mais rápida; fora dela o app não mostra nada.
+ALUGUEL_MIN, ALUGUEL_MAX = 3500, 5500
+FAIXA = f'{ALUGUEL_MIN}-{ALUGUEL_MAX}'
+
+
+def na_faixa(v):
+    """Aluguel dentro do perfil (sem preço passa: quem decide é o filtro do app)."""
+    return v is None or ALUGUEL_MIN <= v <= ALUGUEL_MAX
+
+
 PRAIA = json.load(open(os.path.join(DIR, 'praia.json')))
 RUAS_ARQ = os.path.join(DIR, 'ruas.json')
 LOCK = threading.Lock()
@@ -814,7 +825,7 @@ def _zap_paginas(b, progresso):
         total = None
         for p in range(1, 60):
             progresso(f'{cidade}, {quartos}, página {p}' + (f' de {math.ceil(total / 30)}' if total else ''))
-            url = f'https://www.zapimoveis.com.br/aluguel/apartamentos/{slug}/{quartos}/?pagina={p}'
+            url = f'https://www.zapimoveis.com.br/aluguel/apartamentos/{slug}/{quartos}/?precoMinimo={ALUGUEL_MIN}&precoMaximo={ALUGUEL_MAX}&pagina={p}'
             b.go(url, 6)
             page = b.js('document.documentElement.outerHTML') or ''
             if '"listings":[' not in page.replace('\\"', '"'):   # veio sem anúncios: espera e tenta de novo uma vez
@@ -846,7 +857,7 @@ def _zap_paginas(b, progresso):
                         pass
             if not L or not novos or (total and p * 30 >= total):
                 break
-    return [o for o in out.values() if na_regiao(o.get('cidade'), o.get('bairro'))]
+    return [o for o in out.values() if na_regiao(o.get('cidade'), o.get('bairro')) and na_faixa(o.get('aluguel'))]
 
 
 CIDADES_ZAP = [('Balneário Camboriú', 'BR>Santa Catarina>NULL>Balneario Camboriu', 'sc+balneario-camboriu'),
@@ -858,18 +869,19 @@ def _zap_api(b, progresso, dominio, portal, site):
     out = []
     for cidade, loc, _ in CIDADES_ZAP:
         out += _zap_api_cidade(b, progresso, dominio, portal, site, cidade, loc)
-    return [o for o in out if na_regiao(o.get('cidade'), o.get('bairro'))]
+    return [o for o in out if na_regiao(o.get('cidade'), o.get('bairro')) and na_faixa(o.get('aluguel'))]
 
 
 def _zap_api_cidade(b, progresso, dominio, portal, site, cidade, loc):
     out = []
+    preco = {'priceMin': str(ALUGUEL_MIN), 'priceMax': str(ALUGUEL_MAX)}   # só a faixa do perfil: ~1/4 das páginas
     for quartos in ('2', '3', '1'):   # 1 quarto: só fica se tiver espaço para escritório (coletar.py)
         frm = 0
         while True:
             progresso(f'{cidade}, {quartos} quartos, {frm} lidos ({portal})')
             q = urllib.parse.urlencode({'business': 'RENTAL', 'categoryPage': 'RESULT', 'listingType': 'USED', 'unitTypes': 'APARTMENT',
                                         'usageTypes': 'RESIDENTIAL', 'bedrooms': quartos, 'addressCity': cidade,
-                                        'addressState': 'Santa Catarina', 'addressLocationId': loc,
+                                        'addressState': 'Santa Catarina', 'addressLocationId': loc, **preco,
                                         'size': '30', 'from': str(frm), 'portal': portal, 'sort': 'MOST_RECENT'}, quote_via=urllib.parse.quote)
             code = ("fetch('https://glue-api.zapimoveis.com.br/v4/listings?%s',{headers:{'x-domain':'%s'}})"
                     ".then(r=>r.text().then(t=>JSON.stringify({s:r.status,t:t}))).catch(e=>JSON.stringify({s:-1,t:''+e}))") % (q, dominio)
@@ -877,6 +889,9 @@ def _zap_api_cidade(b, progresso, dominio, portal, site, cidade, loc):
             if r['s'] != 200:
                 time.sleep(5)
                 r = json.loads(b.js(code) or '{"s":-1,"t":""}')
+                if r['s'] != 200 and preco:   # a API recusou o filtro de preço: segue sem ele (a faixa é conferida aqui)
+                    preco = {}
+                    continue
                 if r['s'] != 200:
                     raise RuntimeError(f"a API respondeu {r['s']} {r['t'][:60]}")
             d = json.loads(r['t'])
@@ -931,7 +946,8 @@ def buscar_olx(b, progresso=lambda m: None):
     ads = {}
     # 2+ quartos e, à parte, só 1 quarto (ros/roe = quartos de/até), para o limite de 20 páginas não cortar os de 2+
     for quartos, cidade in [(q, c) for q in ('ros=2', 'ros=1&roe=1') for c in ('balneario-camboriu', 'camboriu', 'itajai')]:
-        base = f'https://www.olx.com.br/imoveis/aluguel/apartamentos/estado-sc/norte-de-santa-catarina/{cidade}?{quartos}&sf=1'
+        base = (f'https://www.olx.com.br/imoveis/aluguel/apartamentos/estado-sc/norte-de-santa-catarina/{cidade}?{quartos}&sf=1'
+                f'&ps={ALUGUEL_MIN}&pe={ALUGUEL_MAX}')   # só a faixa do perfil
         total = None
         for p in range(1, 21):
             progresso(f'{cidade}{" (1 quarto)" if "roe" in quartos else ""}, página {p}' + (f' de {math.ceil(total / 50)}' if total else ''))
@@ -951,14 +967,13 @@ def buscar_olx(b, progresso=lambda m: None):
                 break
             for a in got:
                 ld = a.get('locationDetails') or {}
-                if na_regiao(ld.get('municipality'), ld.get('neighbourhood')):
+                if na_regiao(ld.get('municipality'), ld.get('neighbourhood')) and na_faixa(num(a.get('priceValue'))):
                     ads[str(a['listId'])] = a
             if total and p * 50 >= total:
                 break
     # descrição, endereço e todas as fotos: só dos que ainda não temos
     cache = load('olx_detalhes.json', {})
-    faltam = [a for k, a in ads.items() if k not in cache and not (0 < (num(a.get('priceValue')) or 0) < 2000)
-              and (num(a.get('priceValue')) or 0) <= 9000]   # abaixo de R$ 2.000 o app não mostra
+    faltam = [a for k, a in ads.items() if k not in cache]
     if faltam:
         b.go(faltam[0]['url'], 6)
         js = r'''(async (urls)=>Promise.all(urls.map(async u=>{try{const r=await fetch(u,{credentials:'include'});const t=await r.text();
@@ -1081,14 +1096,15 @@ def atualizar():
                         except Exception:
                             pass
                     ok.add(n)
-                    base = (info.get(n) or {}).get('base') or (info.get(n) or {}).get('n') or 0
-                    ja_parcial = (info.get(n) or {}).get('parcial')
-                    if base and len(itens) < 0.6 * base and not ja_parcial:   # site barrou no meio: não apaga o resto
+                    antes = info.get(n) or {}
+                    # a referência só vale para a mesma faixa de aluguel (mudou o perfil, o tamanho da busca muda)
+                    base = (antes.get('base') or antes.get('n') or 0) if antes.get('faixa') == FAIXA else 0
+                    if base and len(itens) < 0.6 * base and not antes.get('parcial'):   # site barrou no meio: não apaga o resto
                         parciais.add(n)
-                        info[n] = dict(n=len(itens), base=base, parcial=True, quando=agora,
+                        info[n] = dict(n=len(itens), base=base, parcial=True, quando=agora, faixa=FAIXA,
                                        erro=f'veio só {len(itens)} de ~{base}; os que faltaram continuam no app até a próxima busca')
                     else:   # (duas vezes seguidas menor: aceita, o estoque mudou mesmo)
-                        info[n] = dict(n=len(itens), base=len(itens), quando=agora, erro='')
+                        info[n] = dict(n=len(itens), base=len(itens), quando=agora, erro='', faixa=FAIXA)
                 except Exception as e:
                     erros.append(f'{n}: {e}')
                     info[n] = dict((info.get(n) or {}), erro=str(e)[:200], quando=agora)

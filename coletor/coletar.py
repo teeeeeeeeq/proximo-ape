@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Roda todas as fontes e publica docs/anuncios.json (o que o app lê) e docs/meta.json."""
+"""Roda todas as fontes e publica docs/anuncios.json (o que o app lê: só o perfil, com o veredito do Claude) e docs/meta.json."""
 import json, os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import server as s
+import alerta
 
 RAIZ = s.RAIZ
 CAMPOS = ('id', 'fonte', '_src', 'url', 'titulo', 'desc', 'aluguel', 'pacote', 'cond', 'cond_fonte', 'cond_est', 'cond_base', 'iptu', 'fixo', 'quartos', 'suites', 'area', 'bairro', 'rua',
@@ -23,15 +24,7 @@ def main():
     s.save('anuncios.json', anuncios)
     pub = []
     for o in anuncios.values():
-        if o.get('no_ar') is False or o.get('ativo') is False or not o.get('aluguel') or o['aluguel'] < 2000 or o['aluguel'] > 9000:
-            continue
-        if o.get('quartos') == 1 and not (o.get('escritorio') or (o.get('area') or 0) >= s.QUARTO_UNICO_M2):
-            continue   # 1 quarto só com espaço para escritório: citado no anúncio ou área grande
-        if o.get('quartos') is not None and o['quartos'] < 1:
-            continue
-        if not s.na_regiao(o.get('cidade'), o.get('bairro')):
-            continue
-        if s.nao_aceita_animais((o.get('titulo') or '') + '\n' + (o.get('desc') or '')):  # texto inteiro: a recusa costuma vir no fim
+        if not alerta.no_perfil(o):   # aluguel, quartos, mobília, distâncias, temporada, animais
             continue
         x = {k: o.get(k) for k in CAMPOS if o.get(k) not in (None, '', [], False)}
         if x.get('desc'):
@@ -51,13 +44,14 @@ def main():
     s.save('meta.json', meta)
     os.makedirs(os.path.join(RAIZ, 'docs'), exist_ok=True)
     pub.sort(key=lambda x: x.get('visto_em') or '', reverse=True)
-    json.dump(pub, open(os.path.join(RAIZ, 'docs', 'anuncios.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
-    try:   # aviso por e-mail (issue no GitHub) de apartamento novo que serve; uma falha aqui não derruba a busca
-        import alerta
-        n = alerta.preparar(anuncios, [x['id'] for x in pub], os.path.join(RAIZ, 'dados'))
-        print(f'aviso: {n} apartamento(s) novo(s) que servem' if n else 'aviso: nada novo que sirva')
+    try:   # o Claude confere as fotos (cada anúncio ganha 'ia') e sai o aviso por e-mail; uma falha aqui não derruba a busca
+        n = alerta.processar(anuncios, pub, os.path.join(RAIZ, 'dados'))
+        print(f'aviso: {n} apartamento(s) como o do Piatã' if n else 'aviso: nada novo como o do Piatã')
     except Exception as ex:
+        import traceback
+        traceback.print_exc()
         print('aviso falhou:', ex)
+    json.dump(pub, open(os.path.join(RAIZ, 'docs', 'anuncios.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
     json.dump(info, open(os.path.join(RAIZ, 'docs', 'meta.json'), 'w'), ensure_ascii=False)
     print(f"{len(pub)} anúncios publicados; fontes: " + '; '.join(f"{n}: {i.get('n', 0)}{' ERRO ' + i['erro'] if i.get('erro') else ''}" for n, i in info['fontes'].items()))
 

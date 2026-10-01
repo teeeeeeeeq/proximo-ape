@@ -1,9 +1,9 @@
-"""Chaves na Mão (chavesnamao.com.br): aluguel de apartamentos em Balneário Camboriú, 2+ quartos (e 1 quarto à parte), até R$ 9.000.
+"""Chaves na Mão (chavesnamao.com.br): aluguel de apartamentos em Balneário Camboriú, 2+ quartos (e 1 quarto à parte), aluguel na faixa do perfil (server.ALUGUEL_MIN a ALUGUEL_MAX).
 
 Como lê (verificado em 30/09/2026), sem Chrome e sem login:
   - Listagem: API JSON do próprio site, a mesma que a página usa no mapa:
       /api/realestate/listing/items/?level1=apartamentos-para-alugar&level2=sc-balneario-camboriu
-                                     &level3=2-quartos&filtro=pmax:9000&pg=N
+                                     &level3=2-quartos&filtro=pmax:5500&pg=N
     "2-quartos" no site quer dizer 2 ou mais. 15 anúncios por página, pg começa em 0. Depois do último
     resultado de verdade vem um item {"recommendedCount": ...} seguido de recomendações: ignoramos dali em diante.
     Já traz descrição, preço, condomínio, IPTU, endereço e coordenada, mas só as 5 primeiras fotos.
@@ -34,11 +34,11 @@ USA_CHROME = False
 
 SITE = 'https://www.chavesnamao.com.br'
 API = (SITE + '/api/realestate/listing/items/?level1=apartamentos-para-alugar&level2=%s'
-       '&level3=%s&filtro=pmax:9000&pg=%d')
+       '&level3=%s&filtro=pmax:' + str(server.ALUGUEL_MAX) + '&pg=%d')
 CIDADES = ('sc-balneario-camboriu', 'sc-camboriu', 'sc-itajai')
 FOTO = SITE + '/imn/1200x0800/N/70/imoveis/'
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
-PRECO_MAX = 9000
+PRECO_MIN, PRECO_MAX = server.ALUGUEL_MIN, server.ALUGUEL_MAX   # o site filtra o máximo; o mínimo, aqui
 LIMITE_SEG = 330  # depois disso, para de abrir páginas de anúncio e fica com o que a API deu
 
 
@@ -152,7 +152,7 @@ def _passa(x):
     preco = _dinheiro((x.get('prices') or {}).get('rawPrice'))
     return (x.get('transaction') == 'RENT'
             and server.na_regiao((L.get('city') or {}).get('name'), (L.get('neighborhood') or {}).get('name'))
-            and (_qtd(x.get('bedrooms')) or 0) >= 1 and (preco is None or preco <= PRECO_MAX))
+            and (_qtd(x.get('bedrooms')) or 0) >= 1 and (preco is None or PRECO_MIN <= preco <= PRECO_MAX))
 
 
 # ---------- página do anúncio

@@ -33,7 +33,8 @@ SITES = (  # slug do id, domínio, nome da imobiliária
     ('terra', 'imoveisterra.net', 'Terra Imobiliária'),
 )
 CIDADE_BC = '8357'
-PRECO_MAX = 9000
+import server
+PRECO_MIN, PRECO_MAX = server.ALUGUEL_MIN, server.ALUGUEL_MAX
 INTERVALO = 0.45      # segundos entre requisições, somando todos os sites (o servidor é um só)
 PRAZO = 270           # segundos: depois disso não lê mais fichas (monta o que faltar só com a grade)
 TIPOS_APTO = r'apart|cobertura|loft|studio|st[uú]dio|kitnet|kitinete|flat|duplex|triplex|garden|penthouse|apto'
@@ -264,7 +265,7 @@ def passa_cartao(c, finalidade):
     v, tem = preco_mensal(c['precos'], finalidade)
     if finalidade == 'season' and not tem:
         return False  # temporada só com preço por mês (diárias de férias não servem para morar)
-    return v is None or v <= PRECO_MAX
+    return v is None or PRECO_MIN <= v <= PRECO_MAX
 
 
 def ler_grade(site, finalidade, progresso):
@@ -524,7 +525,7 @@ def buscar(chrome, progresso):
                     continue
                 if o['quartos'] is not None and o['quartos'] < 1:
                     continue
-                if o['aluguel'] is not None and o['aluguel'] > PRECO_MAX:
+                if o['aluguel'] is not None and not PRECO_MIN <= o['aluguel'] <= PRECO_MAX:
                     continue  # a ficha desmentiu a grade
                 with trava:
                     res.append((ordem[site.slug], c['id'], o))

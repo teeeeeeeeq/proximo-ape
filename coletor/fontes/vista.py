@@ -9,7 +9,7 @@ nos sites e não é usada aqui). Lemos as páginas públicas, com urllib puro:
     A ficha /imovel/<slug>-<código> traz descrição completa, condomínio, IPTU, diária, todas as fotos e características.
     O servidor da Loft devolve HTTP 429 com poucas requisições seguidas (e conta as recusadas), então as duas são lidas
     em sequência, com intervalo entre requisições, e só as páginas necessárias: a busca ordenada do mais barato até
-    passar de R$ 9.000, e a(s) última(s) página(s), onde caem os anúncios sem preço ("consulte").
+    passar do máximo do perfil, e a(s) última(s) página(s), onde caem os anúncios sem preço ("consulte").
   * Vangogh: WordPress da Rocket Imob. /aluguel/residencial/ traz os 12 primeiros cards e /u-sr.php os próximos 12
     (pela sessão PHP). A ficha /imovel/<código>/<slug>/ traz o registro Vista inteiro em `var imovelDataLayer = {...}`
     e o pino do mapa (geocodificado pelo site a partir do endereço).
@@ -25,7 +25,8 @@ LOFT = (  # slug, endereço, imobiliária
     ('casaforte', 'https://casafortebc.com.br', 'Casa Forte'),
 )
 VG = ('vangogh', 'https://vgimobiliaria.com.br', 'Vangogh Imobiliária')
-PRECO_MAX = 9000
+import server
+PRECO_MIN, PRECO_MAX = server.ALUGUEL_MIN, server.ALUGUEL_MAX
 PRAZO_FICHAS = 230   # s desde o início: depois disso não abre mais fichas (monta com o que veio na lista)
 PRAZO_TOTAL = 285    # s: limite duro
 LOFT_INTERVALO = 8.0  # s entre o fim de uma requisição à Loft e o início da próxima
@@ -364,7 +365,7 @@ def loft_candidato(a):
     if q is not None and q < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
         return False
     v = valor(a.get('ValorLocacao'))
-    return v is None or v <= PRECO_MAX
+    return v is None or PRECO_MIN <= v <= PRECO_MAX
 
 
 def loft_montar(slug, base, imob, a, caminho, ficha):
@@ -447,7 +448,7 @@ def ler_loft(progresso, res, erros, t0):
             erros.append(f'{imob}: {ex}')
             return
     cand = [(slug, base, imob, a, cam) for slug, base, imob in LOFT for a, cam in brutos[slug].values() if loft_candidato(a)]
-    progresso(f'Broulée e Casa Forte: {sum(len(v) for v in brutos.values())} imóveis para alugar, {len(cand)} apartamentos em BC até R$ 9 mil; lendo as fichas')
+    progresso(f'Broulée e Casa Forte: {sum(len(v) for v in brutos.values())} imóveis para alugar, {len(cand)} apartamentos em BC na faixa de aluguel; lendo as fichas')
     for n, (slug, base, imob, a, cam) in enumerate(cand, 1):
         try:
             ficha = None
@@ -458,7 +459,7 @@ def ler_loft(progresso, res, erros, t0):
                 except Exception:
                     ficha = None
             o = loft_montar(slug, base, imob, a, cam, ficha)
-            if o['aluguel'] and o['aluguel'] > PRECO_MAX:
+            if o['aluguel'] and not PRECO_MIN <= o['aluguel'] <= PRECO_MAX:
                 continue  # a ficha desmentiu a lista
             if o['quartos'] is None or o['quartos'] < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
                 continue
@@ -502,7 +503,7 @@ def vg_candidato(c):
     q = max(c['quartos'] or 0, c['suites'] or 0)
     if q and q < 1:
         return False
-    return c['aluguel'] is None or c['aluguel'] <= PRECO_MAX
+    return c['aluguel'] is None or PRECO_MIN <= c['aluguel'] <= PRECO_MAX
 
 
 def vg_ficha(pagina):
@@ -602,7 +603,7 @@ def ler_vg(progresso, res, erros, t0):
         erros.append(f'{imob}: {str(ex)[:120]}')
         return
     cand = [c for c in cards if vg_candidato(c)]
-    progresso(f'{imob}: {len(cards)} imóveis para alugar, {len(cand)} apartamentos em BC até R$ 9 mil; lendo as fichas')
+    progresso(f'{imob}: {len(cards)} imóveis para alugar, {len(cand)} apartamentos em BC na faixa de aluguel; lendo as fichas')
     for c in cand:
         try:
             d = None
@@ -619,7 +620,7 @@ def ler_vg(progresso, res, erros, t0):
             if d and (not e_bc(d.get('Cidade')) or not e_apto(d.get('Categoria'))):
                 continue  # a ficha desmentiu o card
             o = vg_montar(slug, base, imob, c, d)
-            if (o['aluguel'] and o['aluguel'] > PRECO_MAX) or o['quartos'] is None or o['quartos'] < 1 or not o['url']:
+            if (o['aluguel'] and not PRECO_MIN <= o['aluguel'] <= PRECO_MAX) or o['quartos'] is None or o['quartos'] < 1 or not o['url']:
                 continue
             res.append(o)
         except Exception:
