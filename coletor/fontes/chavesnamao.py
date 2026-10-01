@@ -195,6 +195,14 @@ def _rua_da_foto(x):
     return ''
 
 
+def _data_fotos(fotos):
+    """O nome do arquivo traz a hora do envio em hexa (...-quartos-6a9e9ab5-3.jpg = 07/09/2026): a foto mais nova
+    diz quando o anúncio foi mexido por último (é a "última atualização" que o site mostra)."""
+    ts = [int(m.group(1), 16) for p in fotos or [] for m in [re.search(r'-([0-9a-f]{8})-\d+\.\w+$', str(p))] if m]
+    ts = [t for t in ts if 1.5e9 < t < time.time() + 86400]
+    return time.strftime('%Y-%m-%d', time.localtime(max(ts))) if ts else ''
+
+
 def _foto(p):
     p = str(p)
     return p if p.startswith('http') else FOTO + urllib.parse.quote(p.lstrip('/'), safe='/')
@@ -244,6 +252,7 @@ def _anuncio(x, det):
         cidade=(L.get('city') or {}).get('name') or '', lat=lat, lon=lon, local_exato=exato,
         marcado_mobiliado=any((i or {}).get('name') == 'Mobiliado' for i in x.get('privativeItems') or []),
         publicado=criado if re.match(r'\d{4}-\d{2}-\d{2}$', criado) else '',
+        atualizado=_data_fotos(det.get('fotos') or (x.get('pictures') or {}).get('list')),
         anunciante=(x.get('publisher') or {}).get('name') or '',
         fotos=[_foto(p) for p in (det.get('fotos') or (x.get('pictures') or {}).get('list') or [])])
 

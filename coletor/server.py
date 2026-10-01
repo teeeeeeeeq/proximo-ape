@@ -69,6 +69,15 @@ def num(x):
         return None
 
 
+def data_iso(v):
+    """1727712000 / 1727712000000 / '2026-09-30T12:00:00Z' -> '2026-09-30'; o resto -> ''"""
+    if isinstance(v, (int, float)) and not isinstance(v, bool):
+        v = v / 1000 if v > 1e11 else v
+        return time.strftime('%Y-%m-%d', time.localtime(v)) if 1e9 < v < time.time() + 86400 else ''
+    m = re.match(r'(\d{4}-\d{2}-\d{2})', str(v or ''))
+    return m.group(1) if m else ''
+
+
 def dist(a, b):
     la1, lo1, la2, lo2 = map(math.radians, (a[0], a[1], b[0], b[1]))
     h = math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2
@@ -505,6 +514,11 @@ def completar(o):
                 o['praia_m'], o['local_aprox'] = p, 'texto'
     o['mobilia'] = mobilia(o['titulo'] + ' ' + o['desc'], o.get('marcado_mobiliado'))
     o['temporada'] = temporada(o['titulo'] + ' ' + o['desc'])
+    # última vez que o anúncio foi mexido: o que o site diz, a publicação ou uma mudança de preço que o coletor viu
+    if 'atualizado_site' not in o:
+        o['atualizado_site'] = o.get('atualizado') or ''
+    precos = o.get('precos') or []
+    o['atualizado'] = max(o['atualizado_site'], o.get('publicado') or '', precos[-1][0][:10] if len(precos) > 1 else '')
     return o
 
 
@@ -521,7 +535,8 @@ def de_zap(w):
         quartos=(L.get('bedrooms') or [None])[0], suites=(L.get('suites') or [None])[0], area=(L.get('usableAreas') or [None])[0],
         bairro=a.get('neighborhood') or '', rua=a.get('street') or '', cidade=a.get('city') or '', lat=pt.get('lat') or pt.get('approximateLat'),
         lon=pt.get('lon') or pt.get('approximateLon'), local_exato=a.get('precision') in ('ROOFTOP', 'RANGE_INTERPOLATED'),
-        marcado_mobiliado='FURNISHED' in (L.get('amenities') or []), publicado=(L.get('createdAt') or '')[:10],
+        marcado_mobiliado='FURNISHED' in (L.get('amenities') or []), publicado=data_iso(L.get('createdAt')),
+        atualizado=data_iso(L.get('updatedAt')),
         marcado_lazer=any(x in (L.get('amenities') or []) for x in LAZER),
         predio_site=L.get('condominiumName') or '',
         anunciante=(w.get('account') or {}).get('name') or '',
@@ -540,6 +555,8 @@ def de_olx(a, det):
         bairro=ld.get('neighbourhood') or '', cidade=ld.get('municipality') or '', rua=det.get('addr') or '',
         lat=det.get('lat'), lon=det.get('lon'), local_exato=False,
         marcado_mobiliado='Mobiliado' in (P.get('re_features') or ''), publicado=det.get('publicado') or '',
+        # data da busca = última vez que o anúncio foi publicado ou "subido" (o detalhe fica em cache com a primeira)
+        atualizado=data_iso(a.get('date')),
         marcado_lazer=bool(re.search(r'Piscina|Academia|Sauna|Quadra|Playground', P.get('re_complex_features') or '')),
         anunciante=det.get('user') or '', fotos=det.get('images') or [i.get('original') for i in a.get('images') or []]))
 
@@ -704,6 +721,7 @@ def buscar_zap(b, progresso=lambda m: None):
 
 
 def de_zap_pagina(x):
+    x = json.loads(json.dumps(x).replace('"$undefined"', 'null'))   # campo vazio no payload da página (virava "rua $undefined")
     r = (x.get('prices') or {}).get('rental') or {}
     a = x.get('address') or {}
     c = a.get('coordinates') or {}
@@ -717,7 +735,8 @@ def de_zap_pagina(x):
         iptu=round((num(r.get('iptu')) or 0) / 12) or None, quartos=one(am.get('bedrooms')), suites=one(am.get('suites')),
         area=one(am.get('usableAreas')), bairro=a.get('neighborhood') or '', rua=a.get('street') or '', cidade=a.get('city') or '',
         lat=c.get('latitude'), lon=c.get('longitude'), local_exato=not a.get('isApproximateLocation', True),
-        marcado_mobiliado='FURNISHED' in (am.get('values') or []), publicado='',
+        marcado_mobiliado='FURNISHED' in (am.get('values') or []), publicado=data_iso(x.get('createdAt')),
+        atualizado=data_iso(x.get('updatedAt')),   # quando a página traz (não confirmado)
         marcado_lazer=any(x in (am.get('values') or []) for x in LAZER),
         predio_site=x.get('condominiumName') or '',
         anunciante=(x.get('advertiser') or {}).get('name') or '', fotos=[f for f in fotos if f]))

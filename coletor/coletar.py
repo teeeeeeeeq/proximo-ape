@@ -7,7 +7,7 @@ import server as s
 RAIZ = s.RAIZ
 CAMPOS = ('id', 'fonte', '_src', 'url', 'titulo', 'desc', 'aluguel', 'pacote', 'cond', 'cond_fonte', 'cond_est', 'cond_base', 'iptu', 'fixo', 'quartos', 'suites', 'area', 'bairro', 'rua',
           'cidade', 'praia_m', 'humains_m', 'local_exato', 'local_aprox', 'local_fonte', 'predio', 'mobilia', 'temporada', 'lazer', 'publicado', 'anunciante', 'fotos', 'visto_em',
-          'baixou_de', 'baixou_em')
+          'baixou_de', 'baixou_em', 'atualizado')
 
 
 def main():
