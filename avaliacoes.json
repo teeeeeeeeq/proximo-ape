@@ -1034,5 +1034,41 @@
 "id": "F1622227829501849",
 "versao": 3,
 "quando": "2026-10-01 20:40"
+},
+"F1105896535358723": {
+"cozinha_integrada": "nao",
+"cozinha": "simples",
+"piso": "bom",
+"chance": "baixa",
+"melhor_foto": 3,
+"resumo": "Cozinha longa em corredor, separada da sala, com armários planejados brancos e granito preto, funcional mas básica (coifa suja); piso vinílico na sala e porcelanato claro de rejunte fino.",
+"foto": "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/810872223_1084279934536443_4914692337758401029_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=rizd9azQLpIQ7kNvwHWxWCk&_nc_oc=AdpVqKNLT92Wkv_zh3gbm6EB4-rdxu6q2Y0KI1yEovtT_iVsaidKp2wpeuXDnPM6DSo&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=peg6sJeFCPWIxHF7XioNtg&_nc_ss=792a8&oh=00_AQO472XtFt_zx9D1iuF7D0gUjgqmCKBUM4rmGs_5iJUrEA&oe=6AC495A7",
+"id": "F1105896535358723",
+"versao": 3,
+"quando": "2026-10-01 20:41"
+},
+"F1107758308469580": {
+"cozinha_integrada": "nao",
+"cozinha": "ruim",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 5,
+"resumo": "Cozinha pequena e separada da sala, com armários de madeira antigos, pia de inox com móvel solto e piso de cerâmica amarela datada; sala com piso claro, mas o apartamento é antigo.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/777153560_4034991119966844_1987630794606312244_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=-PZ_iwCJorAQ7kNvwFsRbQU&_nc_oc=AdrydzCQaEL_dvmzijbdCma11zp9sHNvNHW3GMyblDYMOFyOV4O0vwkdMO90YPxeohI&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=lNgdr1LtAtuj9g_URZ5E5A&_nc_ss=792a8&oh=00_AQOlHe7zIfcDyzDgw3uL1LIjuQuZywdEpHeZ9gPwCwnBCQ&oe=6AC4803D",
+"id": "F1107758308469580",
+"versao": 3,
+"quando": "2026-10-01 20:41"
+},
+"F1877215986593605": {
+"cozinha_integrada": "incerto",
+"cozinha": "simples",
+"piso": "bom",
+"chance": "media",
+"melhor_foto": 5,
+"resumo": "Reformado e moderno; a cozinha só aparece em close, com armários planejados bege, granito preto e fogão solto, e não dá para ver se abre para a sala; piso porcelanato claro de rejunte fino.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t45.5328-4/825268848_1485162616773019_7741132568378340717_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=TJ74fXwJ7PkQ7kNvwEwx-BJ&_nc_oc=AdoZ18fp5XmeBr9ucx5Yyoq6B77A3VYn2iMqGDuPIE2k9nOdqrLMV3hQGI09L-JSmfk&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=LiUTbdApauCkA2_gJ1uruQ&_nc_ss=792a8&oh=00_AQNQPIQk0tj3m2TXK2kL11tfl0H01-lyiCoIk0kx83FBsA&oe=6AC47BA0",
+"id": "F1877215986593605",
+"versao": 3,
+"quando": "2026-10-01 20:41"
 }
 }
