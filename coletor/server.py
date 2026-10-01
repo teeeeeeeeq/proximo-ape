@@ -306,7 +306,7 @@ def localizar_pelo_bairro(itens):
     import statistics
     ref = {}
     for o in itens:
-        if o.get('local_exato') and o.get('praia_m') is not None and o.get('humains_m') is not None and o.get('bairro'):
+        if o.get('no_ar', True) and o.get('lat') is not None and not o.get('local_aprox') and o.get('humains_m') is not None and o.get('bairro'):
             ref.setdefault((norm(o['bairro']), norm(o.get('cidade')) or 'balneario camboriu'), []).append(o)
     for o in itens:
         if o.get('praia_m') is None and o.get('bairro'):
@@ -395,6 +395,9 @@ def completar(o):
     o['bairro'] = o['bairro'][:1].upper() + o['bairro'][1:]
     if norm(o['bairro']) == 'praia brava de itajai':
         o['bairro'] = 'Praia Brava'
+    mq = re.match(r'^(\d)\s*quadras?\s+(.+)$', o['bairro'], re.I)   # "1 Quadra Barra Sul"
+    if mq:
+        o['bairro'], o['quadras_bairro'] = mq.group(2), int(mq.group(1))
     txt = (o.get('titulo') or '') + '\n' + (o.get('desc') or '')
     txt_lazer = norm(txt)
     o['lazer'] = bool(o.get('marcado_lazer') or re.search(
@@ -435,6 +438,8 @@ def completar(o):
         o['praia_m'], o['humains_m'] = o.get('praia_rua'), None
         if o['praia_m'] is None:
             p = praia_pelo_texto(txt)
+            if p is None and o.get('quadras_bairro'):
+                p = {1: 100, 2: 230, 3: 350}.get(o['quadras_bairro'])
             if p is not None:
                 o['praia_m'], o['local_aprox'] = p, 'texto'
     o['mobilia'] = mobilia(o['titulo'] + ' ' + o['desc'], o.get('marcado_mobiliado'))
@@ -485,17 +490,27 @@ class Chrome:
         self.port, self.mid = port, 0
 
     def __enter__(self):
-        self.prof = tempfile.mkdtemp(prefix='apto_app_')
-        self.p = subprocess.Popen([CHROME, '--headless=new', '--no-first-run', '--disable-gpu', '--remote-allow-origins=*', '--no-sandbox', '--disable-dev-shm-usage',
-                                   f'--remote-debugging-port={self.port}', f'--user-data-dir={self.prof}', f'--user-agent={UA}',
-                                   '--window-size=1400,3000', 'about:blank'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        for _ in range(80):
-            try:
-                tabs = json.load(urllib.request.urlopen(f'http://127.0.0.1:{self.port}/json'))
-                page = [t for t in tabs if t.get('type') == 'page'][0]
+        page = None
+        for tentativa in range(2):
+            self.prof = tempfile.mkdtemp(prefix='apto_app_')
+            self.p = subprocess.Popen([CHROME, '--headless=new', '--no-first-run', '--disable-gpu', '--remote-allow-origins=*', '--no-sandbox',
+                                       '--disable-dev-shm-usage', f'--remote-debugging-port={self.port}', f'--user-data-dir={self.prof}',
+                                       f'--user-agent={UA}', '--window-size=1400,3000', 'about:blank'],
+                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            for _ in range(240):   # até 60 s: no servidor o Chrome às vezes demora a abrir
+                try:
+                    tabs = json.load(urllib.request.urlopen(f'http://127.0.0.1:{self.port}/json', timeout=3))
+                    page = [t for t in tabs if t.get('type') == 'page'][0]
+                    break
+                except Exception:
+                    time.sleep(0.25)
+            if page:
                 break
-            except Exception:
-                time.sleep(0.25)
+            self.p.kill()
+            self.p.wait()
+            shutil.rmtree(self.prof, ignore_errors=True)
+        if not page:
+            raise RuntimeError('o navegador não abriu')
         self.ws = websocket.create_connection(page['webSocketDebuggerUrl'], timeout=120, suppress_origin=True)
         self.cmd('Page.enable')
         self.cmd('Network.setUserAgentOverride', userAgent=UA, acceptLanguage='pt-BR,pt;q=0.9')
@@ -892,10 +907,6 @@ def atualizar():
                                   cidade=norm(o.get('cidade')).strip() or 'balneario camboriu')
         save('predios.json', predios)
         carregar_predios()
-        for o in novos.values():
-            completar(o)
-        estimar_condominios(list(novos.values()))
-        localizar_pelo_bairro(list(novos.values()))
         for k, o in novos.items():
             o['visto_em'] = (antigos.get(k) or {}).get('visto_em') or agora
             if not o.get('desc') and (antigos.get(k) or {}).get('desc'):
@@ -907,6 +918,13 @@ def atualizar():
             if k not in novos:
                 o['no_ar'] = False if o.get('_src', o.get('fonte')) in rotulo else o.get('no_ar', True)
                 novos[k] = o
+        for o in novos.values():   # recalcula endereço e condomínio de tudo, com as regras e referências atuais
+            try:
+                completar(o)
+            except Exception:
+                pass
+        estimar_condominios(list(novos.values()))
+        localizar_pelo_bairro(list(novos.values()))
         save('anuncios.json', novos)
         meta['fontes'] = info
         save('meta.json', meta)
