@@ -206,6 +206,11 @@ def _anuncio(x, det):
     rua = L.get('street') or {}
     P = x.get('prices') or {}
     aluguel = _dinheiro(P.get('rawPrice'))
+    periodo = _norm(x.get('locationPeriod'))
+    diaria = bool(re.search(r'dia|semana|temporada', periodo))   # "Por Dia": o preço é a diária, não o mês
+    valor_dia = aluguel if diaria else None
+    if diaria:
+        aluguel = None
     iptu = _dinheiro(P.get('iptuValue'))
     if iptu and (iptu >= 800 or (aluguel and aluguel >= 1500 and iptu > 0.2 * aluguel)):
         iptu = round(iptu / 12, 2)  # veio o anual
@@ -227,6 +232,8 @@ def _anuncio(x, det):
     titulo = _limpa(x.get('title'))
     if 'temporada' in _norm(det.get('periodo')) and 'temporada' not in _norm(titulo):
         titulo += ' (temporada)'
+    if diaria:
+        titulo = 'Temporada/diária' + (f' (R$ {valor_dia:.0f} por dia)' if valor_dia else '') + ' · ' + titulo
     criado = str(x.get('createdAt') or '')[:10]
     return dict(
         id='C' + str(x['id']), fonte=NOME, url=SITE + x['url'], titulo=titulo,
