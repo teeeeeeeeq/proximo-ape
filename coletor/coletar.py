@@ -28,6 +28,8 @@ def main():
             continue
         if not s.na_regiao(o.get('cidade'), o.get('bairro')):
             continue
+        if s.nao_aceita_animais((o.get('titulo') or '') + '\n' + (o.get('desc') or '')):  # texto inteiro: a recusa costuma vir no fim
+            continue
         x = {k: o.get(k) for k in CAMPOS if o.get(k) not in (None, '', [], False)}
         if x.get('desc'):
             x['desc'] = x['desc'][:1000]

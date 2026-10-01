@@ -92,6 +92,37 @@ def temporada(texto):
                           r'diaria|por dia|airbnb|reveillon', n))
 
 
+# Recusa de animais escrita no anúncio. Só recusa geral: "não aceita animais de grande porte", "não aceitamos gatos"
+# ou "pets não são permitidos na piscina" não contam (o que vem logo depois, na mesma frase, é olhado em _RESSALVA).
+_BICHO = r"(?:pets?|pet'?s|animais|animal|bichos?|bichinhos?)\b(?: de estimacao)?"
+_MEIO = (r'(?:(?:a|o|os|as|de|do|da|dos|das|nenhum|nenhuma|qualquer|tipos?|entrada|presenca|permanencia|criacao|'
+         r'com|ter|possuir|manter|inquilinos?|locatarios?|moradores?|hospedes?)\s+){0,4}')
+_SEM_ANIMAIS = re.compile('|'.join((
+    r'\bnao (?:se )?(?:aceit|permit|admit)\w*(?:-se)? ' + _MEIO + _BICHO,             # não aceita pets / não permitimos pet's
+    r'\bnao (?:e|sao|sera|serao) (?:permitid|aceit|autorizad)\w* ' + _MEIO + _BICHO,  # não é permitida a entrada de animais
+    r'\b(?:proibid|vedad)\w* ' + _MEIO + _BICHO,                                   # proibido animais
+    r'\b' + _BICHO + r' (?:nao (?:sao |e |serao )?(?:permitid|aceit|autorizad)|(?:sao |e )?(?:proibid|vedad))',  # animais não são permitidos
+    r'\bnao (?:se )?(?:aceit|permit|admit)\w* [^.!?\n]{0,40}?\bnem ' + _MEIO + _BICHO,  # não aceito crianças, nem animais
+    r'\b(?:aceita|aceitam|permite|permitem|permitido)s? (?:de )?' + _BICHO + r' ?[:?] ?\(?nao\b',  # aceita pet? não
+    r'\b(?:aceita|permite) ' + _BICHO + r' nao (?:aceit|permit)',                   # "Aceita pet: Não aceita" sem os dois-pontos
+    r'(?:^|[\n*|;-])\s*' + _BICHO + r' ?[:?] ?nao\b',                               # - Pets: não
+    r'\bsem ' + _BICHO + r'(?! ?(?:place|space|care|friendly|shop|garden|park))',     # sem animais
+    r'\bnao (?:e |sou )?pet[ -]?friendly|\bnao pets?\b(?! ?(?:place|space|care|friendly|shop))|\bno pets\b',
+)))
+_RESSALVA = re.compile(r'^ (?:de )?(?:grandes?|medios?)\b|\b(?:porte|quilos?)\b|\d ?kg\b|\bkg\b'
+                       r'|\b(?:exceto|salvo|somente|apenas|so|a nao ser)\b[^.!?;\n]{0,15}?\b(?:pequen|porte|gat|cachorr|caes|cao)'
+                       r'|\b(?:piscina|elevador social|areas? (?:comu|de lazer|sociais))')
+
+
+def nao_aceita_animais(texto):
+    n = norm(texto)
+    for m in _SEM_ANIMAIS.finditer(n):
+        resto = re.match(r'[^.!?;\n]{0,40}', n[m.end():]).group()
+        if not _RESSALVA.search(resto):
+            return True
+    return False
+
+
 RUAS = json.load(open(RUAS_ARQ)) if os.path.exists(RUAS_ARQ) else {}
 
 
