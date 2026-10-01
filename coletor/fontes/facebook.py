@@ -65,9 +65,10 @@ def _cards(itens):
             continue
         onde = resto[-1] if len(resto) > 1 else ''
         cidade = next((c for c in ('Balneário Camboriú', 'Camboriú', 'Itajaí') if c.lower() in onde.lower()), '')
-        # 'R$ 4.200R$ 4.500' (com o preço antigo riscado): o primeiro é o atual
-        out[m.group(1)] = dict(titulo=resto[0], sub='', onde=onde, cidade=cidade,
-                               preco=_num(re.match(r'R\$\s*([\d.]+(?:,\d+)?)', precos[0]).group(1)),
+        # 'R$ 4.200R$ 4.500': o primeiro é o atual, o segundo é o antigo riscado
+        valores = [_num(v) for v in re.findall(r'R\$\s*([\d.]+(?:,\d+)?)', ' '.join(precos))]
+        out[m.group(1)] = dict(titulo=resto[0], sub='', onde=onde, cidade=cidade, preco=valores[0],
+                               antes=valores[1] if len(valores) > 1 and (valores[1] or 0) > (valores[0] or 0) else None,
                                vendido=bool(re.search(r'\b(alugado|vendido|pendente)\b', ' '.join(linhas), re.I)), foto='')
     return out
 
@@ -96,12 +97,14 @@ def _lista(page):
             continue
         g = lambda pat: (re.search(pat, w) or [None, None])[1]
         preco = g(r'"listing_price":\{"formatted_amount":"[^"]*","amount_with_offset_in_currency":"\d+","amount":"([\d.]+)"')
+        riscado = g(r'"strikethrough_price":\{"formatted_amount":"[^"]*",(?:"amount_with_offset_in_currency":"\d+",)?"amount":"([\d.]+)"')
         out[iid] = dict(
             titulo=_s(g(r'"marketplace_listing_title":"((?:[^"\\]|\\.)*)"') or ''),
             sub=_s(g(r'"custom_title":"((?:[^"\\]|\\.)*)"') or ''),
             onde=_s(g(r'"custom_sub_titles_with_rendering_flags":\[\{"subtitle":"((?:[^"\\]|\\.)*)"') or ''),
             cidade=_s(g(r'"reverse_geocode":\{"city":"((?:[^"\\]|\\.)*)"') or ''),
             preco=float(preco) if preco else _num(_s(g(r'"formatted_price":\{"text":"((?:[^"\\]|\\.)*)"') or '')),
+            antes=float(riscado) if riscado else None,
             vendido='"is_sold":true' in w[:4000] or '"is_pending":true' in w[:4000] or '"is_live":false' in w[:4000],
             foto=_s(g(r'"(?:primary_listing_photo|listing_photos)":\[?\{"__typename":"[A-Za-z]+","image":\{(?:"height":\d+,"width":\d+,)?"uri":"((?:[^"\\]|\\.)*)"') or ''))
     return out
@@ -260,7 +263,7 @@ def buscar(b, progresso=lambda m: None):
         q = _quartos(x['sub'], x['titulo'], f.get('desc'))
         out.append(dict(
             id='F' + iid, fonte='Facebook', url=f'https://www.facebook.com/marketplace/item/{iid}/', titulo=x['titulo'],
-            desc=f.get('desc', ''), ativo=not x['vendido'], aluguel=x['preco'], cond=None, iptu=None, quartos=q, suites=None, area=None,
+            desc=f.get('desc', ''), ativo=not x['vendido'], aluguel=x['preco'], preco_antes_site=x.get('antes'), cond=None, iptu=None, quartos=q, suites=None, area=None,
             bairro=bairro, rua=_rua(x['onde'], f.get('desc')), cidade=x['cidade'] or ('Itajaí' if 'itajaí' in x['onde'].lower() else 'Camboriú' if 'camboriú' in x['onde'].lower() and 'balneário' not in x['onde'].lower() else 'Balneário Camboriú'), lat=None, lon=None, local_exato=False,
             marcado_mobiliado=False, publicado=time.strftime('%Y-%m-%d', time.localtime(f['criado'])) if f.get('criado') else '',
             anunciante=f.get('anunciante') or 'Facebook', fotos=f.get('fotos') or ([x['foto']] if x['foto'] else [])))

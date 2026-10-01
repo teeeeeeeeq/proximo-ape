@@ -594,6 +594,7 @@ def de_olx(a, det):
     return completar(dict(
         id='O' + str(a['listId']), fonte='OLX', url=a.get('url'), titulo=clean(a.get('subject')), desc=det.get('body', ''),
         ativo=True, aluguel=num(a.get('priceValue')), cond=num(P.get('condominio')), iptu=num(P.get('iptu')),
+        preco_antes_site=num(a.get('oldPrice')),   # preço riscado no card, quando o anunciante baixou
         quartos=int(P['rooms']) if str(P.get('rooms', '')).isdigit() else None, suites=None, area=num(P.get('size')),
         bairro=ld.get('neighbourhood') or '', cidade=ld.get('municipality') or '', rua=det.get('addr') or '',
         lat=det.get('lat'), lon=det.get('lon'), local_exato=False,
@@ -1008,6 +1009,11 @@ def registrar_preco(o, antigo, agora, antes):
             i -= 1
         if hist[i][1] - hist[-1][1] >= BAIXA_MIN:
             o['baixou_de'], o['baixou_em'] = hist[i][1], hist[-1][0]
+    # o próprio site mostra o preço antigo riscado (OLX, Facebook): baixa que aconteceu antes de o app começar a olhar
+    antes_site = o.get('preco_antes_site')
+    if not o.get('baixou_de') and antes_site and o.get('aluguel') and antes_site - o['aluguel'] >= BAIXA_MIN:
+        ja = (antigo or {}).get('baixou_de') == antes_site and (antigo or {}).get('baixou_em')
+        o['baixou_de'], o['baixou_em'] = antes_site, ja or agora
 
 
 def atualizar():
