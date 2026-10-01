@@ -95,6 +95,24 @@ def mobilia(texto, marcado):
     return 'marcado' if marcado else 'sem info'
 
 
+# Espaço para trabalhar em casa citado no anúncio: um apartamento de 1 quarto com isso serve (ou com 55 m² ou mais).
+# "Gabinete" fica de fora (quase sempre é o armário da pia); "visite nosso escritório" é da imobiliária.
+_ESCRITORIO = re.compile(r'\b(escritorio|home ?office|reversivel|espaco (?:de|para) (?:trabalho|estudos?)|(?:area|ambiente) de trabalho)\b')
+_ESCRITORIO_NAO = re.compile(r'(?:nosso|nossa|ao|visite|venha|horario|endereco|telefone|contato|sofa)\W+(?:\w+\W+)?$')
+QUARTO_UNICO_M2 = 55   # 1 quarto sem escritório citado: só a partir desta área
+
+
+def escritorio(texto):
+    t = norm(texto)
+    for m in _ESCRITORIO.finditer(t):
+        if _ESCRITORIO_NAO.search(t[max(0, m.start() - 25):m.start()]):
+            continue
+        if re.match(r'\s+(?:da imobiliaria|imobiliari|de advocacia|de contabilidade|comercial)', t[m.end():m.end() + 25]):
+            continue
+        return True
+    return False
+
+
 def temporada(texto):
     n = norm(texto)
     return bool(re.search(r'temporada|ate (o mes de |o dia )?(\d+ de )?dezembro|marco a dezembro|abril a dezembro|(8|9|10) meses|'
@@ -559,6 +577,7 @@ def completar(o):
                 o['praia_m'], o['local_aprox'] = p, 'texto'
     o['mobilia'] = mobilia(o['titulo'] + ' ' + o['desc'], o.get('marcado_mobiliado'))
     o['temporada'] = temporada(o['titulo'] + ' ' + o['desc'])
+    o['escritorio'] = escritorio(txt)
     # última vez que o anúncio foi mexido: o que o site diz, a publicação ou uma mudança de preço que o coletor viu
     if 'atualizado_site' not in o:
         o['atualizado_site'] = o.get('atualizado') or ''
@@ -790,7 +809,7 @@ def de_zap_pagina(x):
 
 def _zap_paginas(b, progresso):
     out, dec = {}, json.JSONDecoder()
-    for quartos, (cidade, _, slug) in [(q, c) for c in CIDADES_ZAP for q in ('2-quartos', '3-quartos')]:
+    for quartos, (cidade, _, slug) in [(q, c) for c in CIDADES_ZAP for q in ('2-quartos', '3-quartos', '1-quarto')]:
         total = None
         for p in range(1, 60):
             progresso(f'{cidade}, {quartos}, página {p}' + (f' de {math.ceil(total / 30)}' if total else ''))
@@ -838,7 +857,7 @@ def _zap_api(b, progresso, dominio, portal, site):
 
 def _zap_api_cidade(b, progresso, dominio, portal, site, cidade, loc):
     out = []
-    for quartos in ('2', '3'):
+    for quartos in ('2', '3', '1'):   # 1 quarto: só fica se tiver espaço para escritório (coletar.py)
         frm = 0
         while True:
             progresso(f'{cidade}, {quartos} quartos, {frm} lidos ({portal})')
@@ -904,18 +923,19 @@ def rsc_ads(page):
 
 def buscar_olx(b, progresso=lambda m: None):
     ads = {}
-    for cidade in ('balneario-camboriu', 'camboriu', 'itajai'):
-        base = f'https://www.olx.com.br/imoveis/aluguel/apartamentos/estado-sc/norte-de-santa-catarina/{cidade}?ros=2&sf=1'
+    # 2+ quartos e, à parte, só 1 quarto (ros/roe = quartos de/até), para o limite de 20 páginas não cortar os de 2+
+    for quartos, cidade in [(q, c) for q in ('ros=2', 'ros=1&roe=1') for c in ('balneario-camboriu', 'camboriu', 'itajai')]:
+        base = f'https://www.olx.com.br/imoveis/aluguel/apartamentos/estado-sc/norte-de-santa-catarina/{cidade}?{quartos}&sf=1'
         total = None
         for p in range(1, 21):
-            progresso(f'{cidade}, página {p}' + (f' de {math.ceil(total / 50)}' if total else ''))
+            progresso(f'{cidade}{" (1 quarto)" if "roe" in quartos else ""}, página {p}' + (f' de {math.ceil(total / 50)}' if total else ''))
             b.go(base + (f'&o={p}' if p > 1 else ''), 6)
             page = b.js('document.documentElement.outerHTML') or ''
             got = rsc_ads(page)
             m = re.search(r'totalOfAds\\?":(\d+)', page)
             total = total or (int(m.group(1)) if m else None)
             if not got:
-                if p == 1 and cidade == 'balneario-camboriu':
+                if p == 1 and cidade == 'balneario-camboriu' and quartos == 'ros=2':
                     raise RuntimeError('a OLX não devolveu anúncios')
                 break
             for a in got:
@@ -926,7 +946,8 @@ def buscar_olx(b, progresso=lambda m: None):
                 break
     # descrição, endereço e todas as fotos: só dos que ainda não temos
     cache = load('olx_detalhes.json', {})
-    faltam = [a for k, a in ads.items() if k not in cache and (num(a.get('priceValue')) or 0) <= 9000]
+    faltam = [a for k, a in ads.items() if k not in cache and not (0 < (num(a.get('priceValue')) or 0) < 2000)
+              and (num(a.get('priceValue')) or 0) <= 9000]   # abaixo de R$ 2.000 o app não mostra
     if faltam:
         b.go(faltam[0]['url'], 6)
         js = r'''(async (urls)=>Promise.all(urls.map(async u=>{try{const r=await fetch(u,{credentials:'include'});const t=await r.text();

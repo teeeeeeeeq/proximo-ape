@@ -7,7 +7,7 @@ import server as s
 RAIZ = s.RAIZ
 CAMPOS = ('id', 'fonte', '_src', 'url', 'titulo', 'desc', 'aluguel', 'pacote', 'cond', 'cond_fonte', 'cond_est', 'cond_base', 'iptu', 'fixo', 'quartos', 'suites', 'area', 'bairro', 'rua',
           'cidade', 'praia_m', 'humains_m', 'local_exato', 'local_aprox', 'local_fonte', 'predio', 'mobilia', 'temporada', 'lazer', 'publicado', 'anunciante', 'fotos', 'visto_em',
-          'baixou_de', 'baixou_em', 'atualizado')
+          'baixou_de', 'baixou_em', 'atualizado', 'escritorio')
 
 
 def main():
@@ -25,7 +25,9 @@ def main():
     for o in anuncios.values():
         if o.get('no_ar') is False or o.get('ativo') is False or not o.get('aluguel') or o['aluguel'] < 2000 or o['aluguel'] > 9000:
             continue
-        if o.get('quartos') and o['quartos'] < 2:
+        if o.get('quartos') == 1 and not (o.get('escritorio') or (o.get('area') or 0) >= s.QUARTO_UNICO_M2):
+            continue   # 1 quarto só com espaço para escritório: citado no anúncio ou área grande
+        if o.get('quartos') is not None and o['quartos'] < 1:
             continue
         if not s.na_regiao(o.get('cidade'), o.get('bairro')):
             continue

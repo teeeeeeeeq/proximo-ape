@@ -407,7 +407,7 @@ def montar(c, d):
     quartos = d['quartos'] if d['quartos'] is not None else c['quartos']
     no_texto = quartos_no_texto(d['titulo'], d['desc'])          # o campo às vezes não conta as suítes ('1 suíte + 1 dormitório' = 1)
     quartos = max(quartos or 0, no_texto or 0)
-    if quartos < 2:
+    if quartos < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
         return None
     rua, numero, bairro, cidade = endereco(d['endereco'])
     cidade = cidade or d['cidade_print'] or 'Balneário Camboriú'

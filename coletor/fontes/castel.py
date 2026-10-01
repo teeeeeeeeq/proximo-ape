@@ -371,7 +371,7 @@ def montar(slug, nome, base, c, d, fins):
     if mensal is not None and mensal > MAX_ALUGUEL:
         return None
     quartos = d.get('quartos', c['quartos'])
-    if not quartos or quartos < 2:
+    if not quartos:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
         return None
     desc = d['desc']
     extras = [x for x in c['tarjas'] + d['tarjas'] if x and norm(x) not in norm(desc)]
@@ -414,12 +414,12 @@ def ler_site(slug, nome, base, progresso):
             fins.setdefault(c['id'], set()).add(fin)
             if fin == '2' or c['id'] not in por_id:
                 por_id[c['id']] = c
-    # filtro básico pelo card: BC, apartamento, 2+ quartos, aluguel mensal até 9.000
+    # filtro básico pelo card: BC, apartamento, 1+ quartos, aluguel mensal até 9.000
     alvo = []
     for k, c in por_id.items():
         if 'balneario camboriu' not in norm(c['cidade']) or not e_apartamento(c):
             continue
-        if c['quartos'] is not None and c['quartos'] < 2:
+        if c['quartos'] is not None and c['quartos'] < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
             continue
         p = norm(c['preco'])
         if '2' in fins[k] and 'diaria' not in p and (reais(c['preco']) or 0) > MAX_ALUGUEL:

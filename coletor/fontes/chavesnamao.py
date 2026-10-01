@@ -1,4 +1,4 @@
-"""Chaves na Mão (chavesnamao.com.br): aluguel de apartamentos em Balneário Camboriú, 2+ quartos, até R$ 9.000.
+"""Chaves na Mão (chavesnamao.com.br): aluguel de apartamentos em Balneário Camboriú, 2+ quartos (e 1 quarto à parte), até R$ 9.000.
 
 Como lê (verificado em 30/09/2026), sem Chrome e sem login:
   - Listagem: API JSON do próprio site, a mesma que a página usa no mapa:
@@ -34,7 +34,7 @@ USA_CHROME = False
 
 SITE = 'https://www.chavesnamao.com.br'
 API = (SITE + '/api/realestate/listing/items/?level1=apartamentos-para-alugar&level2=%s'
-       '&level3=2-quartos&filtro=pmax:9000&pg=%d')
+       '&level3=%s&filtro=pmax:9000&pg=%d')
 CIDADES = ('sc-balneario-camboriu', 'sc-camboriu', 'sc-itajai')
 FOTO = SITE + '/imn/1200x0800/N/70/imoveis/'
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
@@ -106,18 +106,24 @@ def _listar(progresso):
         except RuntimeError:
             if c == CIDADES[0]:
                 raise
+    for c in CIDADES:   # 1 quarto ("1-quarto" no site): só fica se tiver espaço para escritório (coletar.py)
+        try:
+            novos = _listar_cidade(progresso, c, '1-quarto')
+            anuncios.update({k: x for k, x in novos.items() if k not in anuncios})
+        except RuntimeError:
+            pass
     return list(anuncios.values())
 
 
-def _listar_cidade(progresso, cidade):
+def _listar_cidade(progresso, cidade, quartos='2-quartos'):
     anuncios, total, paginas, pg = {}, None, None, 0
     while True:
-        progresso(f'{cidade[3:]}, página {pg + 1}' + (f' de {paginas}' if paginas else ''))
+        progresso(f'{cidade[3:]}{" (1 quarto)" if quartos == "1-quarto" else ""}, página {pg + 1}' + (f' de {paginas}' if paginas else ''))
         try:
-            d = json.loads(_get(API % (cidade, pg)))
+            d = json.loads(_get(API % (cidade, quartos, pg)))
             if (d.get('metadata') or {}).get('degraded') or not isinstance(d.get('items'), list):
                 time.sleep(3)
-                d = json.loads(_get(API % (cidade, pg)))
+                d = json.loads(_get(API % (cidade, quartos, pg)))
         except Exception as ex:
             if pg == 0:
                 raise RuntimeError(f'o Chaves na Mão não respondeu ({str(ex)[:80]})')
@@ -146,7 +152,7 @@ def _passa(x):
     preco = _dinheiro((x.get('prices') or {}).get('rawPrice'))
     return (x.get('transaction') == 'RENT'
             and server.na_regiao((L.get('city') or {}).get('name'), (L.get('neighborhood') or {}).get('name'))
-            and (_qtd(x.get('bedrooms')) or 0) >= 2 and (preco is None or preco <= PRECO_MAX))
+            and (_qtd(x.get('bedrooms')) or 0) >= 1 and (preco is None or preco <= PRECO_MAX))
 
 
 # ---------- página do anúncio

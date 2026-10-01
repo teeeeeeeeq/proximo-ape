@@ -22,7 +22,7 @@ concurrency:
 jobs:
   coletar:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60   # com 1 quarto as buscas ficaram maiores
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}

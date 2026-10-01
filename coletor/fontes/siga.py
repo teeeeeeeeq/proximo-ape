@@ -111,7 +111,7 @@ def passa(a):
     if norm(a.get('Cidade')).strip() != 'balneario camboriu':
         return False
     t = tipo_apto(a)
-    if not t or t['_dorm'] < 2:
+    if not t or t['_dorm'] < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
         return False
     v = valor(t.get('Valor'))
     return v is None or v <= PRECO_MAX
@@ -241,7 +241,7 @@ def ler_site(slug, base, imob, progresso, res, erros):
         erros.append(f'{imob}: {ex}')
         return
     cand = [a for a in brutos.values() if passa(a)]
-    progresso(f'{imob}: {len(brutos)} imóveis para alugar, {len(cand)} apartamentos de 2+ quartos em BC; lendo as fichas')
+    progresso(f'{imob}: {len(brutos)} imóveis para alugar, {len(cand)} apartamentos de 1+ quartos em BC; lendo as fichas')
     for n, a in enumerate(cand, 1):
         try:
             try:
