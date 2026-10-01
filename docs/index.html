@@ -106,6 +106,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .lb button{position:absolute;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:99px;width:46px;height:46px;font-size:22px;cursor:pointer}
 .lb .x{top:14px;right:14px}.lb .p{left:12px;top:50%}.lb .n{right:12px;top:50%}
 .lb .c{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#cfd8d6;font-size:13px}
+.irlista{display:none}
+@keyframes pisca{0%,100%{transform:translateX(-50%) scale(1)}40%{transform:translateX(-50%) scale(1.08)}}
+@media (max-width:820px){.irlista{display:block;position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:15;border:0;border-radius:99px;
+  padding:12px 20px;background:var(--ink);color:var(--surface);font:600 15px var(--body);box-shadow:0 6px 22px rgba(0,0,0,.28);cursor:pointer;white-space:nowrap}
+  .irlista[hidden]{display:none}.irlista.pisca{animation:pisca .45s ease-out}aside{padding-bottom:84px}}
+@media (prefers-reduced-motion:reduce){.irlista.pisca{animation:none}}
 @media (max-width:820px){.app{grid-template-columns:1fr}aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}main{padding:18px 16px 50px}.grid{grid-template-columns:1fr}
   .tools,.seg{max-width:100%}.seg{overflow-x:auto}.seg button{flex:1 0 auto;padding:7px 5px;font-size:12.5px;white-space:nowrap}}
 </style>
@@ -202,6 +208,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     <button class="more" id="more" type="button" hidden>Mostrar mais</button>
   </main>
 </div>
+<button class="irlista" id="irlista" type="button" hidden></button>
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
@@ -315,6 +322,7 @@ const SORTS = {
 function render() {
   const list = ALL.filter(passa).sort(SORTS[F.sort]);
   $('count').innerHTML = `${list.length.toLocaleString('pt-BR')} <span>${list.length === 1 ? 'apartamento' : 'apartamentos'}</span>`;
+  avisarLista(`${list.length.toLocaleString('pt-BR')} ${list.length === 1 ? 'apartamento' : 'apartamentos'} · ver ↓`);
   const g = $('grid'); g.innerHTML = '';
   if (!list.length) g.innerHTML = '<p class="empty">Nenhum anúncio com esses filtros. Afrouxe o custo, a distância ou os bairros.</p>';
   list.slice(0, shown).forEach(o => g.appendChild(card(o)));
@@ -422,6 +430,18 @@ $('fontes').onclick = e => { const b = e.target.closest('.chip'); if (!b) return
 $('show').onclick = e => { const b = e.target.closest('button'); if (b) { F.show = b.dataset.s; mudou(); } };
 $('reset').onclick = () => { F = Object.assign(JSON.parse(JSON.stringify(PERFIL)), { ajustes: F.ajustes }); mudou(); };
 $('more').onclick = () => { shown += 40; render(); };
+
+// No celular os filtros ficam em cima e a lista ~3 telas abaixo: um botão fixo mostra quantos sobraram (pisca quando muda)
+// e leva até a lista; some quando a lista já está na tela.
+const ir = $('irlista');
+function avisarLista(txt) {
+  if (ir.textContent && ir.textContent !== txt) { ir.classList.remove('pisca'); void ir.offsetWidth; ir.classList.add('pisca'); }
+  ir.textContent = txt; mostrarIr();
+}
+function mostrarIr() { ir.hidden = document.querySelector('main').getBoundingClientRect().top < innerHeight * 0.75; }
+ir.onclick = () => document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+addEventListener('scroll', mostrarIr, { passive: true });
+addEventListener('resize', mostrarIr);
 
 let lbF = [], lbK = 0; const lb = $('lb');
 function abrirLb(f, k) { lbF = f; lbK = k; mostrarLb(); lb.hidden = false; }
