@@ -617,5 +617,100 @@
 "id": "F4550938295147420",
 "versao": 3,
 "quando": "2026-10-01 19:40"
+},
+"F2093887084827194": {
+"cozinha_integrada": "sim",
+"cozinha": "bonita",
+"piso": "bom",
+"chance": "alta",
+"melhor_foto": 7,
+"resumo": "Cozinha planejada em azul-marinho com puxadores dourados e granito, pia sob a janela, equipada com fogão e geladeira; parece ter bancada voltada para a sala (foto 5), mas a integração não fica totalmente clara. Porcelanato claro de rejunte fino.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t39.30808-6/821523290_122298960668084159_2869586752368830694_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=rsl0Yzw5IaIQ7kNvwFYkKSR&_nc_oc=Adrfs82knPZ1NvSsbJBBd4aXjx_8ObmLMbEZA0vy2S7tLFpS9bC80gpLbjwT90Xi1wE&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=VUxgq48Rpe9nuklqSrz4RA&_nc_ss=792a8&oh=00_AQMtjdTgavW6e51lzAEAJtivKoX2tsTNutqRuy6AQfiKfA&oe=6AC44EAA",
+"id": "F2093887084827194",
+"versao": 3,
+"quando": "2026-10-01 19:40"
+},
+"F936628782854161": {
+"cozinha_integrada": "sim",
+"cozinha": "bonita",
+"piso": "bom",
+"chance": "alta",
+"melhor_foto": 6,
+"resumo": "Cozinha aberta para a sala de jantar e estar, armários planejados brancos com bancada de quartzo e ripado de madeira, revestimento marmorizado e geladeira inox; porcelanato polido claro de rejunte fino.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t39.30808-6/819405701_122120606175401550_250653560517059856_n.jpg?stp=dst-jpg_tt6&cstp=mx872x614&ctp=s872x614&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=fSWpLtDylmMQ7kNvwGHQ-fz&_nc_oc=AdpzVp94BYmoSFViISfX9TJuynKjdsDtcdaywe-_P_FqPcF7-B31KU5uswcNPRGHHgk&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=Obj4xq4fTllIgShrdA7xGQ&_nc_ss=792a8&oh=00_AQO9xT7dB3eyMFKH8OnabZTxB0LJ18VClgDAA9Ng6EfzxQ&oe=6AC44BFE",
+"id": "F936628782854161",
+"versao": 3,
+"quando": "2026-10-01 19:40"
+},
+"F2348820929259031": {
+"cozinha_integrada": "nao",
+"cozinha": "simples",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 2,
+"resumo": "Cozinha pequena e separada da sala, com poucos armários brancos e madeira, azulejo branco quadriculado; piso de cerâmica com rejunte escuro grosso em todo o apartamento, cara de prédio antigo.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t39.30808-6/819098232_27983281174687491_3483632285983107776_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=ZbtNFF7WGE4Q7kNvwEQ1lUC&_nc_oc=AdrpIyf2ALZP5l5f_e_pe6e_0ZMhht5s9QKxMZxlviWo5wXL6dziyljl39cl7dXjZDU&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=PANkDHBpT8zL4aTxdFrjow&_nc_ss=792a8&oh=00_AQMU7MlnF8skQrDo5BfaCHI0Z7BU0holaYEiURfJyhuogw&oe=6AC47228",
+"id": "F2348820929259031",
+"versao": 3,
+"quando": "2026-10-01 19:40"
+},
+"F2453465121729631": {
+"cozinha_integrada": "incerto",
+"cozinha": "ruim",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 7,
+"resumo": "Cozinha pequena e gasta, armários brancos com portas soltas e granito manchado, azulejo antigo; piso de cerâmica cinza com rejunte escuro grosso e banheiros datados. Não dá para ver a sala junto da cozinha.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t45.5328-4/812644432_2590275854766542_3435255026511441250_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=3rpm5O7OXloQ7kNvwGpDu8T&_nc_oc=AdrHuxxPzisQzeclznvXax5XhUJittmdjB7j9ciFih1r1vrozBv2i8xJah6nZORzMXk&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=aNw5el3KbNfnI5JqaPdAsQ&_nc_ss=792a8&oh=00_AQO6sxEMTHpYlu3_FzjgZ83BQR3FSVtraEFN0vzuwmXn1Q&oe=6AC4565C",
+"id": "F2453465121729631",
+"versao": 3,
+"quando": "2026-10-01 19:40"
+},
+"F2259401688127275": {
+"cozinha_integrada": "sim",
+"cozinha": "bonita",
+"piso": "bom",
+"chance": "alta",
+"melhor_foto": 9,
+"resumo": "Cozinha aberta para a sala com bancada de granito preto e banquetas, armários planejados brancos, geladeira inox e equipamentos embutidos, bem equipada; porcelanato claro polido de rejunte fino.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t45.5328-4/824011393_2193679258026344_580597805506080412_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=YOb3LkKdPXoQ7kNvwGR4TAn&_nc_oc=AdpY1hpm5AbRuqugHol1ydDK2QDLQcD0Mt09XimrHqMdrDiTQ4h37vjNmfFBI1Vfmt0&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=a3h7zhIgruQ07QjsmZad8Q&_nc_ss=792a8&oh=00_AQMoSC6yMXXKRhuGm2SSUSsZ_poBLysjAnrG941hPGSUUQ&oe=6AC481D4",
+"id": "F2259401688127275",
+"versao": 3,
+"quando": "2026-10-01 19:40"
+},
+"F1061030339886764": {
+"cozinha_integrada": "nao",
+"cozinha": "simples",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 4,
+"resumo": "Cozinha longa e separada da sala, armários bege e marrom datados, azulejo escuro e piso cinza com rejunte grosso; sala com cerâmica clara de rejunte escuro aparente, cara de apartamento antigo.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/805923559_38568888996089142_2781785784004180990_n.jpg?stp=dst-jpg_tt6&cstp=mx1086x1448&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=-gf-4TCk1ZYQ7kNvwEsf9EE&_nc_oc=AdrYYU6GOU1xjU05HWVsFeUkBBUH6N7h2ofMy6KfMTkOgCtdGRnrtCeZqyPdTmWhrTw&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=HbDcWrH8YPQ3mQ-uCnXkvA&_nc_ss=792a8&oh=00_AQOjrLz0PWW2_ARRQaJVnItpRYxoEj99i7Ga-yEcpqwvRg&oe=6AC4ACF7",
+"id": "F1061030339886764",
+"versao": 3,
+"quando": "2026-10-01 19:40"
+},
+"F2609934482792329": {
+"cozinha_integrada": "incerto",
+"cozinha": "sem foto",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 0,
+"resumo": "O texto diz sala e cozinha integradas, mas nenhuma foto mostra a cozinha. Sala bem arrumada, porém cerâmica antiga com rejunte aparente no apartamento todo e banheiro datado.",
+"id": "F2609934482792329",
+"versao": 3,
+"quando": "2026-10-01 19:40"
+},
+"F2295414591210548": {
+"cozinha_integrada": "nao",
+"cozinha": "simples",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 6,
+"resumo": "Cozinha separada da sala por porta, armários brancos básicos, granito escuro e azulejo com barra datada; cerâmica antiga de rejunte escuro nos quartos e sala, banheiros com azulejo antigo.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/813137170_28387978927534314_8554505239530893585_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx2048x1536&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=oloY5hbIb8QQ7kNvwFXVh-y&_nc_oc=AdqgSnR64YavgkZbspeHTAAyvQRCry5XIQ1IJ110NsjT4F4r_h9tMtNOgIOXO-2UN5I&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=hZFVvW_kGVi0oqvoQcWSEg&_nc_ss=792a8&oh=00_AQNqBBKYS0iIpgK87SfD8__FR2bHL0R-tWhbQMCZ7Q629A&oe=6AC49D9B",
+"id": "F2295414591210548",
+"versao": 3,
+"quando": "2026-10-01 19:40"
 }
 }
