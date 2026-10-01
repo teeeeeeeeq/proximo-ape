@@ -41,13 +41,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - run: pip install websocket-client
+      - run: pip install websocket-client anthropic pillow
 
       - name: Buscar anúncios
         env:
           TZ: America/Sao_Paulo
           SOMENTE: ${{ inputs.somente }}
           FACEBOOK_COOKIES: ${{ secrets.FACEBOOK_COOKIES }}   # sessão do Facebook (Settings → Secrets → Actions); vazio = sem login
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}  # o Claude confere as fotos do aviso; vazio = só o texto do anúncio
         run: python coletor/coletar.py
 
       - name: Avisar apartamento novo (e-mail pelo GitHub)
