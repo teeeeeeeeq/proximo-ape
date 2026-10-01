@@ -950,5 +950,89 @@
 "id": "F2879469845779665",
 "versao": 3,
 "quando": "2026-10-01 20:40"
+},
+"F4466742313549555": {
+"cozinha_integrada": "nao",
+"cozinha": "ruim",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 4,
+"resumo": "Cozinha separada da sala por um arco, com poucos armários básicos, fogão solto com botijão e azulejo bege antigo; piso claro na sala, mas azulejos e banheiros datados.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t45.5328-4/799677508_2514467275705551_3482018349426935645_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=YL2rTQFuLjoQ7kNvwHXOo-v&_nc_oc=AdrlZ0bAd-LSVFMwLzlJm40g0aDSezy5sTR7LAVxu8iwm1IvBJ4O7lazMSMKACqWVe0&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=LRqFBtYte688B8tXwed_kw&_nc_ss=792a8&oh=00_AQOIZexRXS3diaJJwQrkj8Iigsec1BpQ2K7oMyoar4jYiQ&oe=6AC450D9",
+"id": "F4466742313549555",
+"versao": 3,
+"quando": "2026-10-01 20:40"
+},
+"F1131683896087378": {
+"cozinha_integrada": "nao",
+"cozinha": "bonita",
+"piso": "bom",
+"chance": "baixa",
+"melhor_foto": 4,
+"resumo": "Cozinha reformada e bonita (armários planejados cinza, bancada preta, iluminação embutida, forno e micro-ondas embutidos), mas em ambiente separado da sala, com piso diferente; piso vinílico na sala e porcelanato sem rejunte aparente.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t45.5328-4/829453156_2154962515374961_379926351217516305_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=TqzFWnMwWKEQ7kNvwFni5e2&_nc_oc=AdqG5OSH6VjIZuF0-7OfFUxZ0ItxOx3nqf0zIbmxjn865IrOlZ2-19KnRO6U9MIBFNs&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=4vg7Cej3wy-3Y4ic6pJ2gQ&_nc_ss=792a8&oh=00_AQODq71_c2nfYgwri2iJktpWkNCwTvKi9tADxNUgTgg6Jg&oe=6AC4628D",
+"id": "F1131683896087378",
+"versao": 3,
+"quando": "2026-10-01 20:40"
+},
+"F1006196642488147": {
+"cozinha_integrada": "sim",
+"cozinha": "simples",
+"piso": "bom",
+"chance": "media",
+"melhor_foto": 2,
+"resumo": "Cozinha aberta para sala e jantar com bancada de granito voltada para a sala; armários planejados claros e eletros comuns, correta mas sem charme; piso porcelanato claro de rejunte fino.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t45.5328-4/825289162_1734245084453517_203040493898889403_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=a25nAbIGoo8Q7kNvwE8B-s1&_nc_oc=AdqEPPU5aAwkrLwwvQ384t3srE6Co8FoR9LqWZipHEK_9-NqFqKNsvr0pHAyJ7bNUKw&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=DbpiwaN8lGgPYoP2zpL1Aw&_nc_ss=792a8&oh=00_AQMKShdl8LtHi5ZgiVb_TsNk0EJBe8RdeoWM3p-xxu3Jgg&oe=6AC4B35E",
+"id": "F1006196642488147",
+"versao": 3,
+"quando": "2026-10-01 20:40"
+},
+"F1080995934821696": {
+"cozinha_integrada": "nao",
+"cozinha": "simples",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 4,
+"resumo": "Cozinha fechada no fundo, com armários planejados brancos e granito preto, mas azulejo cinza datado; piso de cerâmica antiga em padrão tijolinho com rejunte grosso em todo o apartamento.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t45.5328-4/807990447_1801395020986226_3338929653290195035_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=3RT6GlbxCDcQ7kNvwEOdcXj&_nc_oc=AdpfbJdj15ACSTISEqD6gsuchJhiLxP30xRQJNc5T1TFXK14DtCG_uCFPhpw-9ZZ_mQ&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=GLOBYX4ftd2k9kf5zTja3Q&_nc_ss=792a8&oh=00_AQNXe2OaR5J-6HcPlZjo6qaIN9r-X90NXsfihBgNl7sW6w&oe=6AC4C14F",
+"id": "F1080995934821696",
+"versao": 3,
+"quando": "2026-10-01 20:40"
+},
+"F1059605490413811": {
+"cozinha_integrada": "incerto",
+"cozinha": "sem foto",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 3,
+"resumo": "Sala e jantar amplas, com geladeira solta junto à mesa e a cozinha atrás de uma porta, só entrevista (micro-ondas e máquina); piso de cerâmica bege de prédio dos anos 90 e mobília datada.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/797938830_1086994007415124_8439855803514147593_n.jpg?stp=dst-jpg_tt6&cstp=mx1170x1511&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=kwFuTs_2BTQQ7kNvwGwj906&_nc_oc=Ado17pPiVz8wXrYvwEqYcbUOidGUeFG3etHeCEiOuxtPsO8G1c6DyIvvfQY7CZfgIw4&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=bqMoUj9i_5xjMGoyaj0SZg&_nc_ss=792a8&oh=00_AQP7AW7TTkAqtf5pfHRMSaCC08QarSH7-GE5TRCklZSkuA&oe=6AC4B71D",
+"id": "F1059605490413811",
+"versao": 3,
+"quando": "2026-10-01 20:40"
+},
+"F1611539084085915": {
+"cozinha_integrada": "nao",
+"cozinha": "simples",
+"piso": "bom",
+"chance": "baixa",
+"melhor_foto": 3,
+"resumo": "Cozinha separada da sala (vista por uma porta), com armários planejados brancos e granito preto, básica e de azulejo bege comum; piso de cerâmica clara de rejunte fino. As fotos parecem retocadas ou geradas, vale confirmar.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t45.5328-4/821470735_2100386103895403_840070658774591883_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=k77DpfACX28Q7kNvwEb1Rtj&_nc_oc=AdojoINje23VfD-qut-AYRZAm0nV4PkxpBhTKPYgvWUa6ImVEPrCz2baCxXvNajQK30&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=-_rbl-X_26fQBH87E_vuIA&_nc_ss=792a8&oh=00_AQNA1m8yWWSO28kP2kmUSZ9mE-2gLP_FTz65iGyJiqM3SQ&oe=6AC47489",
+"id": "F1611539084085915",
+"versao": 3,
+"quando": "2026-10-01 20:40"
+},
+"F1622227829501849": {
+"cozinha_integrada": "sim",
+"cozinha": "bonita",
+"piso": "antigo",
+"chance": "baixa",
+"melhor_foto": 7,
+"resumo": "Cozinha aberta para a sala por bancada com banquetas, armários planejados brancos bem equipados (forno, coifa, geladeira inox); mas o piso é cerâmica octogonal antiga em todo o apartamento.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t39.30808-6/795485434_122314686866164184_2581534739259085169_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=kJuh4SCEX7sQ7kNvwF9kgpf&_nc_oc=AdpNzPPqjbtdnz75L2iJjRmEeV7gpugYaCwvlHyXog9C6iRGqe-dEyRYI6eV0id7Zfg&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=YAOmX6rRs_3K8xw_UD1dhA&_nc_ss=792a8&oh=00_AQOUnGbsjJFvY5-zCRdYKTst0gITDx2zoSwpAGY_TUta_w&oe=6AC4679A",
+"id": "F1622227829501849",
+"versao": 3,
+"quando": "2026-10-01 20:40"
 }
 }
