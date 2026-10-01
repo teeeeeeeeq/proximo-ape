@@ -1,20 +1,19 @@
-"""Aviso por e-mail de apartamento novo que serve (o GitHub manda o e-mail de uma issue que menciona o dono do repositório).
+"""O perfil (o que o app mostra), o Claude conferindo as fotos e o aviso por e-mail.
 
-Serve: 2+ quartos, mobiliado ou semimobiliado (os quartos podem estar vazios; "planejados" sem dizer se é mobiliado
-conta), aluguel de R$ 3.500 a 5.000 (só o aluguel), até R$ 6.000 com tudo (aluguel + condomínio,
-estimado se o anúncio não diz + IPTU + seguro-fiança de 10% do aluguel), até 10 min a pé da praia e até 10 min de carro
-da Humains. Recusa de animais já não chega aqui (coletar.py).
+Perfil: aluguel de R$ 3.500 a 5.500, só o aluguel (server.ALUGUEL_MIN/MAX; os leitores já buscam só essa faixa),
+2+ quartos (ou 1 quarto com escritório citado ou 55 m²+), pelo menos semimobiliado ("planejados" sem dizer se é
+mobiliado conta; "sem mobília" não), até 10 min de carro da Humains (em Itajaí, 15), até 10 min a pé da praia, sem
+temporada e sem recusa de animais. Sem localização fica, com o aviso de que falta o endereço.
 
-E, como o do Piatã: cozinha integrada à sala (o mais importante), cozinha bonita e bem montada (armários planejados,
-bom gosto, bem equipada) e piso sem cara de antigo (nada de rejunte grosso e encardido ou azulejo esquisito; madeira
-serve). Quem confere é o Claude, olhando as fotos (e o texto) do anúncio, e ele escolhe a foto do e-mail: a que mostra
-a cozinha com a sala, ou senão a cozinha. Sem a chave ANTHROPIC_API_KEY, vale o que o texto do anúncio diz.
-Cada anúncio é conferido uma vez só (dados/avaliacoes.json).
-
-Novo: entrou no ar há pouco (o coletor viu pela primeira vez, fora da primeira leitura de cada fonte), foi publicado
-nos últimos dias, ou o app viu baixar de preço há pouco. Cada imóvel é avisado uma vez só (dados/avisos.json; o aviso
-antigo, sem as fotos, usava alertas.json), e o mesmo imóvel em sites diferentes (mesmo aluguel, área e bairro) vira
-um aviso só, com os links de todos.
+O Claude confere as fotos de todos os anúncios do perfil, uma vez cada (o mesmo imóvel em sites diferentes conta uma
+vez; dados/avaliacoes.json). Ele olha a cozinha integrada à sala (o mais importante), se a cozinha é bonita e bem
+montada, se o piso tem cara de antigo e qual foto melhor mostra a cozinha com a sala. Quando faltam fotos de dentro,
+estima a chance de ser como o do Piatã (prédio, preço, texto). Veredito:
+  piata     - integrada "sim", cozinha "bonita", piso não "antigo": aparece primeiro no app e vai por e-mail;
+  perguntar - nada contra, mas as fotos não mostram tudo e a chance é alta ou média: aba "Vale perguntar";
+  nao       - cozinha fechada, simples ou ruim, piso antigo, ou chance baixa: o app esconde.
+O e-mail é uma issue que menciona o dono do repositório (o GitHub manda o e-mail); cada imóvel vai uma vez só
+(dados/avisos.json).
 """
 import base64, io, json, os, re, time, urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -23,23 +22,23 @@ import server as s
 
 DONO = 'teeeeeeeeq'
 APP = 'https://teeeeeeeeq.github.io/proximo-ape/'
-TOTAL_MAX = 6000
-ALUGUEL_MIN, ALUGUEL_MAX = 3500, 5000   # só o aluguel (o do Piatã era R$ 4.500)
-SEGURO = 0.10        # seguro-fiança: 10% do aluguel
+SEGURO = 0.10        # seguro-fiança: 10% do aluguel (quando precisa)
 PRAIA_A_PE = 10      # minutos
-HUMAINS_CARRO = 10   # minutos
-NOVO_DIAS = 3        # entrou no ar / baixou há até 3 dias
-PUBLICADO_DIAS = 7   # publicado no site há até 7 dias
+HUMAINS_CARRO = 10   # minutos; em Itajaí, HUMAINS_CARRO_ITAJAI
+HUMAINS_CARRO_ITAJAI = 15
 MAX_POR_AVISO = 15
 MODELO = 'claude-opus-5-5'
 FOTOS_IA = 16        # fotos por anúncio mandadas ao Claude (a cozinha às vezes é a 15ª)
-FOTO_PX = 900        # lado maior das fotos mandadas ao Claude
-MAX_IA = 10          # anúncios conferidos pelo Claude por rodada (o resto fica para a próxima)
-GUARDA_DIAS = 30     # avaliações mais velhas que isso são esquecidas
-VERSAO = 2           # muda quando o que se pede ao Claude muda: o que foi avaliado antes é avaliado de novo
+FOTO_PX = 768        # lado maior das fotos mandadas ao Claude
+MAX_IA = 40          # anúncios conferidos por rodada (os mais recentes primeiro; o resto fica para a próxima)
+MAX_IA_DIA = 250     # e por dia: teto de gasto (~US$ 0,05 cada, ~US$ 12 no dia mais cheio)
+PARALELO = 3         # conferidos ao mesmo tempo
+GUARDA_DIAS = 30     # avaliações mais velhas que isso são refeitas
+VERSAO = 3           # muda quando o que se pede ao Claude muda: o que foi avaliado antes é avaliado de novo
+
 
 def a_pe(m):
-    return None if m is None else max(1, round(m * 1.25 / 75))   # o mesmo do app antigo: ~4,5 km/h, ruas +25%
+    return None if m is None else max(1, round(m * 1.25 / 75))   # ~4,5 km/h, ruas +25%
 
 
 def de_carro(m):
@@ -49,54 +48,48 @@ def de_carro(m):
     return max(1, round(1 + min(r, 2000) / 333 + max(r - 2000, 0) / 583))   # o mesmo do app
 
 
+def limite_humains(o):
+    return HUMAINS_CARRO_ITAJAI if s.norm(o.get('cidade')).strip() == 'itajai' else HUMAINS_CARRO
+
+
+def no_perfil(o):
+    """O que o app mostra (e o Claude confere)."""
+    if o.get('no_ar') is False or o.get('ativo') is False or o.get('temporada') or not o.get('aluguel'):
+        return False
+    if not s.ALUGUEL_MIN <= o['aluguel'] <= s.ALUGUEL_MAX or not s.na_regiao(o.get('cidade'), o.get('bairro')):
+        return False
+    q = o.get('quartos')
+    if q is not None and (q < 1 or (q == 1 and not (o.get('escritorio') or (o.get('area') or 0) >= s.QUARTO_UNICO_M2))):
+        return False   # 1 quarto só com espaço para escritório: citado no anúncio ou área grande
+    texto = (o.get('titulo') or '') + '\n' + (o.get('desc') or '')
+    if o.get('mobilia') == 'nao' or (o.get('mobilia') == 'sem info' and o.get('_src') != 'Facebook Marketplace'
+                                     and 'planejad' not in s.norm(texto)):
+        return False   # no Facebook quase ninguém escreve: o Claude vê pelas fotos
+    if s.nao_aceita_animais(texto):   # texto inteiro: a recusa costuma vir no fim
+        return False
+    h, p = de_carro(o.get('humains_m')), a_pe(o.get('praia_m'))
+    return (h is None or h <= limite_humains(o)) and (p is None or p <= PRAIA_A_PE)
+
+
 def custo(o):
+    """Aluguel + condomínio (estimado se o anúncio não diz) + IPTU, sem o seguro-fiança."""
     cond = o['cond'] if o.get('cond') is not None else (o.get('cond_est') or 0)
     base = max(o['aluguel'] + cond + (o.get('iptu') or 0), o.get('pacote') or 0)
-    return round(base + SEGURO * o['aluguel']), cond, o.get('cond') is None and bool(o.get('cond_est'))
+    return round(base), cond, o.get('cond') is None and bool(o.get('cond_est'))
 
 
-def serve(o):
-    if not o.get('aluguel') or (o.get('quartos') or 0) < 2 or o.get('temporada'):
-        return False
-    if not ALUGUEL_MIN <= o['aluguel'] <= ALUGUEL_MAX:
-        return False
-    texto = (o.get('titulo') or '') + '\n' + (o.get('desc') or '')
-    if o.get('mobilia') not in ('texto', 'marcado', 'semi') and not (o.get('mobilia') == 'sem info' and 'planejad' in s.norm(texto)):
-        return False
-    if custo(o)[0] > TOTAL_MAX:
-        return False
-    p, h = a_pe(o.get('praia_m')), de_carro(o.get('humains_m'))
-    return p is not None and h is not None and p <= PRAIA_A_PE and h <= HUMAINS_CARRO
+def _chave(o):
+    """O mesmo imóvel em sites diferentes: mesmo aluguel, área e bairro (sem área, cada anúncio é um)."""
+    if not o.get('area'):
+        return o['id']
+    return f"{round(o['aluguel'])}|{round(o['area'])}|{s.norm(o.get('bairro'))}"
 
 
-def _dias(data, agora):
-    try:
-        return (agora - time.mktime(time.strptime(data[:16] if len(data) > 10 else data, '%Y-%m-%d %H:%M' if len(data) > 10 else '%Y-%m-%d'))) / 86400
-    except (ValueError, TypeError):
-        return 1e9
+# --- O Claude confere as fotos ---
 
-
-def novo(o, primeira, agora):
-    """Entrou no ar há pouco, foi publicado há pouco ou o app viu baixar de preço há pouco. Foto nova / anúncio
-    "subido" não conta, nem o preço riscado do OLX (não diz quando baixou: o anúncio pode ser de meses atrás)."""
-    src = o.get('_src') or o.get('fonte')
-    v = o.get('visto_em') or ''
-    chegou = v and v > primeira.get(src, '') and not (o.get('publicado') and _dias(o['publicado'], agora) - _dias(v, agora) > 2)
-    baixou_visto = len(o.get('precos') or []) > 1 and o.get('baixou_de') and o.get('baixou_em')
-    return bool((chegou and _dias(v, agora) <= NOVO_DIAS)
-                or (o.get('publicado') and _dias(o['publicado'], agora) <= PUBLICADO_DIAS)
-                or (baixou_visto and _dias(o['baixou_em'], agora) <= NOVO_DIAS))
-
-
-# --- Como o do Piatã: cozinha integrada à sala, cozinha bonita e bem montada, piso sem cara de antigo ---
-
-_PLANEJADA = re.compile(r'\b(cozinha (toda )?planejad[oa]|(moveis|armarios|marcenaria) planejad[oa]s|planejados)\b')
-_INTEGRADA = re.compile(r'\b(cozinha (integrada|americana|aberta)|integrad[oa]s? (a|com) (a )?(sala|cozinha)|'
-                        r'(sala|living) (e cozinha )?integrad[oa]s?|ambientes integrados|conceito aberto)\b')
-_PISO_ANTIGO = re.compile(r'\b(ceramica|azulejo|ardosia)\b')
-
-_PEDIDO = """Você confere anúncios de apartamento para alugar em Balneário Camboriú para quem quase alugou um \
-apartamento de que gostou muito e quer achar outro parecido. As fotos vêm numeradas. Responda:
+_PEDIDO = """Você confere anúncios de apartamento para alugar em Balneário Camboriú (e arredores) para quem quase \
+alugou um apartamento de que gostou muito e quer achar outro parecido. As fotos vêm numeradas, e depois vem o \
+anúncio. Responda:
 
 - cozinha_integrada (o mais importante): a cozinha é aberta para a sala, na mesma área (cozinha americana, bancada \
 ou ilha voltada para a sala, sem parede nem porta entre as duas)? "sim", "nao" (cozinha fechada, separada da sala) \
@@ -109,13 +102,19 @@ nenhuma foto mostra a cozinha.
 - piso: "antigo" só se dá para ver claramente piso ou azulejo de cara antiga: rejunte grosso e encardido, cerâmica \
 antiga, azulejo esquisito pela casa. "bom": piso atual com rejunte fino ou sem rejunte. Não precisa ser porcelanato \
 nem brilhar; madeira, vinílico ou laminado servem. "incerto" se não dá para ver.
+- chance: a chance de o apartamento ser como o que eles querem (cozinha integrada à sala, cozinha bonita, piso sem \
+cara de antigo). Se as fotos mostram tudo, "alta" quando é e "baixa" quando não é. Quando faltam fotos de dentro \
+(só a fachada, só os quartos, descrição genérica), estime pelo que dá para ver: prédio novo ou antigo, padrão do \
+que aparece, o texto, e o preço para o tamanho e o lugar (barato demais para a região costuma ser apartamento antigo).
 - melhor_foto: o número da foto que melhor mostra a cozinha integrada com a sala (as duas na mesma foto); se nenhuma \
 mostra as duas, a que melhor mostra a cozinha; 0 se nenhuma mostra a cozinha.
-- resumo: uma ou duas frases curtas em português sobre a cozinha, a integração com a sala e o piso (ex.: "Cozinha \
-americana aberta para a sala, armários planejados brancos e bancada de quartzo, bem equipada; piso porcelanato claro \
-de rejunte fino.").
+- resumo: uma ou duas frases curtas em português sobre a cozinha, a integração com a sala e o piso, e o que falta \
+ver (ex.: "Cozinha americana aberta para a sala, armários planejados brancos e bancada de quartzo, bem equipada; \
+piso porcelanato claro de rejunte fino." ou "Só fotos da fachada e dos quartos; prédio dos anos 90, a cozinha não \
+aparece.").
 
-As fotos mandam; o texto do anúncio ajuda. Fotos de áreas comuns do prédio (piscina, academia, fachada) não contam."""
+As fotos mandam; o texto do anúncio ajuda. Fotos de áreas comuns do prédio (piscina, academia, fachada) não contam \
+como foto do apartamento."""
 
 _RESPOSTA = {
     'type': 'object',
@@ -123,25 +122,21 @@ _RESPOSTA = {
         'cozinha_integrada': {'type': 'string', 'enum': ['sim', 'nao', 'incerto']},
         'cozinha': {'type': 'string', 'enum': ['bonita', 'simples', 'ruim', 'sem foto']},
         'piso': {'type': 'string', 'enum': ['bom', 'antigo', 'incerto']},
+        'chance': {'type': 'string', 'enum': ['alta', 'media', 'baixa']},
         'melhor_foto': {'type': 'integer'},
         'resumo': {'type': 'string'},
     },
-    'required': ['cozinha_integrada', 'cozinha', 'piso', 'melhor_foto', 'resumo'],
+    'required': ['cozinha_integrada', 'cozinha', 'piso', 'chance', 'melhor_foto', 'resumo'],
     'additionalProperties': False,
 }
 
 
-def _ok(v):
-    return v['cozinha_integrada'] == 'sim' and v['cozinha'] == 'bonita' and v['piso'] != 'antigo'
-
-
-def avaliar_texto(o):
-    """Sem a chave do Claude: vale o que o anúncio diz (cozinha integrada e planejada escritas no texto)."""
-    t = s.norm((o.get('titulo') or '') + '\n' + (o.get('desc') or ''))
-    v = dict(cozinha_integrada='sim' if _INTEGRADA.search(t) else 'incerto',
-             cozinha='bonita' if _PLANEJADA.search(t) else 'sem foto',
-             piso='antigo' if _PISO_ANTIGO.search(t) else 'incerto', resumo='')
-    return dict(v, ok=_ok(v), metodo='texto')
+def veredito(v):
+    if v['cozinha_integrada'] == 'nao' or v['cozinha'] in ('simples', 'ruim') or v['piso'] == 'antigo':
+        return 'nao'
+    if v['cozinha_integrada'] == 'sim' and v['cozinha'] == 'bonita':
+        return 'piata'
+    return 'perguntar' if v['chance'] in ('alta', 'media') else 'nao'
 
 
 def _foto(url):
@@ -153,7 +148,7 @@ def _foto(url):
         return None
     if len(dado) > 3_700_000:   # a API aceita até 5 MB por foto, já em base64
         return None
-    try:   # 900 px bastam para ver a cozinha e custam um terço de uma foto grande
+    try:   # foto menor basta para ver a cozinha e custa bem menos
         from PIL import Image
         im = Image.open(io.BytesIO(dado))
         if max(im.size) > FOTO_PX:
@@ -168,47 +163,105 @@ def _foto(url):
     return tipo and {'type': 'image', 'source': {'type': 'base64', 'media_type': tipo, 'data': base64.standard_b64encode(dado).decode()}}
 
 
+def _ficha(o):
+    """O que o Claude lê junto com as fotos: preço, tamanho e lugar (para a chance) e o texto do anúncio."""
+    partes = [f"aluguel {_brl(o['aluguel'])}" + (f" + condomínio {_brl(o['cond'])}" if o.get('cond') else '')]
+    if o.get('area'):
+        partes.append(f"{round(o['area'])} m²")
+    if o.get('quartos'):
+        partes.append(f"{o['quartos']} quartos")
+    partes.append(', '.join(x for x in (o.get('bairro'), o.get('cidade') or 'Balneário Camboriú') if x))
+    if o.get('predio'):
+        partes.append('prédio ' + o['predio'])
+    return f"Anúncio ({' · '.join(partes)}): {o.get('titulo') or ''}\n\n{(o.get('desc') or '')[:3000]}"
+
+
 def avaliar_ia(o, cliente):
     """O Claude olha as fotos e o texto do anúncio. None se não deu para conferir agora (tenta de novo na próxima rodada)."""
     urls = [u for u in (o.get('fotos') or []) if isinstance(u, str) and u.startswith('http')][:FOTOS_IA]
     with ThreadPoolExecutor(6) as ex:
         baixadas = [(u, f) for u, f in zip(urls, ex.map(_foto, urls)) if f]
-    if len(baixadas) < 3:
-        print(f"  {o['id']}: só {len(baixadas)} foto(s) baixada(s) de {len(urls)}; fica para a próxima")
+    if not baixadas:
+        print(f"  {o['id']}: nenhuma das {len(urls)} fotos baixou; fica para a próxima")
         return None
     conteudo = []
     for i, (u, f) in enumerate(baixadas, 1):
         conteudo += [{'type': 'text', 'text': f'Foto {i}'}, f]
-    conteudo.append({'type': 'text', 'text': f"Anúncio: {o.get('titulo') or ''}\n\n{(o.get('desc') or '')[:3000]}"})
+    conteudo.append({'type': 'text', 'text': _ficha(o)})
     r = cliente.beta.messages.create(
         model=MODELO, max_tokens=8000, system=_PEDIDO,
         betas=['server-side-fallback-2026-07-01'], fallbacks='default',   # se recusar, outro modelo responde
-        output_config={'format': {'type': 'json_schema', 'schema': _RESPOSTA}},
+        output_config={'effort': 'low', 'format': {'type': 'json_schema', 'schema': _RESPOSTA}},
         messages=[{'role': 'user', 'content': conteudo}])
     if r.stop_reason == 'refusal':
         print(f"  {o['id']}: o Claude não avaliou (recusa)")
-        return dict(cozinha_integrada='incerto', cozinha='sem foto', piso='incerto', ok=False, metodo='ia',
-                    resumo='(o Claude não avaliou)')
-    if r.stop_reason == 'max_tokens':
+        v = dict(cozinha_integrada='incerto', cozinha='sem foto', piso='incerto', chance='baixa', melhor_foto=0,
+                 resumo='(o Claude não avaliou este anúncio)')
+    elif r.stop_reason == 'max_tokens':
         return None
-    v = json.loads(next(b.text for b in r.content if b.type == 'text'))
+    else:
+        v = json.loads(next(b.text for b in r.content if b.type == 'text'))
     if 1 <= v['melhor_foto'] <= len(baixadas):
         v['foto'] = baixadas[v['melhor_foto'] - 1][0]
-    print(f"  {o['id']}: integrada {v['cozinha_integrada']} · cozinha {v['cozinha']} · piso {v['piso']} · "
-          f"foto {v['melhor_foto']} ({len(baixadas)} fotos, {r.usage.input_tokens} + {r.usage.output_tokens} tokens)")
-    return dict(v, ok=_ok(v), metodo='ia')
+    v['v'] = veredito(v)
+    print(f"  {o['id']}: {v['v']} (integrada {v['cozinha_integrada']} · cozinha {v['cozinha']} · piso {v['piso']} · "
+          f"chance {v['chance']}; {len(baixadas)} fotos, {r.usage.input_tokens} + {r.usage.output_tokens} tokens)")
+    return v
 
 
 def _cliente():
     if not os.environ.get('ANTHROPIC_API_KEY'):
         return None
     import anthropic
-    return anthropic.Anthropic()
+    return anthropic.Anthropic(max_retries=4)
 
 
-def _chave(o):
-    return f"{round(o['aluguel'])}|{round(o.get('area') or 0)}|{s.norm(o.get('bairro'))}"
+def conferir(grupos, agora):
+    """Confere pelo Claude os grupos do perfil que ainda não foram conferidos (os mais recentes primeiro, até MAX_IA por
+    rodada e MAX_IA_DIA por dia). Devolve as avaliações de todos, por chave."""
+    avals = s.load('avaliacoes.json', {})
+    limite = time.strftime('%Y-%m-%d', time.localtime(agora - GUARDA_DIAS * 86400))
+    avals = {k: v for k, v in avals.items() if (v.get('quando') or '') >= limite and v.get('versao') == VERSAO}
+    cliente = _cliente()
+    faltam = sorted((k for k in grupos if k not in avals), key=lambda k: max(x.get('visto_em') or '' for x in grupos[k]), reverse=True)
+    if not cliente:
+        print(f'Claude: sem ANTHROPIC_API_KEY; {len(faltam)} anúncio(s) do perfil sem conferir')
+        return avals
+    hoje = time.strftime('%Y-%m-%d', time.localtime(agora))
+    vez = max(0, min(MAX_IA, MAX_IA_DIA - sum((v.get('quando') or '').startswith(hoje) for v in avals.values())))
+    import anthropic
+    feitos, parou = 0, ''
 
+    def um(k):
+        try:
+            return k, avaliar_ia(grupos[k][0], cliente), None
+        except Exception as ex:
+            return k, None, ex
+    for i in range(0, min(vez, len(faltam)), PARALELO):
+        with ThreadPoolExecutor(PARALELO) as ex:
+            for k, v, erro in ex.map(um, faltam[i:min(i + PARALELO, vez)]):
+                if v:
+                    v.update(quando=time.strftime('%Y-%m-%d %H:%M', time.localtime(agora)), versao=VERSAO)
+                    avals[k] = v
+                    feitos += 1
+                elif erro:
+                    print(f"  {grupos[k][0]['id']}: o Claude não respondeu ({type(erro).__name__}: {str(erro)[:200]})")
+                    if isinstance(erro, (anthropic.RateLimitError, anthropic.AuthenticationError, anthropic.PermissionDeniedError)) \
+                            or 'credit' in str(erro).lower():
+                        parou = type(erro).__name__   # limite de uso, chave errada ou sem crédito: tenta na próxima rodada
+        s.save('avaliacoes.json', avals)
+        if parou:
+            break
+    print(f'Claude: {feitos} conferido(s) agora; {len(faltam) - feitos} ainda na fila' + (f' (parou: {parou})' if parou else ''))
+    return avals
+
+
+def para_o_app(v):
+    """O que o app mostra da avaliação."""
+    return {k: v[k] for k in ('v', 'foto', 'resumo', 'cozinha_integrada', 'cozinha', 'piso', 'chance') if v.get(k)}
+
+
+# --- O aviso por e-mail ---
 
 def _brl(v):
     return 'R$ ' + f'{round(v):,}'.replace(',', '.')
@@ -218,16 +271,18 @@ def _data(d):
     return '/'.join(reversed(d[:10].split('-')[1:])) if d else ''
 
 
-def _bloco(grupo, agora, aval):
+def _bloco(grupo, aval):
     o = grupo[0]
     total, cond, estimado = custo(o)
     zona = o.get('bairro') or 'Bairro não informado'
     if s.norm(o.get('cidade')).strip() not in ('', 'balneario camboriu'):
         zona += ' · ' + o['cidade']
-    linhas = [f"### {zona}{' · ' + o['rua'] if o.get('rua') else ''} — {_brl(total)}/mês com tudo"]
+    linhas = [f"### {zona}{' · ' + o['rua'] if o.get('rua') else ''} — aluguel {_brl(o['aluguel'])}"]
     foto = aval.get('foto') or (o.get('fotos') or [None])[0]
     if foto:
         linhas.append(f"<img src=\"{foto}\" width=\"420\">")
+    if aval.get('resumo'):
+        linhas.append(f"- **Pelas fotos:** {aval['resumo']}")
     partes = [f"aluguel {_brl(o['aluguel'])}"]
     if o.get('pacote') and o.get('cond_fonte') == 'pacote':
         partes.append(f"taxas {_brl(cond)} (pacote do anúncio)")
@@ -237,29 +292,27 @@ def _bloco(grupo, agora, aval):
         partes.append('condomínio incluso')
     if o.get('iptu'):
         partes.append(f"IPTU {_brl(o['iptu'])}")
-    partes.append(f"seguro-fiança {_brl(SEGURO * o['aluguel'])}")
-    linhas.append('- ' + ' + '.join(partes))
+    linhas.append(f"- {_brl(total)}/mês: {' + '.join(partes)} (seguro-fiança, se precisar: +{_brl(SEGURO * o['aluguel'])})")
     mob = {'texto': 'mobiliado', 'marcado': 'mobiliado (marcado no site)', 'semi': 'semimobiliado',
-           'sem info': 'planejados (não diz se é mobiliado)'}[o['mobilia']]
-    ficha = [f"{o['quartos']} quartos" + (f" ({o['suites']} suíte)" if o.get('suites') else '')]
+           'sem info': 'mobília: o anúncio não diz'}.get(o.get('mobilia'), '')
+    ficha = [f"{o['quartos']} quartos" + (f" ({o['suites']} suíte)" if o.get('suites') else '')] if o.get('quartos') else []
     if o.get('area'):
         ficha.append(f"{round(o['area'])} m²")
-    ficha.append(mob)
+    ficha += [mob] if mob else []
     if o.get('escritorio'):
         ficha.append('cita escritório / home office')
     linhas.append('- ' + ' · '.join(ficha))
-    if aval.get('resumo'):
-        linhas.append(f"- **Pelas fotos:** {aval['resumo']}")
-    aprox = '' if o.get('local_exato') else '~'
-    linhas.append(f"- praia {aprox}{a_pe(o['praia_m'])} min a pé · Humains {aprox}{de_carro(o['humains_m'])} min de carro"
-                  + (f" · prédio {o['predio']}" if o.get('predio') else ''))
+    if o.get('praia_m') is None or o.get('humains_m') is None:
+        linhas.append('- **endereço não informado**: pergunte antes de visitar')
+    else:
+        aprox = '' if o.get('local_exato') else '~'
+        linhas.append(f"- praia {aprox}{a_pe(o['praia_m'])} min a pé · Humains {aprox}{de_carro(o['humains_m'])} min de carro"
+                      + (f" · prédio {o['predio']}" if o.get('predio') else ''))
     quando = []
     if o.get('baixou_de') and o['baixou_de'] > o['aluguel']:
         quando.append(f"**baixou {_brl(o['baixou_de'] - o['aluguel'])}** (era {_brl(o['baixou_de'])})")
     if o.get('publicado'):
         quando.append('publicado ' + _data(o['publicado']))
-    if o.get('atualizado') and o['atualizado'] != o.get('publicado'):
-        quando.append('mexido ' + _data(o['atualizado']))
     quando.append(f"anunciante: {o.get('anunciante') or '—'}")
     linhas.append('- ' + ' · '.join(quando))
     links, vistos = [], {}
@@ -275,66 +328,19 @@ def _bloco(grupo, agora, aval):
     return '\n'.join(linhas)
 
 
-def _como_o_do_piata(novos, agora):
-    """Fica só com os grupos como o do Piatã. Cada imóvel é conferido uma vez (avaliacoes.json); o que só o texto conferiu
-    (sem a chave do Claude) ou foi conferido com outro pedido (VERSAO) é conferido de novo."""
-    avals = s.load('avaliacoes.json', {})
-    limite = time.strftime('%Y-%m-%d', time.localtime(agora - GUARDA_DIAS * 86400))
-    avals = {k: v for k, v in avals.items() if (v.get('quando') or '') >= limite and v.get('versao') == VERSAO}
-    cliente = _cliente()
-    if not cliente:
-        print('aviso: sem ANTHROPIC_API_KEY, confere só pelo texto do anúncio')
-    ficam, feitas = [], 0
-    for g in novos:
-        k = _chave(g[0])
-        v = avals.get(k)
-        if not v or (cliente and v.get('metodo') == 'texto'):
-            if not cliente:
-                v = avaliar_texto(g[0])
-            elif feitas >= MAX_IA:
-                continue   # fica para a próxima rodada
-            else:
-                feitas += 1
-                try:
-                    v = avaliar_ia(g[0], cliente)
-                except Exception as ex:   # chave errada, sem crédito, fora do ar: tenta na próxima rodada
-                    print(f"  {g[0]['id']}: o Claude não respondeu ({type(ex).__name__}: {str(ex)[:200]})")
-                    v = None
-                if v is None:
-                    continue
-            v.update(quando=time.strftime('%Y-%m-%d %H:%M'), versao=VERSAO)
-            avals[k] = v
-        if v['ok']:
-            ficam.append(g)
-    s.save('avaliacoes.json', avals)
-    print(f'aviso: {len(novos)} novo(s) no perfil, {feitas} conferido(s) pelo Claude agora, {len(ficam)} como o do Piatã')
-    return ficam, avals
-
-
-def preparar(anuncios, publicados_ids, pasta):
-    """Escreve alerta_titulo.txt e alerta.md em `pasta` quando há imóvel novo que serve; marca os avisados em avisos.json."""
+def avisar(grupos, avals, pasta):
+    """Escreve alerta_titulo.txt e alerta.md em `pasta` com os "como o do Piatã" ainda não avisados (avisos.json)."""
     for n in ('alerta_titulo.txt', 'alerta.md'):
         try:
             os.remove(os.path.join(pasta, n))
         except OSError:
             pass
-    agora = time.time()
-    no_ar = [anuncios[k] for k in publicados_ids if k in anuncios]
-    primeira = {}
-    for o in anuncios.values():
-        src, v = o.get('_src') or o.get('fonte'), o.get('visto_em') or ''
-        if v and (src not in primeira or v < primeira[src]):
-            primeira[src] = v
     avisados = s.load('avisos.json', {})
-    grupos = {}
-    for o in sorted(no_ar, key=lambda o: o.get('fonte') != 'ZAP'):
-        if serve(o) and novo(o, primeira, agora):
-            grupos.setdefault(_chave(o), []).append(o)
-    novos = [g for k, g in grupos.items() if k not in avisados and not any(x['id'] in avisados for x in g)]
-    novos, avals = _como_o_do_piata(novos, agora)
+    novos = [g for k, g in grupos.items() if (avals.get(k) or {}).get('v') == 'piata'
+             and (g[0].get('quartos') or 0) >= 2 and k not in avisados and not any(x['id'] in avisados for x in g)]
     if not novos:
         return 0
-    novos.sort(key=lambda g: custo(g[0])[0])
+    novos.sort(key=lambda g: g[0]['aluguel'])
     quando = time.strftime('%Y-%m-%d %H:%M')
     for g in novos:
         avisados[_chave(g[0])] = quando
@@ -343,15 +349,14 @@ def preparar(anuncios, publicados_ids, pasta):
     s.save('avisos.json', avisados)
     o = novos[0][0]
     if len(novos) == 1:
-        titulo = f"Apê como o do Piatã: {o.get('bairro') or 'BC'} · aluguel {_brl(o['aluguel'])} · {_brl(custo(o)[0])} com tudo"
+        titulo = f"Apê como o do Piatã: {o.get('bairro') or 'BC'} · aluguel {_brl(o['aluguel'])}"
     else:
-        titulo = f"{len(novos)} apês como o do Piatã (a partir de {_brl(custo(o)[0])} com tudo)"
-    quem = 'o Claude conferiu pelas fotos' if any(avals[_chave(g[0])]['metodo'] == 'ia' for g in novos) else 'o anúncio diz'
+        titulo = f"{len(novos)} apês como o do Piatã (aluguel a partir de {_brl(o['aluguel'])})"
     corpo = [f"@{DONO} {'apareceu um apartamento' if len(novos) == 1 else f'apareceram {len(novos)} apartamentos'} "
-             f"como o do Piatã ({quem}): cozinha integrada à sala, cozinha bonita e bem montada, piso sem cara de "
-             f"antigo. E servem: aluguel de {_brl(ALUGUEL_MIN)} a {_brl(ALUGUEL_MAX)}, 2+ quartos, mobiliado ou semi, até "
-             f"{_brl(TOTAL_MAX)} com seguro-fiança, até {PRAIA_A_PE} min a pé da praia e {HUMAINS_CARRO} min de carro da Humains.", '']
-    corpo += [_bloco(g, agora, avals[_chave(g[0])]) + '\n' for g in novos[:MAX_POR_AVISO]]
+             f"como o do Piatã, conferido(s) pelo Claude nas fotos: cozinha integrada à sala, cozinha bonita e bem montada, "
+             f"piso sem cara de antigo. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2+ quartos, até "
+             f"{PRAIA_A_PE} min a pé da praia e {HUMAINS_CARRO} min de carro da Humains ({HUMAINS_CARRO_ITAJAI} em Itajaí).", '']
+    corpo += [_bloco(g, avals[_chave(g[0])]) + '\n' for g in novos[:MAX_POR_AVISO]]
     if len(novos) > MAX_POR_AVISO:
         corpo.append(f"…e mais {len(novos) - MAX_POR_AVISO} no app.")
     corpo.append(f"\n[Abrir o app]({APP}) · Tempos estimados pela distância; ~ = endereço aproximado.")
@@ -360,3 +365,24 @@ def preparar(anuncios, publicados_ids, pasta):
     with open(os.path.join(pasta, 'alerta.md'), 'w') as f:
         f.write('\n'.join(corpo))
     return len(novos)
+
+
+def processar(anuncios, pub, pasta):
+    """Depois da busca: o Claude confere o que falta, cada anúncio publicado ganha o veredito (pub[i]['ia']) e sai o
+    aviso dos novos "como o do Piatã". `pub` são os anúncios do app (resumidos); `anuncios`, os completos."""
+    agora = time.time()
+    grupos = {}
+    for x in sorted(pub, key=lambda x: x.get('fonte') != 'ZAP'):
+        o = anuncios.get(x['id']) or x
+        grupos.setdefault(_chave(o), []).append(o)
+    avals = conferir(grupos, agora)
+    por_id = {o['id']: avals[k] for k, g in grupos.items() if k in avals for o in g}
+    for x in pub:
+        if x['id'] in por_id:
+            x['ia'] = para_o_app(por_id[x['id']])
+    conta = {}
+    for k in grupos:
+        v = (avals.get(k) or {}).get('v') or 'a conferir'
+        conta[v] = conta.get(v, 0) + 1
+    print('Claude: ' + ', '.join(f'{n} {v}' for v, n in sorted(conta.items())))
+    return avisar(grupos, avals, pasta)

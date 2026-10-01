@@ -16,7 +16,8 @@ USA_CHROME = False
 FONTE = 'Imobiliárias (Castel Digital)'
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
 CIDADE_BC = '4436'
-MAX_ALUGUEL = 9000
+import server
+MIN_ALUGUEL, MAX_ALUGUEL = server.ALUGUEL_MIN, server.ALUGUEL_MAX
 PAUSA = 0.3          # entre pedidos ao mesmo site
 SITES_PARALELOS = 5  # sites lidos ao mesmo tempo (cada site recebe um pedido por vez)
 
@@ -368,7 +369,7 @@ def montar(slug, nome, base, c, d, fins):
     diaria = next((v for l, v, p in d['precos'] if v and 'diaria' in p), None)
     if mensal is None and not d['precos'] and '2' in fins and 'diaria' not in norm(c['preco']) and 'R$' in c['preco']:
         mensal = reais(c['preco'])   # anúncio sem bloco de preço: vale o do card
-    if mensal is not None and mensal > MAX_ALUGUEL:
+    if mensal is not None and not MIN_ALUGUEL <= mensal <= MAX_ALUGUEL:
         return None
     quartos = d.get('quartos', c['quartos'])
     if not quartos:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
@@ -414,7 +415,7 @@ def ler_site(slug, nome, base, progresso):
             fins.setdefault(c['id'], set()).add(fin)
             if fin == '2' or c['id'] not in por_id:
                 por_id[c['id']] = c
-    # filtro básico pelo card: BC, apartamento, 1+ quartos, aluguel mensal até 9.000
+    # filtro básico pelo card: BC, apartamento, 1+ quartos, aluguel mensal na faixa do perfil (server.ALUGUEL_MIN a ALUGUEL_MAX)
     alvo = []
     for k, c in por_id.items():
         if 'balneario camboriu' not in norm(c['cidade']) or not e_apartamento(c):
@@ -422,7 +423,7 @@ def ler_site(slug, nome, base, progresso):
         if c['quartos'] is not None and c['quartos'] < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
             continue
         p = norm(c['preco'])
-        if '2' in fins[k] and 'diaria' not in p and (reais(c['preco']) or 0) > MAX_ALUGUEL:
+        if '2' in fins[k] and 'diaria' not in p and not MIN_ALUGUEL <= (reais(c['preco']) or MIN_ALUGUEL) <= MAX_ALUGUEL:
             continue
         alvo.append(c)
     out = []

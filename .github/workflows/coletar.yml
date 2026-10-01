@@ -2,7 +2,7 @@ name: Coletar anúncios
 
 on:
   schedule:
-    - cron: '17 */3 * * *'   # a cada 3 horas (o GitHub às vezes atrasa alguns minutos)
+    - cron: '17 * * * *'   # a cada hora (o GitHub às vezes atrasa alguns minutos); só a faixa do perfil, uns 5 min
   workflow_dispatch:   # e quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
     inputs:
       somente:
@@ -23,7 +23,7 @@ concurrency:
 jobs:
   coletar:
     runs-on: ubuntu-latest
-    timeout-minutes: 60   # com 1 quarto as buscas ficaram maiores
+    timeout-minutes: 45
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -48,10 +48,10 @@ jobs:
           TZ: America/Sao_Paulo
           SOMENTE: ${{ inputs.somente }}
           FACEBOOK_COOKIES: ${{ secrets.FACEBOOK_COOKIES }}   # sessão do Facebook (Settings → Secrets → Actions); vazio = sem login
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}  # o Claude confere as fotos do aviso; vazio = só o texto do anúncio
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}  # o Claude confere as fotos; vazio = ninguém confere (e não sai aviso)
         run: python coletor/coletar.py
 
-      - name: Avisar apartamento novo (e-mail pelo GitHub)
+      - name: Avisar apartamento como o do Piatã (e-mail pelo GitHub)
         continue-on-error: true   # se falhar, a busca segue
         env:
           GH_TOKEN: ${{ github.token }}
@@ -60,7 +60,7 @@ jobs:
             gh issue create --repo "${{ github.repository }}" --title "$(cat dados/alerta_titulo.txt)" --body-file dados/alerta.md
             rm -f dados/alerta.md dados/alerta_titulo.txt
           else
-            echo "nada novo que sirva"
+            echo "nada novo como o do Piatã"
           fi
 
       - name: Guardar o histórico

@@ -7,13 +7,15 @@ anúncio, que é aberta uma vez e guardada em dados/facebook_fichas.json.
 """
 import json, os, re, time
 
+import server
+
 NOME = 'Facebook Marketplace'
 USA_CHROME = True
 
 CIDADE = '108416972513126'   # Balneário Camboriú no Marketplace
-FAIXAS = [(2000, 3000), (3000, 3600), (3600, 4100), (4100, 4600), (4600, 5100), (5100, 5700), (5700, 7000)]
+FAIXAS = [(lo, min(lo + 500, server.ALUGUEL_MAX)) for lo in range(server.ALUGUEL_MIN, server.ALUGUEL_MAX, 500)]   # só a faixa do perfil
 CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'dados', 'facebook_fichas.json')
-PRAZO_FICHAS = 900   # segundos por busca abrindo páginas de anúncio (~120 páginas)
+PRAZO_FICHAS = 300   # segundos por busca abrindo páginas de anúncio (~40 páginas; o resto fica para a próxima hora)
 RENOVA_H = 36        # as fotos do Facebook vêm com link que vence em ~5 dias: relê o anúncio antes
 ROLAGENS = 4         # vezes que rola cada busca para carregar mais anúncios (logado)
 _SAMESITE = {'lax': 'Lax', 'strict': 'Strict', 'no_restriction': 'None', 'none': 'None'}
@@ -231,7 +233,7 @@ def buscar(b, progresso=lambda m: None):
         txt = (b.js('document.body ? document.body.innerText : ""') or '')[:160].replace('\n', ' | ')
         raise RuntimeError(f"o Facebook não mostrou anúncios sem login (página: {(b.js('document.title') or '')[:50]} | {txt})")
     alvo = {i: x for i, x in lista.items()
-            if _regiao(x) and not re.search(r'\bcasa\b|kitnet|sala comercial|quarto para', x['titulo'], re.I)}
+            if _regiao(x) and server.na_faixa(x['preco']) and not re.search(r'\bcasa\b|kitnet|sala comercial|quarto para', x['titulo'], re.I)}
     try:
         cache = json.load(open(CACHE))
     except Exception:

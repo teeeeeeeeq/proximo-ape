@@ -19,7 +19,8 @@ SITES = (  # slug, endereço, nome da imobiliária, coordenada do escritório (p
     ('mundial', 'https://imoveismundial.com.br', 'Imóveis Mundial'),
     ('primme', 'https://primmeimoveis.com', 'Primme Imóveis'),
 )
-PRECO_MAX = 9000
+import server
+PRECO_MIN, PRECO_MAX = server.ALUGUEL_MIN, server.ALUGUEL_MAX
 
 
 # ---------- texto e números
@@ -114,7 +115,7 @@ def passa(a):
     if not t or t['_dorm'] < 1:   # 1 quarto entra; só fica se tiver espaço para escritório (coletar.py)
         return False
     v = valor(t.get('Valor'))
-    return v is None or v <= PRECO_MAX
+    return v is None or PRECO_MIN <= v <= PRECO_MAX
 
 
 def fotos_de(d):

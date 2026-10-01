@@ -24,14 +24,15 @@ USA_CHROME = True
 BASE = 'https://www.imovelweb.com.br'
 LISTA = BASE + '/apartamentos-aluguel-balneario-camboriu-sc-mais-de-2-quartos-menos-9000-reales.html'
 CIDADE = '108357'          # id do Imovelweb para Balneário Camboriú
-PRECO_MAX = 9000
+import server
+PRECO_MIN, PRECO_MAX = server.ALUGUEL_MIN, server.ALUGUEL_MAX
 PRAZO = 240                # segundos desde o início: depois disso não pede mais fichas
 LOTE = 8                   # fichas pedidas ao mesmo tempo
 RELER_H = 12               # ficha guardada há mais que isso pode ser relida...
 RELER_MAX = 100            # ...mas no máximo estas por rodada (as mais antigas primeiro)
 CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'dados', 'imovelweb_fichas.json')
 
-CORPO = {"q": None, "direccion": None, "moneda": 3, "preciomin": None, "preciomax": PRECO_MAX, "services": "", "general": "",
+CORPO = {"q": None, "direccion": None, "moneda": 3, "preciomin": PRECO_MIN, "preciomax": PRECO_MAX, "services": "", "general": "",
          "searchbykey": "", "amenidades": "", "caracteristicasprop": None, "comodidades": "", "disposicion": None, "roomType": "",
          "outside": "", "areaPrivativa": "", "areaComun": "", "multipleRets": "", "tipoDePropiedad": "2", "subtipoDePropiedad": None,
          "tipoDeOperacion": "2", "garages": None, "antiguedad": None, "expensasminimo": None, "expensasmaximo": None,
@@ -371,7 +372,7 @@ def montar(k, p, f, genericos):
     if quartos is not None and quartos < 2:
         return None
     aluguel = aluguel_de(p)
-    if aluguel is not None and aluguel > PRECO_MAX:
+    if aluguel is not None and not PRECO_MIN <= aluguel <= PRECO_MAX:
         return None
 
     rua = rua_de((p.get('postingLocation') or {}).get('address'))
