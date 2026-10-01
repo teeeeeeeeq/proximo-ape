@@ -352,15 +352,16 @@ def rua_para_mostrar(r):
     return re.split(r'\s+-\s+de\s|\s+-\s+até\s|\s+-\s+lado', r or '')[0].strip()
 
 
-def pacote_do_texto(texto, aluguel):
-    """Maior valor mensal "com tudo" declarado no texto (pacote, total, com taxas). Ignora venda, caução, seguro e diária."""
+def pacote_do_texto(texto, aluguel, ignorar=()):
+    """Maior valor mensal "com tudo" declarado no texto (pacote, total, com taxas). Ignora venda, caução, seguro e diária,
+    e os aluguéis antigos do anúncio (ignorar): baixou o preço no site e a descrição ainda fala do valor de antes."""
     if not aluguel:
         return None
     t = norm(texto)
     melhor = None
     for m in re.finditer(r'r\$\s*(\d{1,2}\.?\d{3}|\d{4,5})(,\d{2})?', t):
         v = float(m.group(1).replace('.', ''))
-        if not (aluguel < v <= aluguel * 2.2):
+        if not (aluguel < v <= aluguel * 2.2) or v in ignorar:
             continue
         antes, depois = t[max(0, m.start() - 45):m.start()], t[m.end():m.end() + 30]
         if re.search(r'venda|vendo|compra|caucao|deposito|fianca|seguro|diaria|por dia|temporada|reveillon|natal', antes + depois):
@@ -458,7 +459,8 @@ def completar(o):
     if 'cond_site' not in o:
         o['cond_site'] = o.get('cond')
     o['cond'], o['cond_fonte'] = condominio(o['cond_site'], txt)
-    pac = max(o.get('pacote_site') if 'pacote_site' in o else (o.get('pacote') or 0), pacote_do_texto(txt, o.get('aluguel')) or 0)
+    pac = max(o.get('pacote_site') if 'pacote_site' in o else (o.get('pacote') or 0),
+              pacote_do_texto(txt, o.get('aluguel'), {p[1] for p in (o.get('precos') or [])[:-1]}) or 0)
     if 'pacote_site' not in o:
         o['pacote_site'] = o.get('pacote') or 0
     o['pacote'] = pac if o.get('aluguel') and pac > o['aluguel'] else None
@@ -924,6 +926,28 @@ def rodar_fonte(nome, usa_chrome, fn, andamento):
     return itens
 
 
+BAIXA_MIN = 50   # R$; abaixo disso não marca como baixa de preço
+
+
+def registrar_preco(o, antigo, agora, antes):
+    """Guarda o aluguel em precos ([quando, valor], só quando muda) e, se a última mudança foi para baixo,
+    baixou_de (o valor antes da sequência de baixas) e baixou_em."""
+    hist = [list(p) for p in (antigo or {}).get('precos') or []]
+    if not hist and (antigo or {}).get('aluguel'):   # anúncio de antes do histórico: vale o preço da busca anterior
+        hist = [[antes or antigo.get('visto_em') or agora, antigo['aluguel']]]
+    if o.get('aluguel') and (not hist or hist[-1][1] != o['aluguel']):
+        hist.append([agora, o['aluguel']])
+    o['precos'] = hist[-12:]
+    o.pop('baixou_de', None)
+    o.pop('baixou_em', None)
+    if len(hist) >= 2 and hist[-1][1] < hist[-2][1]:
+        i = len(hist) - 2
+        while i > 0 and hist[i - 1][1] > hist[i][1]:
+            i -= 1
+        if hist[i][1] - hist[-1][1] >= BAIXA_MIN:
+            o['baixou_de'], o['baixou_em'] = hist[i][1], hist[-1][0]
+
+
 def atualizar():
     from concurrent.futures import ThreadPoolExecutor
     if not LOCK.acquire(blocking=False):
@@ -972,6 +996,7 @@ def atualizar():
                 o['desc'] = antigos[k]['desc']
                 completar(o)
             o['no_ar'] = True
+            registrar_preco(o, antigos.get(k), agora, meta.get('ultima'))
         rotulo = {n: n for n in ok}
         for k, o in antigos.items():
             if k not in novos:
