@@ -80,7 +80,6 @@ select{font:14px var(--body);padding:7px 10px;border:1px solid var(--line);borde
 .ia{margin:0;font-size:13.5px;padding:8px 10px;border-radius:10px;background:var(--sea-soft)}
 .ia b{font-weight:600}
 .ia.nao{background:var(--warn-soft)}
-.ia.sem{background:transparent;border:1px dashed var(--line);color:var(--muted)}
 .seg button small{opacity:.65;font-size:11px;margin-left:3px}
 .money s{color:var(--muted)}
 .money .drop{color:var(--good);font-weight:600}
@@ -131,14 +130,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     <p class="stat" id="stat">Atualiza sozinho a cada hora, só com o que está no perfil. Para buscar agora, toque abaixo e depois em "Run workflow" (leva uns 5 minutos).</p>
     <a class="refresh" id="refresh" href="https://github.com/teeeeeeeeq/proximo-ape/actions/workflows/coletar.yml" target="_blank" rel="noopener">Buscar agora no GitHub</a>
     <div class="fb">
-      <a href="https://www.facebook.com/marketplace/108416972513126/propertyrentals?minPrice=3500&amp;maxPrice=5500&amp;minBedrooms=2&amp;sortBy=creation_time_descend&amp;exact=false&amp;latitude=-26.975&amp;longitude=-48.645&amp;radius=10" target="_blank" rel="noopener">Aluguéis no Facebook Marketplace ↗</a>
+      <a href="https://www.facebook.com/marketplace/108416972513126/propertyrentals?minPrice=3500&amp;maxPrice=6000&amp;minBedrooms=2&amp;sortBy=creation_time_descend&amp;exact=false&amp;latitude=-26.975&amp;longitude=-48.645&amp;radius=10" target="_blank" rel="noopener">Aluguéis no Facebook Marketplace ↗</a>
       <a href="https://www.facebook.com/groups/aluguelanualbc/" target="_blank" rel="noopener">Grupo Aluguel Anual BC ↗</a>
     </div>
 
     <fieldset><legend>Aluguel e tamanho</legend>
       <div class="row"><span>Aluguel até</span><b id="v-aluguel"></b></div>
-      <input type="range" id="aluguel" min="3500" max="5500" step="100">
-      <p class="hint">O app só traz aluguel de R$ 3.500 a 5.500, só o aluguel (o card mostra o total com condomínio e IPTU).</p>
+      <input type="range" id="aluguel" min="3500" max="6000" step="100">
+      <p class="hint">O app só traz aluguel de R$ 3.500 a 6.000, só o aluguel (o card mostra o total com condomínio e IPTU).</p>
       <div class="row"><span>Área mínima</span><b id="v-area"></b></div>
       <input type="range" id="area" min="30" max="150" step="5">
       <div class="chips" id="quartos">
@@ -161,7 +160,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       <input type="range" id="hum" min="2" max="15" step="1">
       <p class="hint">O app só traz até 10 min a pé da praia e até 10 min de carro da Humains (15 em Itajaí). Tempo estimado pela distância: as ruas dão volta e no Centro o trânsito é lento.</p>
       <label class="check"><input type="checkbox" id="semlocal"> Incluir anúncios sem localização</label>
-      <div class="chips" id="bairros"></div>
     </fieldset>
 
     <fieldset><legend>Mobília</legend>
@@ -174,7 +172,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     </fieldset>
 
     <fieldset><legend>Claude</legend>
-      <p class="hint" style="margin-top:0">O Claude olha as fotos de cada anúncio: cozinha integrada à sala, cozinha bonita e bem montada, piso sem cara de antigo. Sem fotos de dentro, estima a chance pelo prédio, pelo preço e pelo texto. Confere uns 40 por hora; os novos primeiro.</p>
+      <p class="hint" style="margin-top:0">Sozinho, a cada hora, antes de o anúncio chegar aqui, o Claude olha as fotos: cozinha integrada à sala, cozinha bonita e bem montada, piso sem cara de antigo (sem fotos de dentro, estima a chance pelo prédio, pelo preço e pelo texto). Os "como o do Piatã" vêm primeiro na lista e por e-mail; os que ele descarta somem.</p>
       <label class="check"><input type="checkbox" id="ianao"> Mostrar também os que o Claude descartou</label>
     </fieldset>
 
@@ -200,15 +198,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       <div class="count" id="count"></div>
       <div class="tools">
         <div class="seg" id="show">
+          <button type="button" data-s="todos">Todos</button>
           <button type="button" data-s="piata">Como o do Piatã</button>
           <button type="button" data-s="perguntar">Vale perguntar</button>
-          <button type="button" data-s="todos">Todos</button>
           <button type="button" data-s="novos">Novos</button>
           <button type="button" data-s="baixaram">Baixaram</button>
           <button type="button" data-s="favoritos">Favoritos</button>
           <button type="button" data-s="descartados">Descartados</button>
         </div>
         <select id="sort" aria-label="Ordenar">
+          <option value="melhores">Melhores primeiro</option>
           <option value="recentes">Mais recentes</option>
           <option value="custo">Menor custo</option>
           <option value="praia">Mais perto da praia</option>
@@ -225,10 +224,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
-// o coletor já traz só o perfil (aluguel de 3.500 a 5.500, 2+ quartos ou 1 com escritório, pelo menos semimobiliado,
+// o coletor já traz só o perfil (aluguel de 3.500 a 6.000, 2+ quartos ou 1 com escritório, pelo menos semimobiliado,
 // até 10 min a pé da praia, até 10 min de carro da Humains ou 15 em Itajaí); aqui dá para apertar mais
-const PERFIL = { semFonte: [], aluguel: 5500, area: 45, quartos: 2, esc: true, praia: 10, hum: 15, semlocal: true, cond: 2000, bairros: [], mob: ['texto', 'marcado', 'semi', 'sem info'], ianao: false, dias: 21, q: '', show: 'piata', sort: 'recentes' };
-const CHAVE = 'apto-filtros-v3';   // v2 era o perfil antigo (custo total, todos os aluguéis): recomeça do perfil novo
+const PERFIL = { semFonte: [], aluguel: 6000, area: 45, quartos: 2, esc: true, praia: 10, hum: 15, semlocal: true, cond: 2000, mob: ['texto', 'marcado', 'semi', 'sem info'], ianao: false, dias: 21, q: '', show: 'todos', sort: 'melhores' };
+const CHAVE = 'apto-filtros-v4';   // v2: perfil antigo; v3: abria só nos aprovados pelo Claude e ia até R$ 5.500
 // minutos de carro pela distância em linha reta: as ruas dão ~35% de volta, os primeiros 2 km saem a ~20 km/h
 // (sinais e trânsito do Centro), o resto a ~35 km/h, e 1 min para sair e estacionar
 const carro = m => { if (m == null) return null; const r = m * 1.35; return Math.max(1, Math.round(1 + Math.min(r, 2000) / 333 + Math.max(r - 2000, 0) / 583)); };
@@ -238,7 +237,7 @@ let F = JSON.parse(JSON.stringify(PERFIL));
 try {
   const s = JSON.parse(localStorage.getItem(CHAVE) || 'null');
   if (s) F = Object.assign(F, s);
-  else { const v2 = JSON.parse(localStorage.getItem('apto-filtros-v2') || 'null'); if (v2 && v2.ajustes) F.ajustes = v2.ajustes; }
+  else { const v = JSON.parse(localStorage.getItem('apto-filtros-v3') || localStorage.getItem('apto-filtros-v2') || 'null'); if (v && v.ajustes) F.ajustes = v.ajustes; }
 } catch (e) {}
 let ALL = [], MARCAS = {}, FONTES = {}, PRIMEIRA = {}, shown = 40;
 const src = o => o._src || o.fonte;
@@ -269,7 +268,7 @@ async function carregar() {
   ALL.forEach(o => { const s = src(o); if (o.visto_em && !(PRIMEIRA[s] <= o.visto_em)) PRIMEIRA[s] = o.visto_em; });
   const conf = ALL.filter(o => o.ia).length;
   $('sub').textContent = `${ALL.length.toLocaleString('pt-BR')} anúncios no perfil · ${conf.toLocaleString('pt-BR')} conferidos pelo Claude · última busca em ${fmtData(d.ultima)}`;
-  montarBairros(); montarFontes(); pintarFiltros(); render();
+  montarFontes(); pintarFiltros(); render();
 }
 function fmtData(s) { if (!s) return '—'; const [d, h] = s.split(' '); return d.split('-').reverse().slice(0, 2).join('/') + (h ? ' às ' + h : ''); }
 function marca(o) { return MARCAS[o.id] || (o.outros || []).map(x => MARCAS[x.id]).find(Boolean) || null; }
@@ -315,7 +314,6 @@ function filtros(o) {
   if (o.area && o.area < F.area) return false;
   // 1 quarto só chega aqui com espaço para escritório (citado no anúncio ou 55 m²+): entra com a opção ligada
   if (!o.quartos || o.quartos < F.quartos) { if (!(o.quartos === 1 && F.esc && F.quartos <= 2)) return false; }
-  if (F.bairros.length && !F.bairros.includes(zona(o))) return false;
   if (o.praia_m == null || o.humains_m == null) { if (!F.semlocal) return false; }
   if (o.praia_m != null && F.praia < PRAIA_MAX && aPe(o.praia_m) > F.praia) return false;
   if (o.humains_m != null && F.hum < HUM_MAX && carro(o.humains_m) > F.hum) return false;
@@ -324,7 +322,9 @@ function filtros(o) {
 }
 // favoritos e descartados aparecem com qualquer filtro
 const passa = (o, aba = F.show) => naAba(o, aba) && (aba === 'favoritos' || aba === 'descartados' || filtros(o));
+const NIVEL = { piata: 0, perguntar: 1, nao: 3 };   // sem veredito (o Claude ainda não olhou) = 2
 const SORTS = {
+  melhores: (a, b) => (NIVEL[ia(a)] ?? 2) - (NIVEL[ia(b)] ?? 2) || SORTS.recentes(a, b),
   recentes: (a, b) => novidade(b).localeCompare(novidade(a)) || (b.publicado || '').localeCompare(a.publicado || ''),
   custo: (a, b) => a.fixo - b.fixo || a.aluguel - b.aluguel,
   praia: (a, b) => (a.praia_m ?? 1e9) - (b.praia_m ?? 1e9),
@@ -342,7 +342,7 @@ function render() {
   const faltam = ALL.filter(o => !o.ia && filtros(o)).length;
   if (!list.length) g.innerHTML = `<p class="empty">${(F.show === 'piata' || F.show === 'perguntar') && faltam
     ? `Nenhum por enquanto. O Claude ainda vai conferir ${faltam.toLocaleString('pt-BR')} ${faltam === 1 ? 'anúncio' : 'anúncios'} (uns 40 por hora, os novos primeiro); enquanto isso, veja a aba Todos.`
-    : 'Nenhum anúncio com esses filtros. Afrouxe o aluguel, a distância ou os bairros.'}</p>`;
+    : 'Nenhum anúncio com esses filtros. Afrouxe o aluguel ou a distância.'}</p>`;
   list.slice(0, shown).forEach(o => g.appendChild(card(o)));
   $('more').hidden = list.length <= shown;
 }
@@ -364,7 +364,7 @@ function card(o) {
   if (bh) facts.push(`<span class="f">Humains ${t}${bh} min de carro${ap}</span>`);
   facts.push(`<span class="f plain">${{ texto: 'Mobiliado (no texto)', marcado: 'Mobiliado (só marcado)', semi: 'Semi-mobiliado', nao: 'Sem mobília', 'sem info': 'Mobília não informada' }[o.mobilia]}</span>`);
   const COZ = { sim: 'cozinha integrada à sala', nao: 'cozinha fechada', incerto: 'não dá para ver se a cozinha é integrada' };
-  const veredito = !I.v ? '<p class="ia sem">O Claude ainda não conferiu as fotos deste.</p>'
+  const veredito = !I.v ? ''
     : `<p class="ia${I.v === 'nao' ? ' nao' : ''}"><b>${I.v === 'piata' ? 'Como o do Piatã' : I.v === 'perguntar' ? 'Vale perguntar (chance ' + (I.chance === 'media' ? 'média' : I.chance) + ')' : 'O Claude descartou'}:</b>
       ${esc([COZ[I.cozinha_integrada], I.cozinha === 'sem foto' ? 'cozinha não aparece' : 'cozinha ' + I.cozinha, I.piso === 'incerto' ? '' : 'piso ' + I.piso].filter(Boolean).join(' · '))}.
       ${esc(I.resumo || '')}</p>`;
@@ -414,12 +414,6 @@ function marcar(o, v) {
   render();
 }
 
-function montarBairros() {
-  const c = {}; ALL.forEach(o => { const z = zona(o); if (z) c[z] = (c[z] || 0) + 1; });
-  F.bairros.forEach(z => { if (!(z in c)) c[z] = 0; });
-  const top = Object.entries(c).sort((a, b) => b[1] - a[1]).slice(0, 24);
-  $('bairros').innerHTML = top.map(([b, n]) => `<button type="button" class="chip" data-b="${esc(b)}">${esc(b)} <small>${n}</small></button>`).join('');
-}
 function montarFontes() {
   const c = {}; ALL.forEach(o => { c[src(o)] = (c[src(o)] || 0) + 1; });
   Object.keys(FONTES).forEach(n => { if (!(n in c)) c[n] = 0; });
@@ -427,7 +421,7 @@ function montarFontes() {
   $('fstat').innerHTML = Object.entries(FONTES).map(([n, i]) => i.erro ? `<li class="e">${esc(n)}: falhou (${esc(i.erro.slice(0, 80))})</li>` : `<li>${esc(n)}: ${i.n} anúncios · ${fmtData(i.quando)}</li>`).join('');
 }
 function pintarFiltros() {
-  $('aluguel').value = F.aluguel; $('v-aluguel').textContent = F.aluguel >= 5500 ? 'R$ 5.500 (o perfil)' : brl(F.aluguel);
+  $('aluguel').value = F.aluguel; $('v-aluguel').textContent = F.aluguel >= 6000 ? 'R$ 6.000 (o perfil)' : brl(F.aluguel);
   $('area').value = F.area; $('v-area').textContent = F.area + ' m²';
   $('cond').value = F.cond; $('v-cond').textContent = F.cond >= 2000 ? 'qualquer' : brl(F.cond);
   $('praia').value = F.praia; $('v-praia').textContent = 'até ' + F.praia + ' min';
@@ -436,7 +430,6 @@ function pintarFiltros() {
   $('semlocal').checked = F.semlocal; $('ianao').checked = F.ianao; $('q').value = F.q; $('sort').value = F.sort;
   document.querySelectorAll('#quartos .chip[data-q]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.q === F.quartos)));
   $('esc').setAttribute('aria-pressed', String(!!F.esc));
-  document.querySelectorAll('#bairros .chip').forEach(b => b.setAttribute('aria-pressed', String(F.bairros.includes(b.dataset.b))));
   document.querySelectorAll('#mob .chip').forEach(b => b.setAttribute('aria-pressed', String(F.mob.includes(b.dataset.m))));
   document.querySelectorAll('#fontes .chip').forEach(b => b.setAttribute('aria-pressed', String(!(F.semFonte || []).includes(b.dataset.f))));
   document.querySelectorAll('#show button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.s === F.show)));
@@ -448,7 +441,6 @@ $('ianao').onchange = e => { F.ianao = e.target.checked; mudou(); };
 let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { F.q = e.target.value.trim(); mudou(); }, 250); });
 $('sort').onchange = e => { F.sort = e.target.value; mudou(); };
 $('quartos').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; if (b.id === 'esc') F.esc = !F.esc; else F.quartos = +b.dataset.q; mudou(); };
-$('bairros').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.b; F.bairros = F.bairros.includes(v) ? F.bairros.filter(x => x !== v) : F.bairros.concat(v); mudou(); };
 $('mob').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.m; F.mob = F.mob.includes(v) ? F.mob.filter(x => x !== v) : F.mob.concat(v); mudou(); };
 $('fontes').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; const v = b.dataset.f; const s = F.semFonte || []; F.semFonte = s.includes(v) ? s.filter(x => x !== v) : s.concat(v); mudou(); };
 $('show').onclick = e => { const b = e.target.closest('button'); if (b) { F.show = b.dataset.s; mudou(); } };
