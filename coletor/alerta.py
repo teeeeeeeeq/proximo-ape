@@ -9,12 +9,14 @@ falta o endereço.
 O Claude confere as fotos de todos os anúncios do perfil, uma vez cada (o mesmo imóvel em sites diferentes conta uma
 vez; dados/avaliacoes.json). Com a chave ANTHROPIC_API_KEY, pela API, aqui mesmo. Sem ela, pelo plano do dono: a busca
 monta uma fila (folhas com as fotos numeradas e o texto de cada anúncio, na branch fila-claude), uma rotina do Claude Code
-confere de hora em hora (coletor/rotina.py) e grava os vereditos na branch avaliacoes, que a busca seguinte usa. Ele olha a cozinha integrada à sala (o mais importante), se a cozinha é bonita e bem
-montada, se o piso tem cara de antigo e qual foto melhor mostra a cozinha com a sala. Quando faltam fotos de dentro,
-estima a chance de ser como o do Piatã (prédio, preço, texto). Veredito:
-  piata     - integrada "sim", cozinha "bonita", piso não "antigo": aparece primeiro no app e vai por e-mail;
+confere de hora em hora (coletor/rotina.py) e grava os vereditos na branch avaliacoes, que a busca seguinte usa.
+Ele dá uma nota ao acabamento (excelente, bom, comum, ruim), diz se a cozinha é integrada à sala (obrigatório), escolhe
+a foto que melhor mostra o apartamento por dentro e, quando as fotos não mostram o bastante, estima a chance (prédio,
+preço, texto). Veredito:
+  excelente - acabamento excelente e cozinha integrada: primeiro no app e por e-mail;
+  bom       - acabamento bom e cozinha integrada: logo abaixo, no app;
   perguntar - nada contra, mas as fotos não mostram tudo e a chance é alta ou média: aba "Vale perguntar";
-  nao       - cozinha fechada, simples ou ruim, piso antigo, ou chance baixa: o app esconde.
+  nao       - cozinha fechada, acabamento comum ou ruim, ou chance baixa: o app esconde.
 O e-mail é uma issue que menciona o dono do repositório (o GitHub manda o e-mail); cada imóvel vai uma vez só
 (dados/avisos.json).
 """
@@ -39,7 +41,8 @@ MAX_IA = 40          # anúncios conferidos por rodada (os mais recentes primeir
 MAX_IA_DIA = 250     # e por dia: teto de gasto (~US$ 0,05 cada, ~US$ 12 no dia mais cheio)
 PARALELO = 3         # conferidos ao mesmo tempo
 GUARDA_DIAS = 30     # avaliações mais velhas que isso são refeitas
-VERSAO = 3           # muda quando o que se pede ao Claude muda: o que foi avaliado antes é avaliado de novo
+VERSAO = 4           # muda quando o que se pede ao Claude muda: o que foi avaliado antes é avaliado de novo
+                     # (3 era "como o do Piatã"; 4 é a nota de acabamento com a cozinha integrada obrigatória)
 FILA_MAX = 30        # sem a chave da API: anúncios por rodada da rotina do Claude (os mais recentes primeiro)
 FILA_FOTOS = 12      # fotos por anúncio na fila, em duas folhas de 6 (512 x 384 cada foto)
 
@@ -97,31 +100,34 @@ def _chave(o):
 
 # --- O Claude confere as fotos ---
 
-_PEDIDO = """Você confere anúncios de apartamento para alugar em Balneário Camboriú (e arredores) para quem quase \
-alugou um apartamento de que gostou muito e quer achar outro parecido. As fotos vêm numeradas, e depois vem o \
+_PEDIDO = """Você confere anúncios de apartamento para alugar em Balneário Camboriú (e arredores) para quem procura um \
+apartamento para morar, com acabamento muito bom e a cozinha integrada à sala. As fotos vêm numeradas, e depois vem o \
 anúncio. Responda:
 
-- cozinha_integrada (o mais importante): a cozinha é aberta para a sala, na mesma área (cozinha americana, bancada \
-ou ilha voltada para a sala, sem parede nem porta entre as duas)? "sim", "nao" (cozinha fechada, separada da sala) \
-ou "incerto" (as fotos não deixam ver).
-- cozinha: como é a cozinha. Eles passam muito tempo na cozinha ou em volta dela; a sala e o sofá são fáceis de \
-deixar bonitos e confortáveis, a cozinha não. "bonita": armários planejados, sob medida, feitos com bom gosto, bem \
-equipada, agradável de usar e de ficar. "simples": tem planejados, mas é básica, apertada, mal equipada ou com \
-acabamento datado. "ruim": sem planejados (armário de aço, móveis soltos de loja), feia ou desagradável. "sem foto": \
-nenhuma foto mostra a cozinha.
-- piso: "antigo" só se dá para ver claramente piso ou azulejo de cara antiga: rejunte grosso e encardido, cerâmica \
-antiga, azulejo esquisito pela casa. "bom": piso atual com rejunte fino ou sem rejunte. Não precisa ser porcelanato \
-nem brilhar; madeira, vinílico ou laminado servem. "incerto" se não dá para ver.
-- chance: a chance de o apartamento ser como o que eles querem (cozinha integrada à sala, cozinha bonita, piso sem \
-cara de antigo). Se as fotos mostram tudo, "alta" quando é e "baixa" quando não é. Quando faltam fotos de dentro \
-(só a fachada, só os quartos, descrição genérica), estime pelo que dá para ver: prédio novo ou antigo, padrão do \
-que aparece, o texto, e o preço para o tamanho e o lugar (barato demais para a região costuma ser apartamento antigo).
-- melhor_foto: o número da foto que melhor mostra a cozinha integrada com a sala (as duas na mesma foto); se nenhuma \
-mostra as duas, a que melhor mostra a cozinha; 0 se nenhuma mostra a cozinha.
-- resumo: uma ou duas frases curtas em português sobre a cozinha, a integração com a sala e o piso, e o que falta \
-ver (ex.: "Cozinha americana aberta para a sala, armários planejados brancos e bancada de quartzo, bem equipada; \
-piso porcelanato claro de rejunte fino." ou "Só fotos da fachada e dos quartos; prédio dos anos 90, a cozinha não \
-aparece.").
+- acabamento: a nota do acabamento e do estado do apartamento, pelas fotos de dentro.
+  "excelente": impecável. Tudo novo ou recém-reformado, materiais de qualidade e bem feitos: porcelanato ou madeira \
+bem assentados, de rejunte fino; bancadas de pedra ou quartzo; marcenaria planejada sob medida, bem acabada, na \
+cozinha e nos quartos; banheiro moderno (box de vidro, metais e louças atuais); iluminação embutida, gesso ou sanca. \
+Bem conservado e com bom gosto: dá vontade de morar.
+  "bom": atual e bem cuidado, com planejados e piso atual, mas sem o capricho do excelente (mais simples, algum \
+detalhe datado, gasto ou de gosto duvidoso).
+  "comum": apartamento comum ou datado: acabamento antigo, móveis soltos ou cansados, cerâmica ou azulejo antigos, \
+rejunte grosso, banheiro antigo.
+  "ruim": malconservado, feio ou desagradável.
+  "sem foto": as fotos não mostram o apartamento por dentro (só fachada, áreas comuns ou planta).
+- cozinha_integrada (obrigatório para servir): a cozinha é aberta para a sala, na mesma área (cozinha americana, \
+bancada ou ilha voltada para a sala, sem parede nem porta entre as duas)? "sim", "nao" (cozinha fechada, separada \
+da sala) ou "incerto" (as fotos não deixam ver).
+- chance: a chance de o apartamento ter acabamento bom ou excelente e cozinha integrada. Se as fotos mostram tudo, \
+"alta" quando tem e "baixa" quando não tem. Quando faltam fotos de dentro ou da cozinha, estime pelo que dá para \
+ver: prédio novo ou antigo, padrão do que aparece, o texto, e o preço para o tamanho e o lugar (barato demais para a \
+região costuma ser apartamento antigo).
+- melhor_foto: o número da foto que melhor mostra o apartamento por dentro: de preferência a cozinha integrada com a \
+sala na mesma foto; senão a sala ou a cozinha; 0 se nenhuma mostra o interior.
+- resumo: uma ou duas frases curtas em português sobre o acabamento (piso, marcenaria, bancadas, banheiro), a \
+cozinha e a sala, e o que falta ver (ex.: "Tudo novo: porcelanato claro de rejunte fino, marcenaria sob medida em \
+toda a casa, bancada de quartzo e cozinha aberta para a sala; banheiro com box de vidro." ou "Só fotos da fachada \
+e dos quartos; prédio dos anos 90, a cozinha não aparece.").
 
 As fotos mandam; o texto do anúncio ajuda. Fotos de áreas comuns do prédio (piscina, academia, fachada) não contam \
 como foto do apartamento."""
@@ -129,23 +135,22 @@ como foto do apartamento."""
 _RESPOSTA = {
     'type': 'object',
     'properties': {
+        'acabamento': {'type': 'string', 'enum': ['excelente', 'bom', 'comum', 'ruim', 'sem foto']},
         'cozinha_integrada': {'type': 'string', 'enum': ['sim', 'nao', 'incerto']},
-        'cozinha': {'type': 'string', 'enum': ['bonita', 'simples', 'ruim', 'sem foto']},
-        'piso': {'type': 'string', 'enum': ['bom', 'antigo', 'incerto']},
         'chance': {'type': 'string', 'enum': ['alta', 'media', 'baixa']},
         'melhor_foto': {'type': 'integer'},
         'resumo': {'type': 'string'},
     },
-    'required': ['cozinha_integrada', 'cozinha', 'piso', 'chance', 'melhor_foto', 'resumo'],
+    'required': ['acabamento', 'cozinha_integrada', 'chance', 'melhor_foto', 'resumo'],
     'additionalProperties': False,
 }
 
 
 def veredito(v):
-    if v['cozinha_integrada'] == 'nao' or v['cozinha'] in ('simples', 'ruim') or v['piso'] == 'antigo':
+    if v['cozinha_integrada'] == 'nao' or v['acabamento'] in ('comum', 'ruim'):
         return 'nao'
-    if v['cozinha_integrada'] == 'sim' and v['cozinha'] == 'bonita':
-        return 'piata'
+    if v['cozinha_integrada'] == 'sim' and v['acabamento'] in ('excelente', 'bom'):
+        return v['acabamento']
     return 'perguntar' if v['chance'] in ('alta', 'media') else 'nao'
 
 
@@ -205,7 +210,7 @@ def avaliar_ia(o, cliente):
         messages=[{'role': 'user', 'content': conteudo}])
     if r.stop_reason == 'refusal':
         print(f"  {o['id']}: o Claude não avaliou (recusa)")
-        v = dict(cozinha_integrada='incerto', cozinha='sem foto', piso='incerto', chance='baixa', melhor_foto=0,
+        v = dict(acabamento='sem foto', cozinha_integrada='incerto', chance='baixa', melhor_foto=0,
                  resumo='(o Claude não avaliou este anúncio)')
     elif r.stop_reason == 'max_tokens':
         return None
@@ -214,7 +219,7 @@ def avaliar_ia(o, cliente):
     if 1 <= v['melhor_foto'] <= len(baixadas):
         v['foto'] = baixadas[v['melhor_foto'] - 1][0]
     v['v'] = veredito(v)
-    print(f"  {o['id']}: {v['v']} (integrada {v['cozinha_integrada']} · cozinha {v['cozinha']} · piso {v['piso']} · "
+    print(f"  {o['id']}: {v['v']} (acabamento {v['acabamento']} · integrada {v['cozinha_integrada']} · "
           f"chance {v['chance']}; {len(baixadas)} fotos, {r.usage.input_tokens} + {r.usage.output_tokens} tokens)")
     return v
 
@@ -370,7 +375,7 @@ def conferir(grupos, agora):
 
 def para_o_app(v):
     """O que o app mostra da avaliação."""
-    return {k: v[k] for k in ('v', 'foto', 'resumo', 'cozinha_integrada', 'cozinha', 'piso', 'chance') if v.get(k)}
+    return {k: v[k] for k in ('v', 'foto', 'resumo', 'acabamento', 'cozinha_integrada', 'chance') if v.get(k)}
 
 
 # --- O aviso por e-mail ---
@@ -441,14 +446,14 @@ def _bloco(grupo, aval):
 
 
 def avisar(grupos, avals, pasta):
-    """Escreve alerta_titulo.txt e alerta.md em `pasta` com os "como o do Piatã" ainda não avisados (avisos.json)."""
+    """Escreve alerta_titulo.txt e alerta.md em `pasta` com os de acabamento excelente ainda não avisados (avisos.json)."""
     for n in ('alerta_titulo.txt', 'alerta.md'):
         try:
             os.remove(os.path.join(pasta, n))
         except OSError:
             pass
     avisados = s.load('avisos.json', {})
-    novos = [g for k, g in grupos.items() if (avals.get(k) or {}).get('v') == 'piata'
+    novos = [g for k, g in grupos.items() if (avals.get(k) or {}).get('v') == 'excelente'
              and (g[0].get('quartos') or 0) >= 2 and k not in avisados and not any(x['id'] in avisados for x in g)]
     if not novos:
         return 0
@@ -461,12 +466,12 @@ def avisar(grupos, avals, pasta):
     s.save('avisos.json', avisados)
     o = novos[0][0]
     if len(novos) == 1:
-        titulo = f"Apê como o do Piatã: {o.get('bairro') or 'BC'} · aluguel {_brl(o['aluguel'])}"
+        titulo = f"Apê de acabamento excelente: {o.get('bairro') or 'BC'} · aluguel {_brl(o['aluguel'])}"
     else:
-        titulo = f"{len(novos)} apês como o do Piatã (aluguel a partir de {_brl(o['aluguel'])})"
+        titulo = f"{len(novos)} apês de acabamento excelente (aluguel a partir de {_brl(o['aluguel'])})"
     corpo = [f"@{DONO} {'apareceu um apartamento' if len(novos) == 1 else f'apareceram {len(novos)} apartamentos'} "
-             f"como o do Piatã, {'conferido' if len(novos) == 1 else 'conferidos'} pelo Claude nas fotos: cozinha integrada à sala, cozinha bonita e bem montada, "
-             f"piso sem cara de antigo. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2 quartos, até "
+             f"de acabamento excelente e cozinha integrada à sala, {'conferido' if len(novos) == 1 else 'conferidos'} pelo "
+             f"Claude nas fotos. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2+ quartos, até "
              f"{PRAIA_A_PE} min a pé da praia e {HUMAINS_CARRO} min de carro da Humains ({HUMAINS_CARRO_ITAJAI} em Itajaí).", '']
     corpo += [_bloco(g, avals[_chave(g[0])]) + '\n' for g in novos[:MAX_POR_AVISO]]
     if len(novos) > MAX_POR_AVISO:
@@ -481,7 +486,7 @@ def avisar(grupos, avals, pasta):
 
 def processar(anuncios, pub, pasta):
     """Depois da busca: o Claude confere o que falta, cada anúncio publicado ganha o veredito (pub[i]['ia']) e sai o
-    aviso dos novos "como o do Piatã". `pub` são os anúncios do app (resumidos); `anuncios`, os completos."""
+    aviso dos novos de acabamento excelente. `pub` são os anúncios do app (resumidos); `anuncios`, os completos."""
     agora = time.time()
     grupos = {}
     for x in sorted(pub, key=lambda x: x.get('fonte') != 'ZAP'):
