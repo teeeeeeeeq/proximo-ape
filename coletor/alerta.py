@@ -2,7 +2,7 @@
 
 Perfil: aluguel de R$ 3.500 a 6.000, só o aluguel (server.ALUGUEL_MIN/MAX; os leitores já buscam só essa faixa),
 2 quartos (ou 1 quarto com escritório citado ou 55 m²+; 3 ou mais é grande demais), pelo menos semimobiliado ("planejados" sem dizer se é
-mobiliado conta; "sem mobília" não), até 10 min de carro da Humains (em Itajaí, 15), até 10 min a pé da praia, sem
+mobiliado conta; "sem mobília" não), até 10 min de carro da Humains (em Itajaí, 15), até 25 min a pé da praia, sem
 temporada e sem recusa de animais, fora da Barra (longe, mesmo sem endereço). Sem localização fica, com o aviso de que
 falta o endereço.
 
@@ -32,7 +32,7 @@ import server as s
 DONO = 'teeeeeeeeq'
 APP = 'https://teeeeeeeeq.github.io/proximo-ape/'
 SEGURO = 0.10        # seguro-fiança: 10% do aluguel (quando precisa)
-PRAIA_A_PE = 10      # minutos
+PRAIA_A_PE = 25      # minutos (era 10; na Brava muitos bons ficam a 15 ou 20)
 HUMAINS_CARRO = 10   # minutos; em Itajaí, HUMAINS_CARRO_ITAJAI
 HUMAINS_CARRO_ITAJAI = 15
 QUARTOS_MAX = 2      # 3 quartos ou mais é grande demais
