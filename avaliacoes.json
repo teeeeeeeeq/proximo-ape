@@ -212,15 +212,15 @@
 "quando": "2026-10-01 18:47"
 },
 "4000|78|centro": {
-"cozinha_integrada": "incerto",
-"cozinha": "sem foto",
-"piso": "bom",
+"acabamento": "bom",
+"cozinha_integrada": "nao",
 "chance": "baixa",
-"melhor_foto": 0,
-"resumo": "Nenhuma foto da cozinha; ao fundo da sala ela parece ficar atrás de uma porta, separada. Piso laminado atual e banheiros reformados, em prédio mais antigo.",
+"melhor_foto": 1,
+"resumo": "Piso vinílico, banheiros modernizados com box de vidro e armários embutidos, mas móveis simples; a cozinha fica numa porta separada, fora da sala.",
+"foto": "https://resizedimgs.zapimoveis.com.br/img/vr-listing/2e17af0c79c7ecc8c46e42a699d9c2be/foto.jpg?action=fit-in&dimension=1200x900",
 "id": "Z2915364614",
-"versao": 3,
-"quando": "2026-10-01 18:48"
+"versao": 4,
+"quando": "2026-10-01 22:41"
 },
 "3750|65|centro": {
 "cozinha_integrada": "sim",
@@ -235,16 +235,15 @@
 "quando": "2026-10-01 18:48"
 },
 "4000|90|centro": {
-"cozinha_integrada": "sim",
-"cozinha": "simples",
-"piso": "bom",
+"acabamento": "bom",
+"cozinha_integrada": "incerto",
 "chance": "media",
 "melhor_foto": 6,
-"resumo": "Cozinha pequena com armários planejados cinza e bancada de granito, com balcão e banquetas que parecem abrir para a sala (não aparece junto na mesma foto); piso vinílico atual.",
-"foto": "https://resizedimgs.zapimoveis.com.br/img/vr-listing/0244e84b67a5ecab64eaffd40866e8be/foto.webp?action=fit-in&dimension=1200x900",
+"resumo": "Piso vinílico, cozinha planejada cinza com granito preto, banheiros com bancada de granito e box de vidro, armários nos quartos; a cozinha parece um cômodo à parte da sala, mas não dá para confirmar.",
+"foto": "https://resizedimgs.zapimoveis.com.br/img/vr-listing/0244e84b67a5ecab64eaffd40866e8be/foto.jpg?action=fit-in&dimension=1200x900",
 "id": "Z2909792057",
-"versao": 3,
-"quando": "2026-10-01 18:48"
+"versao": 4,
+"quando": "2026-10-01 22:41"
 },
 "5400|64|pioneiros": {
 "cozinha_integrada": "incerto",
@@ -437,28 +436,26 @@
 "quando": "2026-10-01 19:39"
 },
 "F1765903284720141": {
+"acabamento": "comum",
 "cozinha_integrada": "nao",
-"cozinha": "simples",
-"piso": "antigo",
 "chance": "baixa",
-"melhor_foto": 2,
-"resumo": "Cozinha de corredor, fechada, com planejados brancos e granito mas azulejo estampado datado; piso de cerâmica antiga com rejunte aparente em sala, cozinha e quartos.",
-"foto": "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/814818672_1405747589278220_6430713363576472049_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=4OfoLXkclvYQ7kNvwHMH1Ym&_nc_oc=Adp6NtdXukYQ50jwL2Ypp4nweFDiXRp1Rr7bp8uEx628kVSHUMeQ06WrE9eYi9ye3nk&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Fk2wjehMjvmsTaL2fDnaqA&_nc_ss=792a8&oh=00_AQOC8JgdAN9N5b91LmWIWYWXcC0FCMsMgwVgSshJ5y7X3Q&oe=6AC49117",
+"melhor_foto": 1,
+"resumo": "Piso cerâmico bege e azulejos antigos estampados, cozinha estreita fechada com armários e granito simples; sala e banheiro recém-decorados com painel de TV, mas base datada.",
+"foto": "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/817552612_1405756192610693_1233621035906242020_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=454cf4&_nc_ohc=w9GsFd7ycJkQ7kNvwFJspMk&_nc_oc=AdqVogEQU5yoV2LjmyJduicLh-QRQjX_znuwBcEtRjFN9SsqA5X5WmTD215nh7Wtwr4&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Fk2wjehMjvmsTaL2fDnaqA&_nc_ss=792a8&oh=00_AQPsatFazKVDkfmLp6EX48GZqR2e7qOPkOnP2vwrGKnBwQ&oe=6AC49D79",
 "id": "F1765903284720141",
-"versao": 3,
-"quando": "2026-10-01 19:39"
+"versao": 4,
+"quando": "2026-10-01 22:40"
 },
 "F1135045635750435": {
+"acabamento": "bom",
 "cozinha_integrada": "sim",
-"cozinha": "bonita",
-"piso": "bom",
 "chance": "alta",
 "melhor_foto": 1,
-"resumo": "Cozinha aberta para a sala ampla, armários planejados brancos em L com iluminação embutida e saída para a área externa, mas vazia, sem eletros. Porcelanato claro polido de rejunte fino.",
+"resumo": "Porcelanato polido claro, cozinha com marcenaria branca, led e bancada de pedra aberta para a sala ampla; banheiros simples com box de vidro e pia de coluna, apartamento vazio.",
 "foto": "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/813832546_1761648921721074_1499372127668927168_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1152&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=454cf4&_nc_ohc=pXhtRdKIWvgQ7kNvwGrn7Wz&_nc_oc=AdplsKoNPe6n6Za3voxfd1JTLnA8zO4LHV89iwzQKhruB7cfw6PYGLtQpZYCx0_52CQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=50K3J44McYw-xgPr6vl4LQ&_nc_ss=792a8&oh=00_AQNu_8kPrlxf4ZQDz9iuDL-6O3vzdm4TzvaFKdQ6ncBhzw&oe=6AC49F5E",
 "id": "F1135045635750435",
-"versao": 3,
-"quando": "2026-10-01 19:39"
+"versao": 4,
+"quando": "2026-10-01 22:41"
 },
 "F1077792095105245": {
 "acabamento": "excelente",
@@ -1166,16 +1163,15 @@
 "quando": "2026-10-01 22:40"
 },
 "F1224404503196580": {
+"acabamento": "bom",
 "cozinha_integrada": "incerto",
-"cozinha": "simples",
-"piso": "bom",
 "chance": "media",
-"melhor_foto": 2,
-"resumo": "Cozinha pequena com planejados brancos e pretos, bancada de granito e máquina de lavar junto; não dá para ver se abre para a sala (talvez ao fundo da foto 3). Piso porcelanato claro de rejunte fino.",
-"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/790225926_1794265458412979_8005798144769004063_n.jpg?stp=dst-jpg_tt6&cstp=mx1280x960&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=IVq_Ds2WYp4Q7kNvwE7rpyZ&_nc_oc=Adp115zgZ2vN_PjU94Ie9QY0Oz2JCwCJjlzDPGvLe4eim3SxaINFPgstSSUpsSOj65k&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=4_Ge54VKGTHoc0CFMlpaWg&_nc_ss=792a8&oh=00_AQOx_n1uAbz98gbf2zXAZylMCDfJjsz0Nud1WT3sbUfNUw&oe=6AC4BC1F",
+"melhor_foto": 3,
+"resumo": "Apartamento pequeno e bem decorado: piso claro, painel de TV planejado, cozinha com granito preto e armários escuros, guarda-roupas sob medida com espelho; a ligação da cozinha com a sala não aparece e o banheiro não aparece.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/787941903_1794265368412988_3056833612913193191_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=3xd3d-LZAPkQ7kNvwHSaxEv&_nc_oc=AdoihwF6R6M2pmcnuvpw-ZBWPl5Vuifm9n0H9zdGzoZmgNy5fwd2C3scuw_fNGY2DlI&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=4_Ge54VKGTHoc0CFMlpaWg&_nc_ss=792a8&oh=00_AQONZYXVS7EzyYx_fOSj1ErQjeGDv6bfP9tXlRr83eqm8w&oe=6AC4D793",
 "id": "F1224404503196580",
-"versao": 3,
-"quando": "2026-10-01 21:40"
+"versao": 4,
+"quando": "2026-10-01 22:40"
 },
 "F1586178903247205": {
 "cozinha_integrada": "nao",
