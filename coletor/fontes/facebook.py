@@ -18,6 +18,12 @@ CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abs
 PRAZO_FICHAS = 420   # segundos por busca abrindo páginas de anúncio (~60 páginas; o resto fica para a próxima hora)
 FICHA_V = 2          # versão da leitura da ficha: a 1 pegava só a 1ª foto de muitos anúncios (relê os que ficaram com 0 ou 1)
 RENOVA_H = 36        # as fotos do Facebook vêm com link que vence em ~5 dias: relê o anúncio antes
+# O Facebook pode tirar o Marketplace da conta dos cookies (manda para /marketplace/ineligible/). Insistir toda hora piora:
+# depois disso, só tenta de novo uma vez a cada PAUSA_H horas (dados/facebook_bloqueio.json guarda quando viu)
+PAUSA_H = 24
+BLOQUEIO = os.path.join(os.path.dirname(CACHE), 'facebook_bloqueio.json')
+INELEGIVEL = ('o Facebook tirou o Marketplace da conta do FACEBOOK_COOKIES (manda para marketplace/ineligible); '
+              'veja no app do Facebook, em Marketplace, e peça análise se for a sua conta')
 ROLAGENS = 4         # vezes que rola cada busca para carregar mais anúncios (logado)
 _SAMESITE = {'lax': 'Lax', 'strict': 'Strict', 'no_restriction': 'None', 'none': 'None'}
 
@@ -243,20 +249,10 @@ def _rua(*txts):
     return ''
 
 
-ITAJAI_SUL = ('praia brava', 'fazendinha', 'cabeçudas', 'cabecudas', 'fazenda', 'ressacada')
-
-
 def _regiao(x):
-    """Na lista: Balneário e Camboriú entram; Itajaí entra provisório (decide depois, pela descrição)."""
+    """Na lista: Balneário, Camboriú e Itajaí (a cidade inteira; quem decide é o tempo de carro até a Humains)."""
     t = (x['onde'] + ' ' + x['cidade']).lower()
     return 'camboriú' in t or 'itajaí' in t
-
-
-def _itajai_sul(x, desc):
-    t = (x['onde'] + ' ' + x['cidade']).lower()
-    if 'itajaí' not in t or 'camboriú' in t:
-        return True
-    return any(b in (t + ' ' + x['titulo'] + ' ' + (desc or '')).lower() for b in ITAJAI_SUL)
 
 
 def _sessao(b, ck):
@@ -274,17 +270,41 @@ def _sessao(b, ck):
         raise RuntimeError('o Facebook não aceitou a sessão (cookies vencidos ou derrubados): exporte os cookies de novo')
 
 
+def bloqueado_ha():
+    """Horas desde que a busca viu o Marketplace bloqueado na conta (None: não está bloqueado)."""
+    try:
+        return (time.time() - json.load(open(BLOQUEIO))['visto']) / 3600
+    except Exception:
+        return None
+
+
+def marcar_bloqueio(sim):
+    try:
+        if sim:
+            json.dump({'visto': time.time()}, open(BLOQUEIO, 'w'))
+        elif os.path.exists(BLOQUEIO):
+            os.remove(BLOQUEIO)
+    except OSError:
+        pass
+
+
 def buscar(b, progresso=lambda m: None):
     ck = _cookies()
+    h = bloqueado_ha()
+    if ck and h is not None and h < PAUSA_H:
+        raise RuntimeError(f'{INELEGIVEL} (pausa: tenta de novo em ~{PAUSA_H - h:.0f} h)')
     if ck:
         progresso('entrando na conta')
         _sessao(b, ck)
     lista = {}
-    for lat, raio in ((-26.99, 7), (-26.935, 6)):   # Balneário/Camboriú e o sul de Itajaí
+    for lat, raio in ((-26.99, 7), (-26.935, 6)):   # Balneário/Camboriú e Itajaí até o Centro
         for lo, hi in FAIXAS:
             progresso(f'lista R$ {lo}–{hi} ({lat})')
             b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=1'
                  f'&sortBy=creation_time_descend&exact=false&latitude={lat}&longitude=-48.645&radius={raio}', 9)
+            if '/marketplace/ineligible' in (b.js('location.href') or ''):
+                marcar_bloqueio(True)
+                raise RuntimeError(INELEGIVEL)
             lista.update(_lista(b.js('document.documentElement.outerHTML') or ''))
             for _ in range(ROLAGENS if ck else 0):
                 b.js('window.scrollTo(0, document.body.scrollHeight)')
@@ -295,9 +315,11 @@ def buscar(b, progresso=lambda m: None):
                 lista.update({i: x for i, x in cards.items() if i not in lista})
     if not lista:
         if ck:
-            raise RuntimeError('logado, mas o Marketplace não mostrou anúncios (a página pode ter mudado)')
+            raise RuntimeError(f"logado, mas o Marketplace não mostrou anúncios (página {(b.js('location.pathname') or '')[:60]}: "
+                               f"pode ter mudado)")
         txt = (b.js('document.body ? document.body.innerText : ""') or '')[:160].replace('\n', ' | ')
         raise RuntimeError(f"o Facebook não mostrou anúncios sem login (página: {(b.js('document.title') or '')[:50]} | {txt})")
+    marcar_bloqueio(False)
     alvo = {i: x for i, x in lista.items()
             if _regiao(x) and server.na_faixa(x['preco']) and not re.search(r'\bcasa\b|kitnet|sala comercial|quarto para', x['titulo'], re.I)}
     try:
@@ -333,16 +355,9 @@ def buscar(b, progresso=lambda m: None):
         progresso(f'fichas lidas: {sum(contagem)} ({contagem[0]} sem foto, {contagem[1]} com 1, {contagem[2]} com 2 ou mais)')
     os.makedirs(os.path.dirname(CACHE), exist_ok=True)
     json.dump(cache, open(CACHE, 'w'), ensure_ascii=False)
-    try:   # favorito entra mesmo de outro bairro de Itajaí (a lista do aviso de preço; o app mostra os favoritos fora do perfil)
-        import alerta
-        favs = set((alerta.favoritos() or {}).get('ids') or [])
-    except Exception:
-        favs = set()
     out = []
     for iid, x in alvo.items():
         f = cache.get(iid) or {}
-        if not _itajai_sul(x, f.get('desc')) and 'F' + iid not in favs:
-            continue
         onde = [p.strip() for p in x['onde'].split(',')]
         bairro = onde[0] if len(onde) >= 3 and not re.match(r'(rua|avenida|av\.)', onde[0], re.I) else ''
         q = _quartos(x['sub'], x['titulo'], f.get('desc'))

@@ -2,8 +2,8 @@
 
 Perfil: aluguel de R$ 3.500 a 6.000, só o aluguel (server.ALUGUEL_MIN/MAX; os leitores já buscam só essa faixa),
 2 quartos (ou 1 quarto com escritório citado ou 55 m²+; 3 ou mais é grande demais), pelo menos semimobiliado ("planejados" sem dizer se é
-mobiliado conta; "sem mobília" não), até 10 min de carro da Humains (em Itajaí, 15), até 25 min a pé da praia, sem
-temporada e sem recusa de animais, fora da Barra (longe, mesmo sem endereço). Sem localização fica, com o aviso de que
+mobiliado conta; "sem mobília" não), até 20 min de carro da Humains (de qualquer bairro: chega ao Centro de Itajaí; a praia
+não limita, o app aperta se quiser), sem temporada e sem recusa de animais, fora da Barra (mesmo sem endereço). Sem localização fica, com o aviso de que
 falta o endereço.
 
 O Claude confere as fotos de todos os anúncios do perfil, uma vez cada (o mesmo imóvel em sites diferentes conta uma
@@ -32,9 +32,7 @@ import server as s
 DONO = 'teeeeeeeeq'
 APP = 'https://teeeeeeeeq.github.io/proximo-ape/'
 SEGURO = 0.10        # seguro-fiança: 10% do aluguel (quando precisa)
-PRAIA_A_PE = 25      # minutos (era 10; na Brava muitos bons ficam a 15 ou 20)
-HUMAINS_CARRO = 10   # minutos; em Itajaí, HUMAINS_CARRO_ITAJAI
-HUMAINS_CARRO_ITAJAI = 15
+HUMAINS_CARRO = 20   # minutos, de qualquer bairro (era 10, e 15 em Itajaí); a praia não limita mais
 QUARTOS_MAX = 2      # 3 quartos ou mais é grande demais
 LONGE = {'balneario camboriu': {'barra'}}   # bairros longe: fora mesmo quando o anúncio não dá o endereço
 MAX_POR_AVISO = 15
@@ -60,12 +58,9 @@ def a_pe(m):
 def de_carro(m):
     if m is None:
         return None
-    r = m * 1.35
-    return max(1, round(1 + min(r, 2000) / 333 + max(r - 2000, 0) / 583))   # o mesmo do app
-
-
-def limite_humains(o):
-    return HUMAINS_CARRO_ITAJAI if s.norm(o.get('cidade')).strip() == 'itajai' else HUMAINS_CARRO
+    r = m * 1.35   # ruas ~35% mais longas que a linha reta; 1 min para sair e estacionar
+    # os primeiros 2 km a ~20 km/h (sinais e trânsito do Centro), até 4 km a ~35, o resto a ~50 (Osvaldo Reis, BR-101)
+    return max(1, round(1 + min(r, 2000) / 333 + min(max(r - 2000, 0), 2000) / 583 + max(r - 4000, 0) / 833))   # o mesmo do app
 
 
 def no_perfil(o):
@@ -86,8 +81,8 @@ def no_perfil(o):
         return False   # no Facebook quase ninguém escreve: o Claude vê pelas fotos
     if s.nao_aceita_animais(texto):   # texto inteiro: a recusa costuma vir no fim
         return False
-    h, p = de_carro(o.get('humains_m')), a_pe(o.get('praia_m'))
-    return (h is None or h <= limite_humains(o)) and (p is None or p <= PRAIA_A_PE)
+    h = de_carro(o.get('humains_m'))
+    return h is None or h <= HUMAINS_CARRO
 
 
 def custo(o):
@@ -494,7 +489,7 @@ def avisar(grupos, avals, pasta):
     corpo = [f"@{DONO} {'apareceu um apartamento' if len(novos) == 1 else f'apareceram {len(novos)} apartamentos'} "
              f"de acabamento excelente e cozinha integrada à sala, {'conferido' if len(novos) == 1 else 'conferidos'} pelo "
              f"Claude nas fotos. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2 quartos, até "
-             f"{PRAIA_A_PE} min a pé da praia e {HUMAINS_CARRO} min de carro da Humains ({HUMAINS_CARRO_ITAJAI} em Itajaí).", '']
+             f"{HUMAINS_CARRO} min de carro da Humains.", '']
     corpo += [_bloco(g, avals[_chave(g[0])]) + '\n' for g in novos[:MAX_POR_AVISO]]
     if len(novos) > MAX_POR_AVISO:
         corpo.append(f"…e mais {len(novos) - MAX_POR_AVISO} no app.")

@@ -193,7 +193,7 @@ RUAS = json.load(open(RUAS_ARQ)) if os.path.exists(RUAS_ARQ) else {}
 REGIOES = {
     'balneario camboriu': None,
     'camboriu': None,
-    'itajai': {'praia brava', 'praia brava de itajai', 'fazendinha', 'cabecudas', 'fazenda', 'ressacada'},
+    'itajai': None,   # a cidade inteira (era só o sul): quem decide é o tempo de carro até a Humains (alerta.py)
 }
 LAZER = ('POOL', 'GYM', 'SAUNA', 'PLAYGROUND', 'SPORTS_COURT', 'SPA', 'TENNIS_COURT', 'SQUASH', 'GAMES_ROOM', 'KIDS_AREA')
 
@@ -205,7 +205,8 @@ BAIRROS = {
                            'Várzea do Ranchinho', 'Praia do Estaleirinho', 'Praia do Estaleiro', 'Praia das Taquaras', 'Praia de Laranjeiras'],
     'camboriu': ['Tabuleiro', 'São Francisco de Assis', 'Santa Regina', 'Centro', 'Areias', 'Monte Alegre', 'Rio Pequeno', 'Lídia Duarte',
                  'Cedro', 'Várzea do Ranchinho', 'Conde Vila Verde'],
-    'itajai': ['Praia Brava', 'Fazenda', 'Fazendinha', 'Ressacada', 'Cabeçudas'],
+    'itajai': ['Praia Brava', 'Fazenda', 'Fazendinha', 'Ressacada', 'Cabeçudas', 'Centro', 'Vila Operária', 'São João', 'Dom Bosco',
+               'São Judas', 'Barra do Rio', 'Cidade Nova', 'São Vicente', 'Cordeiros'],
 }
 _REFERENCIA = {'Barra Sul', 'Barra Norte', 'Praia Brava'}   # citados como ponto de referência: só valem se nada mais for citado
 _GRAFIAS = {'taboleiro': 'Tabuleiro', 'nacoes': 'Nações', 'bairro das nacoes': 'Nações', 'dos municipios': 'Municípios'}

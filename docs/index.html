@@ -166,10 +166,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
     <fieldset><legend>Onde</legend>
       <div class="row"><span>A pé até a praia</span><b id="v-praia"></b></div>
-      <input type="range" id="praia" min="1" max="25" step="1">
+      <input type="range" id="praia" min="1" max="30" step="1">
       <div class="row"><span>De carro até a Humains</span><b id="v-hum"></b></div>
-      <input type="range" id="hum" min="2" max="15" step="1">
-      <p class="hint">O app só traz até 25 min a pé da praia (na Brava, muitos ficam a 15 ou 20) e até 10 min de carro da Humains (15 em Itajaí). Tempo estimado pela distância: as ruas dão volta e no Centro o trânsito é lento.</p>
+      <input type="range" id="hum" min="2" max="20" step="1">
+      <p class="hint">O app traz até 20 min de carro da Humains, de qualquer bairro (chega ao Centro de Itajaí; a Barra fica de fora). A praia não limita: aperte aqui se quiser. Tempo estimado pela distância: as ruas dão volta, no Centro o trânsito é lento e na avenida e na BR anda mais.</p>
       <label class="check"><input type="checkbox" id="semlocal"> Incluir anúncios sem localização</label>
     </fieldset>
 
@@ -239,14 +239,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 
 <script>
 // o coletor já traz só o perfil (aluguel de 3.500 a 6.000, 2 quartos ou 1 com escritório, fora da Barra, pelo menos semimobiliado,
-// até 25 min a pé da praia, até 10 min de carro da Humains ou 15 em Itajaí); aqui dá para apertar mais
-const PERFIL = { semFonte: [], aluguel: 6000, area: 45, quartos: 2, esc: true, praia: 25, hum: 15, semlocal: true, cond: 2000, mob: ['texto', 'marcado', 'semi', 'sem info'], ianao: false, dias: 21, q: '', show: 'todos', sort: 'melhores' };
+// até 20 min de carro da Humains, de qualquer bairro; a praia não limita) e os favoritos; aqui dá para apertar mais
+const PERFIL = { semFonte: [], aluguel: 6000, area: 45, quartos: 2, esc: true, praia: 30, hum: 20, semlocal: true, cond: 2000, mob: ['texto', 'marcado', 'semi', 'sem info'], ianao: false, dias: 21, q: '', show: 'todos', sort: 'melhores' };
 const CHAVE = 'apto-filtros-v4';   // v2: perfil antigo; v3: abria só nos aprovados pelo Claude e ia até R$ 5.500
 // minutos de carro pela distância em linha reta: as ruas dão ~35% de volta, os primeiros 2 km saem a ~20 km/h
-// (sinais e trânsito do Centro), o resto a ~35 km/h, e 1 min para sair e estacionar
-const carro = m => { if (m == null) return null; const r = m * 1.35; return Math.max(1, Math.round(1 + Math.min(r, 2000) / 333 + Math.max(r - 2000, 0) / 583)); };
+// (sinais e trânsito do Centro), até 4 km a ~35 km/h, o resto a ~50 (Osvaldo Reis, BR-101), e 1 min para sair e estacionar
+const carro = m => { if (m == null) return null; const r = m * 1.35; return Math.max(1, Math.round(1 + Math.min(r, 2000) / 333 + Math.min(Math.max(r - 2000, 0), 2000) / 583 + Math.max(r - 4000, 0) / 833)); };
 const aPe = m => m == null ? null : Math.max(1, Math.round(m * 1.25 / 75));   // ~4,5 km/h, ruas +25%
-const PRAIA_MAX = 25, HUM_MAX = 15;   // no fim do controle = o perfil (o que o coletor já trouxe)
+const PRAIA_MAX = 30, HUM_MAX = 20;   // no fim do controle = o perfil (o que o coletor já trouxe)
 let F = JSON.parse(JSON.stringify(PERFIL));
 try {
   const s = JSON.parse(localStorage.getItem(CHAVE) || 'null');
@@ -420,6 +420,8 @@ function lerMarcas() {
   // visitas marcadas ou em andamento (02/10): Amores (OLX) e Palm Coast, Praia Brava (Cati Imóveis)
   // a praia passou de 10 para 25 min (02/10): quem estava no máximo antigo vai para o novo
   if (!feitos.includes('praia-25')) { if (F.praia >= 10) F.praia = PRAIA_MAX; feitos.push('praia-25'); }
+  // e depois (02/10): a praia não limita mais e a Humains vai a 20 min de carro; quem estava no máximo vai para o novo
+  if (!feitos.includes('humains-20')) { if (F.praia >= 25) F.praia = PRAIA_MAX; if (F.hum >= 15) F.hum = HUM_MAX; feitos.push('humains-20'); }
   if (!feitos.includes('favoritos-visitas')) { m.O1538462960 = m['KNcati-AP0716-CBIO'] = 'favorito'; feitos.push('favoritos-visitas'); }
   // e os 3 ainda sem visita: Garden Village (Reggiori, no Chaves na Mão), Ed. Londrina (Facebook) e Centro de Itajaí (Facebook)
   if (!feitos.includes('favoritos-visitas-2')) { m.C46892381 = m.F3496598923883901 = m.F1570399801148593 = 'favorito'; feitos.push('favoritos-visitas-2'); }
@@ -495,8 +497,8 @@ function pintarFiltros() {
   $('aluguel').value = F.aluguel; $('v-aluguel').textContent = F.aluguel >= 6000 ? 'R$ 6.000 (o perfil)' : brl(F.aluguel);
   $('area').value = F.area; $('v-area').textContent = F.area + ' m²';
   $('cond').value = F.cond; $('v-cond').textContent = F.cond >= 2000 ? 'qualquer' : brl(F.cond);
-  $('praia').value = F.praia; $('v-praia').textContent = 'até ' + F.praia + ' min';
-  $('hum').value = F.hum; $('v-hum').textContent = F.hum >= HUM_MAX ? '10 min (15 em Itajaí)' : 'até ' + F.hum + ' min';
+  $('praia').value = F.praia; $('v-praia').textContent = F.praia >= PRAIA_MAX ? 'qualquer distância' : 'até ' + F.praia + ' min';
+  $('hum').value = F.hum; $('v-hum').textContent = 'até ' + F.hum + ' min';
   $('dias').value = F.dias; $('v-dias').textContent = F.dias >= 61 ? 'qualquer data' : 'até ' + F.dias + ' dias atrás';
   $('semlocal').checked = F.semlocal; $('ianao').checked = F.ianao; $('q').value = F.q; $('sort').value = F.sort;
   document.querySelectorAll('#quartos .chip[data-q]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.q === F.quartos)));
