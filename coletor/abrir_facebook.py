@@ -3,7 +3,7 @@
 sessão do FACEBOOK_COOKIES, vê se ainda está disponível e guarda a ficha (descrição, fotos, anunciante) em
 dados/facebook_fichas.json, como a busca faz. O log mostra só o número do anúncio, o título, o preço e a situação.
 
-Com uma palavra no lugar do link (ex.: sicredi), pesquisa no Marketplace de Balneário, abre os anúncios que vierem e diz
+Com uma palavra no lugar do link (ex.: sicredi), pesquisa no Marketplace (de Itajaí a Itapema), abre os anúncios que vierem e diz
 quais têm a palavra na descrição.
 
 Uso: Actions → Coletar anúncios → Run workflow com o campo "abrir" preenchido (a rodada não busca nos sites)."""
@@ -77,16 +77,18 @@ def abrir(url):
 
 
 def procurar(palavra, limite=40):
-    """Pesquisa a palavra no Marketplace de Balneário e abre os anúncios que vierem (primeiro os da faixa do perfil, até
+    """Pesquisa a palavra no Marketplace, de Itajaí a Itapema, e abre os anúncios que vierem (primeiro os da faixa do perfil, até
     `limite`); o log diz quais têm a palavra no título ou na descrição."""
     ck = fb._cookies()
     q, alvo = urllib.parse.quote(palavra), s.norm(palavra).strip()
     with s.Chrome(port=s.porta_livre()) as b:
         if ck:
             fb._sessao(b, ck)
-        lista = {}
-        for url in (f'https://www.facebook.com/marketplace/{fb.CIDADE}/search/?query={q}&exact=false',
-                    f'https://www.facebook.com/marketplace/{fb.CIDADE}/propertyrentals?query={q}&exact=false'):
+        lista, aluguel = {}, set()
+        perto = '&latitude=-27.0&longitude=-48.64&radius=30'   # de Itajaí a Itapema
+        for url in (f'https://www.facebook.com/marketplace/{fb.CIDADE}/propertyrentals?query={q}&exact=false{perto}',
+                    f'https://www.facebook.com/marketplace/{fb.CIDADE}/search/?query={q}&exact=false{perto}'):
+            aluguel |= set(lista)   # o que veio na categoria de aluguéis (a busca geral traz carros, móveis...)
             b.go(url, 9)
             lista.update(fb._lista(b.js('document.documentElement.outerHTML') or ''))
             for _ in range(fb.ROLAGENS if ck else 0):
@@ -95,8 +97,9 @@ def procurar(palavra, limite=40):
             cards = fb._cards(b.js('[...document.querySelectorAll(\'a[href*="/marketplace/item/"]\')]'
                                    '.map(a => ({h: a.getAttribute("href"), t: a.innerText, i: (a.querySelector("img") || {}).src || ""}))'))
             lista.update({i: x for i, x in cards.items() if i not in lista})
-        ordem = sorted(lista, key=lambda i: not s.na_faixa(lista[i].get('preco')))[:limite]
-        print(f'procurar: "{palavra}" no Marketplace trouxe {len(lista)} anúncio(s); abrindo {len(ordem)}')
+        ordem = sorted(lista, key=lambda i: (i not in aluguel, not s.na_faixa(lista[i].get('preco'))))[:limite]
+        print(f'procurar: "{palavra}" no Marketplace trouxe {len(aluguel)} anúncio(s) em aluguéis e {len(lista) - len(aluguel)} '
+              f'na busca geral; abrindo {len(ordem)}')
         fichas, achados = {}, []
         for iid in ordem:
             try:
