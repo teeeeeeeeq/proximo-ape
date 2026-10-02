@@ -13,6 +13,13 @@ CAMPOS = ('id', 'fonte', '_src', 'url', 'titulo', 'desc', 'aluguel', 'pacote', '
 
 def main():
     meta_antes = s.load('meta.json', {})
+    if os.environ.get('ABRIR', '').strip():   # conferir um anúncio avulso do Facebook (e só publicar)
+        import abrir_facebook
+        try:
+            abrir_facebook.abrir(os.environ['ABRIR'].strip())
+        except Exception as ex:
+            print('abrir falhou:', str(ex)[:200])
+        os.environ['SOMENTE'] = 'nenhuma'
     if os.environ.get('SOMENTE', '').strip().lower() == 'nenhuma':   # só publica (vereditos novos da rotina do Claude e o aviso)
         s.STATUS.update(ultima=meta_antes.get('ultima'), erro='')
     else:
