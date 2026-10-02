@@ -2,7 +2,9 @@ name: Coletar anúncios
 
 on:
   schedule:
-    - cron: '17 * * * *'   # a cada hora (o GitHub às vezes atrasa alguns minutos); só a faixa do perfil, uns 5 min
+    # de hora em hora: o GitHub pula muitos horários agendados, então tenta a cada 10 min e o job "relogio" só deixa buscar
+    # quando a última busca (o último estado na branch dados) foi há 50 min ou mais; as outras tentativas param em segundos
+    - cron: '*/10 * * * *'
   workflow_dispatch:   # e quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
     inputs:
       somente:
@@ -20,12 +22,30 @@ permissions:
   id-token: write
   issues: write   # avisos (apartamento novo, favorito que baixou): uma issue que menciona o dono (o GitHub manda por e-mail)
 
-concurrency:
-  group: coletar
-  cancel-in-progress: false
-
 jobs:
+  relogio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      rodar: ${{ steps.r.outputs.rodar }}
+    steps:
+      - id: r
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENTO: ${{ github.event_name }}
+        run: |
+          if [ "$EVENTO" != "schedule" ]; then echo "rodar=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          ultima=$(gh api "repos/${{ github.repository }}/commits/dados" --jq .commit.committer.date 2>/dev/null || echo 1970-01-01T00:00:00Z)
+          min=$(( ($(date +%s) - $(date -d "$ultima" +%s)) / 60 ))
+          echo "última busca há $min min"
+          if [ "$min" -ge 50 ]; then echo "rodar=true" >> "$GITHUB_OUTPUT"; else echo "rodar=false" >> "$GITHUB_OUTPUT"; fi
+
   coletar:
+    needs: relogio
+    if: needs.relogio.outputs.rodar == 'true'
+    concurrency:   # no job (não no workflow): as tentativas do relógio que não buscam não entram na fila nem tiram a vez de ninguém
+      group: coletar
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment:

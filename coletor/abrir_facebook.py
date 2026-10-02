@@ -65,6 +65,10 @@ def abrir(url):
         final = b.js('location.href') or ''
         page = b.js('document.documentElement.outerHTML') or ''
         m = re.search(r'/marketplace/item/(\d+)', final) or re.search(r'/marketplace/item/(\d+)', page)
+        if '/marketplace/ineligible' in final:
+            fb.marcar_bloqueio(True)
+            print(f'abrir: {fb.INELEGIVEL}')
+            return None
         if not m:
             print(f'abrir: o link não levou a um anúncio do Marketplace (foi para {re.sub(r"[?#].*", "", final)[:80]})')
             return None
