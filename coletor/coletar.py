@@ -49,7 +49,7 @@ def main():
     pub.sort(key=lambda x: x.get('visto_em') or '', reverse=True)
     try:   # o Claude confere as fotos (cada anúncio ganha 'ia') e sai o aviso por e-mail; uma falha aqui não derruba a busca
         n = alerta.processar(anuncios, pub, os.path.join(RAIZ, 'dados'))
-        print(f'aviso: {n} apartamento(s) como o do Piatã' if n else 'aviso: nada novo como o do Piatã')
+        print(f'aviso: {n} apartamento(s) de acabamento excelente' if n else 'aviso: nada novo de acabamento excelente')
     except Exception as ex:
         import traceback
         traceback.print_exc()

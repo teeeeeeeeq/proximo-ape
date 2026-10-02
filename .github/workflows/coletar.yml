@@ -70,7 +70,7 @@ jobs:
             echo "sem fila nesta rodada"
           fi
 
-      - name: Avisar apartamento como o do Piatã (e-mail pelo GitHub)
+      - name: Avisar apartamento de acabamento excelente (e-mail pelo GitHub)
         continue-on-error: true   # se falhar, a busca segue
         env:
           GH_TOKEN: ${{ github.token }}
@@ -79,7 +79,7 @@ jobs:
             gh issue create --repo "${{ github.repository }}" --title "$(cat dados/alerta_titulo.txt)" --body-file dados/alerta.md
             rm -f dados/alerta.md dados/alerta_titulo.txt
           else
-            echo "nada novo como o do Piatã"
+            echo "nada novo de acabamento excelente"
           fi
 
       - name: Guardar o histórico

@@ -75,7 +75,8 @@ select{font:14px var(--body);padding:7px 10px;border:1px solid var(--line);borde
 .badge.new{background:var(--sand);color:#fff}
 .badge.off{background:var(--bad);color:#fff}
 .badge.drop{background:var(--good);color:#fff}
-.badge.piata{background:var(--good);color:#fff}
+.badge.exc{background:var(--good);color:#fff}
+.badge.bom{background:var(--sea);color:#fff}
 .badge.perg{background:var(--sand);color:#fff}
 .ia{margin:0;font-size:13.5px;padding:8px 10px;border-radius:10px;background:var(--sea-soft)}
 .ia b{font-weight:600}
@@ -171,7 +172,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     </fieldset>
 
     <fieldset><legend>Claude</legend>
-      <p class="hint" style="margin-top:0">Sozinho, a cada hora, antes de o anúncio chegar aqui, o Claude olha as fotos: cozinha integrada à sala, cozinha bonita e bem montada, piso sem cara de antigo (sem fotos de dentro, estima a chance pelo prédio, pelo preço e pelo texto). Os "como o do Piatã" vêm primeiro na lista e por e-mail; os que ele descarta somem.</p>
+      <p class="hint" style="margin-top:0">Sozinho, a cada hora, antes de o anúncio chegar aqui, o Claude olha as fotos e dá uma nota ao acabamento (piso, marcenaria, bancadas, banheiro, iluminação, conservação, bom gosto) e confere se a cozinha é integrada à sala, que é obrigatório. Sem fotos de dentro, estima a chance pelo prédio, pelo preço e pelo texto. Os de acabamento excelente vêm primeiro na lista e por e-mail; os bons, logo abaixo; os que ele descarta somem.</p>
       <label class="check"><input type="checkbox" id="ianao"> Mostrar também os que o Claude descartou</label>
     </fieldset>
 
@@ -198,7 +199,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       <div class="tools">
         <div class="seg" id="show">
           <button type="button" data-s="todos">Todos</button>
-          <button type="button" data-s="piata">Como o do Piatã</button>
+          <button type="button" data-s="excelente">Acabamento excelente</button>
+          <button type="button" data-s="bom">Bom acabamento</button>
           <button type="button" data-s="perguntar">Vale perguntar</button>
           <button type="button" data-s="novos">Novos</button>
           <button type="button" data-s="baixaram">Baixaram</button>
@@ -289,15 +291,14 @@ const idade = o => horas(o.atualizado || (o.visto_em || '').slice(0, 10)) / 24;
 // o que aconteceu por último com o anúncio: entrou no ar, baixou de preço ou foi mexido no site
 const novidade = o => [chegou(o) || '', baixou(o) ? o.baixou_em : '', o.atualizado || ''].sort().pop();
 
-// o veredito do Claude (o coletor manda em o.ia): piata, perguntar ou nao; sem o.ia = ainda não conferido
+// o veredito do Claude (o coletor manda em o.ia): excelente, bom, perguntar ou nao; sem o.ia = ainda não conferido
 const ia = o => (o.ia || {}).v;
 function naAba(o, aba) {
   const m = marca(o);
   if (aba === 'favoritos') return m === 'favorito';
   if (aba === 'descartados') return m === 'descartado';
   if (m === 'descartado') return false;
-  if (aba === 'piata') return ia(o) === 'piata';
-  if (aba === 'perguntar') return ia(o) === 'perguntar';
+  if (aba === 'excelente' || aba === 'bom' || aba === 'perguntar') return ia(o) === aba;
   if (ia(o) === 'nao' && !F.ianao) return false;
   if (aba === 'novos') return novo(o) || baixouAgora(o);
   if (aba === 'baixaram') return baixou(o);
@@ -321,9 +322,9 @@ function filtros(o) {
 }
 // favoritos e descartados aparecem com qualquer filtro
 const passa = (o, aba = F.show) => naAba(o, aba) && (aba === 'favoritos' || aba === 'descartados' || filtros(o));
-const NIVEL = { piata: 0, perguntar: 1, nao: 3 };   // sem veredito (o Claude ainda não olhou) = 2
+const NIVEL = { excelente: 0, bom: 1, perguntar: 2, nao: 4 };   // sem veredito (o Claude ainda não olhou) = 3
 const SORTS = {
-  melhores: (a, b) => (NIVEL[ia(a)] ?? 2) - (NIVEL[ia(b)] ?? 2) || SORTS.recentes(a, b),
+  melhores: (a, b) => (NIVEL[ia(a)] ?? 3) - (NIVEL[ia(b)] ?? 3) || SORTS.recentes(a, b),
   recentes: (a, b) => novidade(b).localeCompare(novidade(a)) || (b.publicado || '').localeCompare(a.publicado || ''),
   custo: (a, b) => a.fixo - b.fixo || a.aluguel - b.aluguel,
   praia: (a, b) => (a.praia_m ?? 1e9) - (b.praia_m ?? 1e9),
@@ -331,7 +332,7 @@ const SORTS = {
   area: (a, b) => (b.area || 0) - (a.area || 0),
 };
 
-const ABAS = { piata: 'Como o do Piatã', perguntar: 'Vale perguntar', todos: 'Todos', novos: 'Novos', baixaram: 'Baixaram', favoritos: 'Favoritos', descartados: 'Descartados' };
+const ABAS = { excelente: 'Acabamento excelente', bom: 'Bom acabamento', perguntar: 'Vale perguntar', todos: 'Todos', novos: 'Novos', baixaram: 'Baixaram', favoritos: 'Favoritos', descartados: 'Descartados' };
 function render() {
   const list = ALL.filter(o => passa(o)).sort(SORTS[F.sort]);
   document.querySelectorAll('#show button').forEach(b => { const n = ALL.filter(o => passa(o, b.dataset.s)).length; b.innerHTML = `${ABAS[b.dataset.s]} <small>${n}</small>`; });
@@ -339,7 +340,7 @@ function render() {
   avisarLista(`${list.length.toLocaleString('pt-BR')} ${list.length === 1 ? 'apartamento' : 'apartamentos'} · ver ↓`);
   const g = $('grid'); g.innerHTML = '';
   const faltam = ALL.filter(o => !o.ia && filtros(o)).length;
-  if (!list.length) g.innerHTML = `<p class="empty">${(F.show === 'piata' || F.show === 'perguntar') && faltam
+  if (!list.length) g.innerHTML = `<p class="empty">${['excelente', 'bom', 'perguntar'].includes(F.show) && faltam
     ? `Nenhum por enquanto. O Claude ainda vai conferir ${faltam.toLocaleString('pt-BR')} ${faltam === 1 ? 'anúncio' : 'anúncios'} (uns 40 por hora, os novos primeiro); enquanto isso, veja a aba Todos.`
     : 'Nenhum anúncio com esses filtros. Afrouxe o aluguel ou a distância.'}</p>`;
   list.slice(0, shown).forEach(o => g.appendChild(card(o)));
@@ -364,14 +365,14 @@ function card(o) {
   facts.push(`<span class="f plain">${{ texto: 'Mobiliado (no texto)', marcado: 'Mobiliado (só marcado)', semi: 'Semi-mobiliado', nao: 'Sem mobília', 'sem info': 'Mobília não informada' }[o.mobilia]}</span>`);
   const COZ = { sim: 'cozinha integrada à sala', nao: 'cozinha fechada', incerto: 'não dá para ver se a cozinha é integrada' };
   const veredito = !I.v ? ''
-    : `<p class="ia${I.v === 'nao' ? ' nao' : ''}"><b>${I.v === 'piata' ? 'Como o do Piatã' : I.v === 'perguntar' ? 'Vale perguntar (chance ' + (I.chance === 'media' ? 'média' : I.chance) + ')' : 'O Claude descartou'}:</b>
-      ${esc([COZ[I.cozinha_integrada], I.cozinha === 'sem foto' ? 'cozinha não aparece' : 'cozinha ' + I.cozinha, I.piso === 'incerto' ? '' : 'piso ' + I.piso].filter(Boolean).join(' · '))}.
+    : `<p class="ia${I.v === 'nao' ? ' nao' : ''}"><b>${{ excelente: 'Acabamento excelente', bom: 'Bom acabamento', perguntar: 'Vale perguntar (chance ' + (I.chance === 'media' ? 'média' : I.chance) + ')' }[I.v] || 'O Claude descartou'}:</b>
+      ${esc([I.v === 'excelente' || I.v === 'bom' ? '' : I.acabamento === 'sem foto' ? 'sem fotos de dentro' : 'acabamento ' + I.acabamento, COZ[I.cozinha_integrada]].filter(Boolean).join(' · '))}.
       ${esc(I.resumo || '')}</p>`;
   el.innerHTML = `
     <div class="ph"><div class="strip"></div>
       ${fotos.length > 1 ? '<button class="nav p" type="button" aria-label="Foto anterior">‹</button><button class="nav n" type="button" aria-label="Próxima foto">›</button>' : ''}
       <span class="pc">${fotos.length} ${fotos.length === 1 ? 'foto' : 'fotos'}</span>
-      <div class="badges">${I.v === 'piata' ? '<span class="badge piata">Como o do Piatã</span>' : I.v === 'perguntar' ? '<span class="badge perg">Vale perguntar</span>' : ''}${novo(o) ? `<span class="badge new">${horas(chegou(o)) < 6 ? 'Acabou de chegar' : 'Novo · ' + ha(horas(chegou(o)))}</span>` : ''}${baixou(o) ? `<span class="badge drop">Baixou ${brl(o.baixou_de - o.aluguel)}</span>` : ''}${o.no_ar === false ? '<span class="badge off">Saiu do ar</span>' : ''}</div></div>
+      <div class="badges">${{ excelente: '<span class="badge exc">Acabamento excelente</span>', bom: '<span class="badge bom">Bom acabamento</span>', perguntar: '<span class="badge perg">Vale perguntar</span>' }[I.v] || ''}${novo(o) ? `<span class="badge new">${horas(chegou(o)) < 6 ? 'Acabou de chegar' : 'Novo · ' + ha(horas(chegou(o)))}</span>` : ''}${baixou(o) ? `<span class="badge drop">Baixou ${brl(o.baixou_de - o.aluguel)}</span>` : ''}${o.no_ar === false ? '<span class="badge off">Saiu do ar</span>' : ''}</div></div>
     <div class="body">
       <h2 class="place">${esc(zona(o))}${o.rua ? ' · ' + esc(o.rua) : ''}<small>${esc(o.titulo)}</small></h2>
       <div class="money"><b>${o.cond == null && o.cond_est ? '~' : ''}${brl(o.fixo)}</b><span>aluguel ${baixou(o) ? `<s>${brl(o.baixou_de)}</s> ` : ''}${brl(o.aluguel)}${baixou(o) ? ` <span class="drop">(baixou em ${fmtData(o.baixou_em)})</span>` : ''}${o.cond && o.cond_fonte === 'pacote' ? ' + taxas ' + brl(o.cond) + ' (pacote do anúncio: ' + brl(o.pacote) + ')' : o.cond ? ' + cond. ' + brl(o.cond) + (o.cond_fonte === 'descrição' ? ' (da descrição)' : '') : o.cond_fonte === 'incluso' ? ' · condomínio incluso' : o.cond_est ? ' + cond. <em class="est">~' + brl(o.cond_est) + ' estimado (' + esc(o.cond_base) + ')</em>' : ' · condomínio não informado'}${o.iptu ? ' + IPTU ' + brl(o.iptu) : ''} · sem luz e gás</span></div>
