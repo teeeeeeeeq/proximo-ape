@@ -15,7 +15,8 @@ USA_CHROME = True
 CIDADE = '108416972513126'   # Balneário Camboriú no Marketplace
 FAIXAS = [(lo, min(lo + 500, server.ALUGUEL_MAX)) for lo in range(server.ALUGUEL_MIN, server.ALUGUEL_MAX, 500)]   # só a faixa do perfil
 CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'dados', 'facebook_fichas.json')
-PRAZO_FICHAS = 300   # segundos por busca abrindo páginas de anúncio (~40 páginas; o resto fica para a próxima hora)
+PRAZO_FICHAS = 420   # segundos por busca abrindo páginas de anúncio (~60 páginas; o resto fica para a próxima hora)
+FICHA_V = 2          # versão da leitura da ficha: a 1 pegava só a 1ª foto de muitos anúncios (relê os que ficaram com 0 ou 1)
 RENOVA_H = 36        # as fotos do Facebook vêm com link que vence em ~5 dias: relê o anúncio antes
 ROLAGENS = 4         # vezes que rola cada busca para carregar mais anúncios (logado)
 _SAMESITE = {'lax': 'Lax', 'strict': 'Strict', 'no_restriction': 'None', 'none': 'None'}
@@ -71,7 +72,8 @@ def _cards(itens):
         valores = [_num(v) for v in re.findall(r'R\$\s*([\d.]+(?:,\d+)?)', ' '.join(precos))]
         out[m.group(1)] = dict(titulo=resto[0], sub='', onde=onde, cidade=cidade, preco=valores[0],
                                antes=valores[1] if len(valores) > 1 and (valores[1] or 0) > (valores[0] or 0) else None,
-                               vendido=bool(re.search(r'\b(alugado|vendido|pendente)\b', ' '.join(linhas), re.I)), foto='')
+                               vendido=bool(re.search(r'\b(alugado|vendido|pendente)\b', ' '.join(linhas), re.I)),
+                               foto=it.get('i') if (it.get('i') or '').startswith('http') else '')
     return out
 
 
@@ -108,8 +110,75 @@ def _lista(page):
             preco=float(preco) if preco else _num(_s(g(r'"formatted_price":\{"text":"((?:[^"\\]|\\.)*)"') or '')),
             antes=float(riscado) if riscado else None,
             vendido='"is_sold":true' in w[:4000] or '"is_pending":true' in w[:4000] or '"is_live":false' in w[:4000],
-            foto=_s(g(r'"(?:primary_listing_photo|listing_photos)":\[?\{"__typename":"[A-Za-z]+","image":\{(?:"height":\d+,"width":\d+,)?"uri":"((?:[^"\\]|\\.)*)"') or ''))
+            foto=_miniatura(w))
     return out
+
+
+def _miniatura(w):
+    """A foto de capa do card (primary_listing_photo ou a 1ª de listing_photos), com as chaves em qualquer ordem."""
+    for chave in ('"primary_listing_photo":', '"listing_photos":'):
+        i = w.find(chave)
+        m = i >= 0 and re.search(r'"uri":"((?:[^"\\]|\\.)*)"', w[i:i + 1500])
+        if m:
+            return _s(m.group(1))
+    return ''
+
+
+def _bloco(texto, i):
+    """O array ou objeto JSON que começa em texto[i] ('[' ou '{'), respeitando as strings; None se não fecha."""
+    prof, em_str, esc = 0, False, False
+    for k in range(i, min(len(texto), i + 400_000)):
+        c = texto[k]
+        if em_str:
+            if esc:
+                esc = False
+            elif c == '\\':
+                esc = True
+            elif c == '"':
+                em_str = False
+        elif c == '"':
+            em_str = True
+        elif c in '[{':
+            prof += 1
+        elif c in ']}':
+            prof -= 1
+            if prof == 0:
+                return texto[i:k + 1]
+    return None
+
+
+def _fotos_ficha(page):
+    """Todas as fotos grandes do anúncio: o array listing_photos inteiro (o maior, se a página tiver mais de um).
+    Antes, uma regex parava no primeiro '],"' e muitos anúncios ficavam só com a 1ª foto."""
+    melhor = []
+    for m in re.finditer(r'"listing_photos":\[', page):
+        bloco = _bloco(page, m.end() - 1) or ''
+        try:
+            urls = [((it or {}).get('image') or {}).get('uri') for it in json.loads(bloco) if isinstance(it, dict)]
+        except ValueError:   # não é JSON puro: as URIs das imagens, com as chaves em qualquer ordem
+            urls = [_s(u) for u in re.findall(r'"image":\{[^{}]*?"uri":"((?:[^"\\]|\\.)*)"', bloco)]
+        urls = list(dict.fromkeys(u for u in urls if u))
+        if len(urls) > len(melhor):
+            melhor = urls
+    return melhor
+
+
+def _estrutura(page):
+    """Só os nomes dos campos do 1º item de listing_photos (e quantos itens), sem os valores."""
+    def nomes(x, fundo=3):
+        if isinstance(x, dict):
+            return {k: nomes(v, fundo - 1) for k, v in x.items()} if fundo else '{…}'
+        if isinstance(x, list):
+            return [nomes(x[0], fundo - 1), f'+{len(x) - 1}'] if x and fundo else f'[{len(x)}]'
+        return type(x).__name__
+    m = re.search(r'"listing_photos":\[', page)
+    if not m:
+        return 'não aparece na página'
+    try:
+        itens = json.loads(_bloco(page, m.end() - 1) or '')
+        return f'{len(itens)} item(ns): ' + json.dumps(nomes(itens[0]) if itens else None, ensure_ascii=False)[:400]
+    except ValueError:
+        return 'não é JSON puro: ' + str(len(re.findall(r'"uri":"', page[m.end():m.end() + 20000]))) + ' "uri" logo depois'
 
 
 def _vence(fotos):
@@ -123,13 +192,10 @@ def _ficha(page, iid=''):
     d = re.search(r'"redacted_description":\{"text":"((?:[^"\\]|\\.)*)"\}', page)
     t = re.search(r'"redacted_description":\{"text":"(?:[^"\\]|\\.)*"\},"creation_time":(\d+)', page) \
         or re.search(r'"creation_time":(\d{10})\b', page)   # logado, a data não vem colada na descrição
-    fotos = []
-    ph = re.search(r'"listing_photos":\[(.*?)\],"', page)
-    if ph:
-        fotos = [_s(u) for u in re.findall(r'"image":\{"height":\d+,"width":\d+,"uri":"((?:[^"\\]|\\.)*)"', ph.group(1))]
+    fotos = _fotos_ficha(page)
     grupo = re.search(r'"origin_group":\{"id":"\d+","name":"((?:[^"\\]|\\.)*)"', page)
     vend = re.search(r'"marketplace_listing_seller":\{"__typename":"User","name":"((?:[^"\\]|\\.)*)"', page)
-    return dict(desc=_s(d.group(1)) if d else '', criado=int(t.group(1)) if t and 1.5e9 < int(t.group(1)) < time.time() + 86400 else None, fotos=fotos,
+    return dict(v=FICHA_V, desc=_s(d.group(1)) if d else '', criado=int(t.group(1)) if t and 1.5e9 < int(t.group(1)) < time.time() + 86400 else None, fotos=fotos,
                 anunciante=('grupo ' + _s(grupo.group(1))) if grupo else (_s(vend.group(1)) if vend else 'Facebook'))
 
 
@@ -225,7 +291,7 @@ def buscar(b, progresso=lambda m: None):
                 time.sleep(2.5)
             if ck:
                 cards = _cards(b.js('[...document.querySelectorAll(\'a[href*="/marketplace/item/"]\')]'
-                                    '.map(a => ({h: a.getAttribute("href"), t: a.innerText}))'))
+                                    '.map(a => ({h: a.getAttribute("href"), t: a.innerText, i: (a.querySelector("img") || {}).src || ""}))'))
                 lista.update({i: x for i, x in cards.items() if i not in lista})
     if not lista:
         if ck:
@@ -241,18 +307,30 @@ def buscar(b, progresso=lambda m: None):
     t0 = time.time()
     # primeiro os que nunca foram lidos (ou vieram vazios), depois os que estão com as fotos para vencer
     novos = [i for i in alvo if not (cache.get(i) or {}).get('desc') and not (cache.get(i) or {}).get('fotos')]
+    novos += [i for i in alvo if i not in novos and (cache[i].get('v') or 1) < FICHA_V and len(cache[i].get('fotos') or []) <= 1]
     vencendo = sorted((i for i in alvo if i not in novos and (_vence(cache[i].get('fotos')) or 9e9) < time.time() + RENOVA_H * 3600),
                       key=lambda i: _vence(cache[i].get('fotos')))
     faltam = novos + vencendo
+    lidas_1, contagem = [], [0, 0, 0]
     for k, iid in enumerate(faltam):
         if time.time() - t0 > PRAZO_FICHAS:
             break
         progresso(f'anúncio {k + 1} de {len(faltam)}')
         try:
             b.go(f'https://www.facebook.com/marketplace/item/{iid}/', 7)
-            cache[iid] = _ficha(b.js('document.documentElement.outerHTML') or '', iid)
+            page = b.js('document.documentElement.outerHTML') or ''
+            f = _ficha(page, iid)
+            if not f['fotos'] and not f['desc'] and cache.get(iid):
+                continue   # a página não carregou: fica o que já tinha
+            if len(f['fotos']) <= 1 and not lidas_1:   # para entender pelo log, sem publicar o conteúdo da página
+                lidas_1.append(iid)
+                progresso(f'ficha {iid} com {len(f["fotos"])} foto(s); estrutura de listing_photos: {_estrutura(page)}')
+            cache[iid] = f
+            contagem[min(len(f['fotos']), 2)] += 1
         except Exception:
             pass
+    if sum(contagem):
+        progresso(f'fichas lidas: {sum(contagem)} ({contagem[0]} sem foto, {contagem[1]} com 1, {contagem[2]} com 2 ou mais)')
     os.makedirs(os.path.dirname(CACHE), exist_ok=True)
     json.dump(cache, open(CACHE, 'w'), ensure_ascii=False)
     out = []
