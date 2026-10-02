@@ -39,11 +39,19 @@ def main():
     limite = time.strftime('%Y-%m-%d', time.localtime(time.time() - 14 * 86400))
     anuncios = {k: o for k, o in anuncios.items() if o.get('no_ar', True) or (o.get('visto_em') or '') >= limite}
     s.save('anuncios.json', anuncios)
+    try:   # os favoritos que o app mandou (a issue do aviso de preço): entram no app mesmo fora do perfil
+        fav = alerta.favoritos()
+    except Exception as ex:
+        print('favoritos falhou:', ex)
+        fav = None
+    favs = set((fav or {}).get('ids') or [])
     pub = []
     for o in anuncios.values():
-        if not alerta.no_perfil(o):   # aluguel, quartos, mobília, distâncias, temporada, animais
+        if not alerta.no_perfil(o) and o['id'] not in favs:   # aluguel, quartos, mobília, distâncias, temporada, animais
             continue
         x = {k: o.get(k) for k in CAMPOS if o.get(k) not in (None, '', [], False)}
+        if o.get('no_ar') is False:   # só favorito chega aqui fora do ar: o app mostra "Saiu do ar"
+            x['no_ar'] = False
         if x.get('desc'):
             x['desc'] = x['desc'][:1000]
         x['fotos'] = (o.get('fotos') or [])[:15]
@@ -69,7 +77,7 @@ def main():
         traceback.print_exc()
         print('aviso falhou:', ex)
     try:   # favorito que baixou de preço: outro e-mail
-        info['favoritos'] = alerta.favoritos()   # o app compara com os favoritos do navegador (pede para mandar de novo)
+        info['favoritos'] = fav   # o app compara com os favoritos do navegador (pede para mandar de novo)
         n = alerta.avisar_precos(anuncios, os.path.join(RAIZ, 'dados'))
         print(f'aviso de preço: {n} favorito(s) baixaram' if n else 'aviso de preço: nenhum favorito baixou')
     except Exception as ex:
