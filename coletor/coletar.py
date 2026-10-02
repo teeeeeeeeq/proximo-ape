@@ -68,6 +68,14 @@ def main():
         import traceback
         traceback.print_exc()
         print('aviso falhou:', ex)
+    try:   # favorito que baixou de preço: outro e-mail
+        info['favoritos'] = alerta.favoritos()   # o app compara com os favoritos do navegador (pede para mandar de novo)
+        n = alerta.avisar_precos(anuncios, os.path.join(RAIZ, 'dados'))
+        print(f'aviso de preço: {n} favorito(s) baixaram' if n else 'aviso de preço: nenhum favorito baixou')
+    except Exception as ex:
+        import traceback
+        traceback.print_exc()
+        print('aviso de preço falhou:', ex)
     json.dump(pub, open(os.path.join(RAIZ, 'docs', 'anuncios.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
     json.dump(info, open(os.path.join(RAIZ, 'docs', 'meta.json'), 'w'), ensure_ascii=False)
     print(f"{len(pub)} anúncios publicados; fontes: " + '; '.join(f"{n}: {i.get('n', 0)}{' ERRO ' + i['erro'] if i.get('erro') else ''}" for n, i in info['fontes'].items()))
