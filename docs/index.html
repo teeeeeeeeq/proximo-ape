@@ -417,6 +417,8 @@ function lerMarcas() {
   // ajustes pedidos depois que as marcas já estavam salvas no navegador; cada um roda uma vez
   const feitos = F.ajustes || [];
   if (!feitos.includes('amores-desdescartado')) { if (m.O1538462960 === 'descartado') delete m.O1538462960; feitos.push('amores-desdescartado'); }
+  // visitas marcadas ou em andamento (02/10): Amores (OLX) e Palm Coast, Praia Brava (Cati Imóveis)
+  if (!feitos.includes('favoritos-visitas')) { m.O1538462960 = m['KNcati-AP0716-CBIO'] = 'favorito'; feitos.push('favoritos-visitas'); }
   F.ajustes = feitos; saveF(); salvarMarcas(m);
   return m;
 }
@@ -468,13 +470,13 @@ function linkFavoritos(ids) {
 }
 function pintarAvisoFav() {
   const el = $('avfav'), meus = meusFavoritos(), busca = (META.favoritos || {}).ids, env = ler('apto-fav-enviados', {});
-  const naAba = F.show === 'favoritos', n = ALL.filter(o => passa(o, 'favoritos')).length;
+  const naAba = F.show === 'favoritos';
   let h = '';
   if (mesma(meus, busca)) h = naAba && meus.length ? `Aviso por e-mail ligado: a busca avisa quando um destes favoritos baixar ${brl(QUEDA)} ou mais.` : '';
   else if (mesma(meus, env.ids)) h = naAba ? `Lista mandada em ${env.em}: a busca passa a usar na próxima rodada (até 1 hora). Se não tocou no botão verde no GitHub, <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">abra de novo ↗</a>` : '';
   else if (meus.length || (busca || []).length) h = busca
     ? `Os favoritos mudaram desde a lista do aviso por e-mail. <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">Mandar a lista nova ↗</a> (abre o GitHub; lá, toque no botão verde)`
-    : naAba ? `Quer um e-mail quando um favorito baixar ${brl(QUEDA)} ou mais? <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">Mandar ${n === 1 ? 'o favorito' : 'os ' + n + ' favoritos'} para a busca ↗</a> (abre o GitHub; lá, toque no botão verde)` : '';
+    : naAba ? `Quer um e-mail quando um favorito baixar ${brl(QUEDA)} ou mais? <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">Mandar os favoritos para a busca ↗</a> (abre o GitHub; lá, toque no botão verde)` : '';
   el.hidden = !h; el.innerHTML = h;
   const a = el.querySelector('a'); if (a) a.onclick = () => { gravar('apto-fav-enviados', { ids: meus, em: new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) }); setTimeout(render, 0); };
 }
