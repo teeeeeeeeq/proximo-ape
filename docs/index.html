@@ -421,6 +421,8 @@ function lerMarcas() {
   // a praia passou de 10 para 25 min (02/10): quem estava no máximo antigo vai para o novo
   if (!feitos.includes('praia-25')) { if (F.praia >= 10) F.praia = PRAIA_MAX; feitos.push('praia-25'); }
   if (!feitos.includes('favoritos-visitas')) { m.O1538462960 = m['KNcati-AP0716-CBIO'] = 'favorito'; feitos.push('favoritos-visitas'); }
+  // e os 3 ainda sem visita: Garden Village (Reggiori, no Chaves na Mão), Ed. Londrina (Facebook) e Centro de Itajaí (Facebook)
+  if (!feitos.includes('favoritos-visitas-2')) { m.C46892381 = m.F3496598923883901 = m.F1570399801148593 = 'favorito'; feitos.push('favoritos-visitas-2'); }
   F.ajustes = feitos; saveF(); salvarMarcas(m);
   return m;
 }

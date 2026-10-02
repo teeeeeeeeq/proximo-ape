@@ -333,10 +333,15 @@ def buscar(b, progresso=lambda m: None):
         progresso(f'fichas lidas: {sum(contagem)} ({contagem[0]} sem foto, {contagem[1]} com 1, {contagem[2]} com 2 ou mais)')
     os.makedirs(os.path.dirname(CACHE), exist_ok=True)
     json.dump(cache, open(CACHE, 'w'), ensure_ascii=False)
+    try:   # favorito entra mesmo de outro bairro de Itajaí (a lista do aviso de preço; o app mostra os favoritos fora do perfil)
+        import alerta
+        favs = set((alerta.favoritos() or {}).get('ids') or [])
+    except Exception:
+        favs = set()
     out = []
     for iid, x in alvo.items():
         f = cache.get(iid) or {}
-        if not _itajai_sul(x, f.get('desc')):
+        if not _itajai_sul(x, f.get('desc')) and 'F' + iid not in favs:
             continue
         onde = [p.strip() for p in x['onde'].split(',')]
         bairro = onde[0] if len(onde) >= 3 and not re.match(r'(rua|avenida|av\.)', onde[0], re.I) else ''
