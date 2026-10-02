@@ -32,6 +32,24 @@ def na_faixa(v):
     return v is None or ALUGUEL_MIN <= v <= ALUGUEL_MAX
 
 
+# Sites que mostram uma amostra diferente a cada busca (no Facebook, uns 45% dos anúncios trocam de uma hora para a
+# outra): quem não veio continua no ar por estas horas, contadas da última vez que apareceu. Nos outros, sai na hora.
+TOLERANCIA_H = {'Facebook Marketplace': 48, 'ZAP': 24}
+
+
+def _horas(desde, ate):
+    try:
+        return (time.mktime(time.strptime(ate, '%Y-%m-%d %H:%M')) - time.mktime(time.strptime(desde, '%Y-%m-%d %H:%M'))) / 3600
+    except (TypeError, ValueError):
+        return float('inf')
+
+
+def _ultima_vez(o, anterior):
+    """Quando o anúncio veio numa busca pela última vez. Antes de existir visto_ultimo: a busca anterior, se ele estava
+    no ar; senão, a primeira vez que apareceu."""
+    return o.get('visto_ultimo') or (anterior if o.get('no_ar', True) else o.get('visto_em')) or ''
+
+
 PRAIA = json.load(open(os.path.join(DIR, 'praia.json')))
 RUAS_ARQ = os.path.join(DIR, 'ruas.json')
 LOCK = threading.Lock()
@@ -1190,11 +1208,15 @@ def atualizar():
                 o['desc'] = antigos[k]['desc']
                 completar(o)
             o['no_ar'] = True
+            o['visto_ultimo'] = agora
             registrar_preco(o, antigos.get(k), agora, meta.get('ultima'))
         rotulo = {n: n for n in ok if n not in parciais}
         for k, o in antigos.items():
             if k not in novos:
-                o['no_ar'] = False if o.get('_src', o.get('fonte')) in rotulo else o.get('no_ar', True)
+                src = o.get('_src', o.get('fonte'))
+                o['visto_ultimo'] = _ultima_vez(o, meta.get('ultima'))
+                if src in rotulo:
+                    o['no_ar'] = _horas(o['visto_ultimo'], agora) < TOLERANCIA_H.get(src, 0)
                 novos[k] = o
         for o in novos.values():   # recalcula endereço e condomínio de tudo, com as regras e referências atuais
             try:
