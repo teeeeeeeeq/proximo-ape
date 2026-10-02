@@ -1,9 +1,10 @@
 """O perfil (o que o app mostra), o Claude conferindo as fotos e o aviso por e-mail.
 
 Perfil: aluguel de R$ 3.500 a 6.000, só o aluguel (server.ALUGUEL_MIN/MAX; os leitores já buscam só essa faixa),
-2+ quartos (ou 1 quarto com escritório citado ou 55 m²+), pelo menos semimobiliado ("planejados" sem dizer se é
+2 quartos (ou 1 quarto com escritório citado ou 55 m²+; 3 ou mais é grande demais), pelo menos semimobiliado ("planejados" sem dizer se é
 mobiliado conta; "sem mobília" não), até 10 min de carro da Humains (em Itajaí, 15), até 10 min a pé da praia, sem
-temporada e sem recusa de animais. Sem localização fica, com o aviso de que falta o endereço.
+temporada e sem recusa de animais, fora da Barra (longe, mesmo sem endereço). Sem localização fica, com o aviso de que
+falta o endereço.
 
 O Claude confere as fotos de todos os anúncios do perfil, uma vez cada (o mesmo imóvel em sites diferentes conta uma
 vez; dados/avaliacoes.json). Com a chave ANTHROPIC_API_KEY, pela API, aqui mesmo. Sem ela, pelo plano do dono: a busca
@@ -28,6 +29,8 @@ SEGURO = 0.10        # seguro-fiança: 10% do aluguel (quando precisa)
 PRAIA_A_PE = 10      # minutos
 HUMAINS_CARRO = 10   # minutos; em Itajaí, HUMAINS_CARRO_ITAJAI
 HUMAINS_CARRO_ITAJAI = 15
+QUARTOS_MAX = 2      # 3 quartos ou mais é grande demais
+LONGE = {'balneario camboriu': {'barra'}}   # bairros longe: fora mesmo quando o anúncio não dá o endereço
 MAX_POR_AVISO = 15
 MODELO = 'claude-opus-5-5'
 FOTOS_IA = 16        # fotos por anúncio mandadas ao Claude (a cozinha às vezes é a 15ª)
@@ -62,8 +65,11 @@ def no_perfil(o):
         return False
     if not s.ALUGUEL_MIN <= o['aluguel'] <= s.ALUGUEL_MAX or not s.na_regiao(o.get('cidade'), o.get('bairro')):
         return False
+    c = s.norm(o.get('cidade')).strip() or 'balneario camboriu'
+    if s.norm(o.get('bairro')).strip() in LONGE.get(c, ()):
+        return False
     q = o.get('quartos')
-    if q is not None and (q < 1 or (q == 1 and not (o.get('escritorio') or (o.get('area') or 0) >= s.QUARTO_UNICO_M2))):
+    if q is not None and (q < 1 or q > QUARTOS_MAX or (q == 1 and not (o.get('escritorio') or (o.get('area') or 0) >= s.QUARTO_UNICO_M2))):
         return False   # 1 quarto só com espaço para escritório: citado no anúncio ou área grande
     texto = (o.get('titulo') or '') + '\n' + (o.get('desc') or '')
     if o.get('mobilia') == 'nao' or (o.get('mobilia') == 'sem info' and o.get('_src') != 'Facebook Marketplace'
@@ -460,7 +466,7 @@ def avisar(grupos, avals, pasta):
         titulo = f"{len(novos)} apês como o do Piatã (aluguel a partir de {_brl(o['aluguel'])})"
     corpo = [f"@{DONO} {'apareceu um apartamento' if len(novos) == 1 else f'apareceram {len(novos)} apartamentos'} "
              f"como o do Piatã, {'conferido' if len(novos) == 1 else 'conferidos'} pelo Claude nas fotos: cozinha integrada à sala, cozinha bonita e bem montada, "
-             f"piso sem cara de antigo. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2+ quartos, até "
+             f"piso sem cara de antigo. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2 quartos, até "
              f"{PRAIA_A_PE} min a pé da praia e {HUMAINS_CARRO} min de carro da Humains ({HUMAINS_CARRO_ITAJAI} em Itajaí).", '']
     corpo += [_bloco(g, avals[_chave(g[0])]) + '\n' for g in novos[:MAX_POR_AVISO]]
     if len(novos) > MAX_POR_AVISO:

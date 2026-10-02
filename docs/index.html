@@ -141,8 +141,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
       <div class="row"><span>Área mínima</span><b id="v-area"></b></div>
       <input type="range" id="area" min="30" max="150" step="5">
       <div class="chips" id="quartos">
-        <button type="button" class="chip" data-q="2">2+ quartos</button>
-        <button type="button" class="chip" data-q="3">3+ quartos</button>
+        <button type="button" class="chip" data-q="2">2 quartos</button>
         <button type="button" class="chip" id="esc">1 quarto com espaço para escritório</button>
       </div>
     </fieldset>
@@ -224,7 +223,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 <div class="lb" id="lb" hidden><img id="lbimg" alt=""><button class="x" type="button" aria-label="Fechar">×</button><button class="p" type="button" aria-label="Anterior">‹</button><button class="n" type="button" aria-label="Próxima">›</button><div class="c" id="lbc"></div></div>
 
 <script>
-// o coletor já traz só o perfil (aluguel de 3.500 a 6.000, 2+ quartos ou 1 com escritório, pelo menos semimobiliado,
+// o coletor já traz só o perfil (aluguel de 3.500 a 6.000, 2 quartos ou 1 com escritório, fora da Barra, pelo menos semimobiliado,
 // até 10 min a pé da praia, até 10 min de carro da Humains ou 15 em Itajaí); aqui dá para apertar mais
 const PERFIL = { semFonte: [], aluguel: 6000, area: 45, quartos: 2, esc: true, praia: 10, hum: 15, semlocal: true, cond: 2000, mob: ['texto', 'marcado', 'semi', 'sem info'], ianao: false, dias: 21, q: '', show: 'todos', sort: 'melhores' };
 const CHAVE = 'apto-filtros-v4';   // v2: perfil antigo; v3: abria só nos aprovados pelo Claude e ia até R$ 5.500

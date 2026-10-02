@@ -2,7 +2,7 @@
 
 Busca de apartamentos para alugar em Balneário Camboriú. A cada hora (e quando pedido: Actions → Coletar anúncios → Run workflow), o GitHub Actions lê ZAP, OLX, Chaves na Mão, Facebook Marketplace e sites de imobiliárias (`coletor/`), e publica o app (`docs/`) no GitHub Pages.
 
-- O perfil (`coletor/alerta.py`, `no_perfil`): aluguel de R$ 3.500 a 6.000, só o aluguel (`server.ALUGUEL_MIN/MAX`; os leitores já pedem aos sites só essa faixa, o que deixa a busca rápida), 2+ quartos ou 1 com escritório, pelo menos semimobiliado, até 10 min a pé da praia, até 10 min de carro da Humains (15 em Itajaí), sem recusa de animais. O app só recebe o que está no perfil.
+- O perfil (`coletor/alerta.py`, `no_perfil`): aluguel de R$ 3.500 a 6.000, só o aluguel (`server.ALUGUEL_MIN/MAX`; os leitores já pedem aos sites só essa faixa, o que deixa a busca rápida), 2 quartos ou 1 com escritório (3 ou mais é grande demais), pelo menos semimobiliado, até 10 min a pé da praia, até 10 min de carro da Humains (15 em Itajaí), fora da Barra (longe, mesmo quando o anúncio não dá o endereço), sem recusa de animais. O app só recebe o que está no perfil.
 - Buscar agora: aba **Actions** → *Coletar anúncios* → **Run workflow**.
 - Cada leitor fica em `coletor/fontes/<nome>.py` e expõe `buscar(chrome, progresso) -> list[dict]`.
 - O histórico (quando cada anúncio apareceu) fica na branch `dados`.
