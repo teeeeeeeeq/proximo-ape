@@ -462,7 +462,7 @@ const mesma = (a, b) => !!a && !!b && a.length === b.length && a.every((x, i) =>
 function linkFavoritos(ids) {
   const porId = {}; ALL.forEach(o => idsDe(o).forEach(i => { porId[i] = o; }));
   const url = linhas => REPO + '/issues/new?title=' + encodeURIComponent(TITULO_FAV) + '&body=' + encodeURIComponent(
-    `Lista de favoritos mandada pelo app. A busca de hora em hora usa a issue mais recente com este título e avisa por e-mail quando um destes favoritos baixar ${brl(QUEDA)} ou mais. É só tocar em Submit (o texto não precisa mudar).\n\n\`\`\`\n${linhas.join('\n')}\n\`\`\`\n`);
+    `Lista de favoritos mandada pelo app. A busca de hora em hora usa a issue mais recente com este título e avisa por e-mail quando um destes favoritos baixar ${brl(QUEDA)} ou mais. É só tocar no botão verde de criar (o texto não precisa mudar).\n\n\`\`\`\n${linhas.join('\n')}\n\`\`\`\n`);
   const u = url(ids.map(i => porId[i] ? `${i}  ${zona(porId[i]) || 'sem bairro'} · ${brl(porId[i].aluguel)}` : i));
   return u.length < 7000 ? u : url(ids);   // link comprido demais: só os códigos
 }
@@ -471,10 +471,10 @@ function pintarAvisoFav() {
   const naAba = F.show === 'favoritos', n = ALL.filter(o => passa(o, 'favoritos')).length;
   let h = '';
   if (mesma(meus, busca)) h = naAba && meus.length ? `Aviso por e-mail ligado: a busca avisa quando um destes favoritos baixar ${brl(QUEDA)} ou mais.` : '';
-  else if (mesma(meus, env.ids)) h = naAba ? `Lista mandada em ${env.em}: a busca passa a usar na próxima rodada (até 1 hora). Se não tocou em Submit no GitHub, <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">abra de novo ↗</a>` : '';
+  else if (mesma(meus, env.ids)) h = naAba ? `Lista mandada em ${env.em}: a busca passa a usar na próxima rodada (até 1 hora). Se não tocou no botão verde no GitHub, <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">abra de novo ↗</a>` : '';
   else if (meus.length || (busca || []).length) h = busca
-    ? `Os favoritos mudaram desde a lista do aviso por e-mail. <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">Mandar a lista nova ↗</a> (abre uma issue pronta no GitHub; toque em Submit)`
-    : naAba ? `Quer um e-mail quando um favorito baixar ${brl(QUEDA)} ou mais? <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">Mandar ${n === 1 ? 'o favorito' : 'os ' + n + ' favoritos'} para a busca ↗</a> (abre uma issue pronta no GitHub; toque em Submit)` : '';
+    ? `Os favoritos mudaram desde a lista do aviso por e-mail. <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">Mandar a lista nova ↗</a> (abre o GitHub; lá, toque no botão verde)`
+    : naAba ? `Quer um e-mail quando um favorito baixar ${brl(QUEDA)} ou mais? <a href="${esc(linkFavoritos(meus))}" target="_blank" rel="noopener">Mandar ${n === 1 ? 'o favorito' : 'os ' + n + ' favoritos'} para a busca ↗</a> (abre o GitHub; lá, toque no botão verde)` : '';
   el.hidden = !h; el.innerHTML = h;
   const a = el.querySelector('a'); if (a) a.onclick = () => { gravar('apto-fav-enviados', { ids: meus, em: new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) }); setTimeout(render, 0); };
 }
