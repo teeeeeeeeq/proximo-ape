@@ -10,7 +10,7 @@ on:
         required: false
         default: ''
       abrir:
-        description: 'Link de um anúncio do Facebook para conferir (se ainda está no ar e a descrição); não busca nos sites'
+        description: 'Link de um anúncio do Facebook para conferir (se ainda está no ar e a descrição), ou uma palavra para procurar nas descrições do Marketplace (ex.: sicredi); não busca nos sites'
         required: false
         default: ''
 
