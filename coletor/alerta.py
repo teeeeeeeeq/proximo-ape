@@ -21,8 +21,10 @@ O e-mail é uma issue que menciona o dono do repositório (o GitHub manda o e-ma
 (dados/avisos.json).
 Sem endereço: a fila leva também os anúncios do perfil sem endereço (até FILA_ENDERECOS por rodada); a rotina pesquisa o
 endereço do prédio citado e grava na branch avaliacoes (enderecos.json), que a busca seguinte usa (server.endereco_pesquisado).
+Favorito que baixou QUEDA_FAVORITO ou mais: outro e-mail (outra issue). Os favoritos ficam no navegador; o app abre uma issue
+do dono com a lista ("Favoritos para o aviso de preço") e o workflow grava a mais recente em dados/favoritos_issue.json.
 """
-import base64, io, json, os, re, shutil, time, urllib.request
+import base64, calendar, io, json, os, re, shutil, time, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 import server as s
@@ -48,6 +50,7 @@ VERSAO = 4           # muda quando o que se pede ao Claude muda: o que foi avali
 FILA_MAX = 30        # sem a chave da API: anúncios por rodada da rotina do Claude (os mais recentes primeiro)
 FILA_FOTOS = 12      # fotos por anúncio na fila, em duas folhas de 6 (512 x 384 cada foto)
 FILA_ENDERECOS = 10  # anúncios sem endereço por rodada da rotina, para ela pesquisar o endereço do prédio
+QUEDA_FAVORITO = 200   # R$; baixa menor num favorito fica só no selo "Baixou" do app (o mesmo valor do app: QUEDA)
 
 
 def a_pe(m):
@@ -404,7 +407,8 @@ def _data(d):
     return '/'.join(reversed(d[:10].split('-')[1:])) if d else ''
 
 
-def _bloco(grupo, aval):
+def _bloco(grupo, aval, queda=None):
+    """`queda` (de, para): a baixa do aviso de favorito, no lugar da baixa que o anúncio mostra."""
     o = grupo[0]
     total, cond, estimado = custo(o)
     zona = o.get('bairro') or 'Bairro não informado'
@@ -442,7 +446,9 @@ def _bloco(grupo, aval):
         linhas.append(f"- praia {aprox}{a_pe(o['praia_m'])} min a pé · Humains {aprox}{de_carro(o['humains_m'])} min de carro"
                       + (f" · prédio {o['predio']}" if o.get('predio') else ''))
     quando = []
-    if o.get('baixou_de') and o['baixou_de'] > o['aluguel']:
+    if queda:
+        quando.append(f"**baixou {_brl(queda[0] - queda[1])}** (era {_brl(queda[0])})")
+    elif o.get('baixou_de') and o['baixou_de'] > o['aluguel']:
         quando.append(f"**baixou {_brl(o['baixou_de'] - o['aluguel'])}** (era {_brl(o['baixou_de'])})")
     if o.get('publicado'):
         quando.append('publicado ' + _data(o['publicado']))
@@ -498,6 +504,73 @@ def avisar(grupos, avals, pasta):
     with open(os.path.join(pasta, 'alerta.md'), 'w') as f:
         f.write('\n'.join(corpo))
     return len(novos)
+
+
+def favoritos():
+    """Os favoritos que o app mandou: a issue mais recente do dono com o título do app (o workflow grava em
+    dados/favoritos_issue.json). Os ids vêm no bloco de código, um por linha; o resto da linha é só para quem lê."""
+    issue = s.load('favoritos_issue.json', None)
+    if not issue:
+        return None
+    m = re.search(r'```[^\n]*\n(.*?)```', issue.get('texto') or '', re.S)
+    ids = sorted({l.split()[0] for l in (m.group(1) if m else '').splitlines() if l.strip()})
+    try:   # created_at vem em UTC; o resto do app grava na hora de Brasília (TZ do workflow)
+        quando = time.strftime('%Y-%m-%d %H:%M', time.localtime(calendar.timegm(time.strptime(issue['quando'], '%Y-%m-%dT%H:%M:%SZ'))))
+    except (KeyError, TypeError, ValueError):
+        quando = None
+    return {'ids': ids, 'issue': issue.get('numero'), 'quando': quando}
+
+
+def avisar_precos(anuncios, pasta):
+    """Escreve alerta_preco_titulo.txt e alerta_preco.md em `pasta` com os favoritos que baixaram QUEDA_FAVORITO ou mais.
+    Cada favorito guarda em dados/precos_avisados.json o aluguel de referência: o da primeira vez que a busca o viu
+    como favorito e, depois, o do último aviso; se o aluguel sobe, a referência sobe junto (a baixa conta de lá)."""
+    for n in ('alerta_preco_titulo.txt', 'alerta_preco.md'):
+        try:
+            os.remove(os.path.join(pasta, n))
+        except OSError:
+            pass
+    fav = favoritos()
+    if not fav:
+        return 0
+    antes = s.load('precos_avisados.json', {})
+    ref = {i: antes[i] for i in fav['ids'] if i in antes}   # quem saiu dos favoritos esquece a referência
+    grupos = {}
+    for i in sorted(fav['ids'], key=lambda i: (anuncios.get(i) or {}).get('fonte') != 'ZAP'):   # como no app: ZAP primeiro
+        o = anuncios.get(i)
+        if o and o.get('no_ar') is not False and o.get('ativo') is not False and o.get('aluguel'):
+            grupos.setdefault(_chave(o), []).append(o)
+    baixaram = []
+    for g in grupos.values():
+        p = g[0]['aluguel']
+        de = max((ref[x['id']] for x in g if x['id'] in ref), default=None)
+        avisa = de is not None and de - p >= QUEDA_FAVORITO
+        if avisa:
+            baixaram.append((g, de))
+        for x in g:
+            if avisa or ref.get(x['id']) is None or ref[x['id']] < p:
+                ref[x['id']] = p   # avisado agora, primeira vez ou subiu
+    s.save('precos_avisados.json', ref)
+    if not baixaram:
+        return 0
+    baixaram.sort(key=lambda b: b[0][0]['aluguel'] - b[1])
+    avals = s.load('avaliacoes.json', {})
+    o, de = baixaram[0][0][0], baixaram[0][1]
+    if len(baixaram) == 1:
+        titulo = f"Favorito baixou {_brl(de - o['aluguel'])}: {o.get('bairro') or 'BC'} · aluguel {_brl(o['aluguel'])}"
+    else:
+        titulo = f"{len(baixaram)} favoritos baixaram de preço (até {_brl(de - o['aluguel'])})"
+    corpo = [f"@{DONO} {'um dos favoritos baixou' if len(baixaram) == 1 else f'{len(baixaram)} favoritos baixaram'} "
+             f"o aluguel em {_brl(QUEDA_FAVORITO)} ou mais.", '']
+    corpo += [_bloco(g, avals.get(_chave(g[0])) or {}, (de, g[0]['aluguel'])) + '\n' for g, de in baixaram[:MAX_POR_AVISO]]
+    if len(baixaram) > MAX_POR_AVISO:
+        corpo.append(f"…e mais {len(baixaram) - MAX_POR_AVISO} no app.")
+    corpo.append(f"\n[Abrir o app]({APP}) · Favoritos da issue #{fav['issue']}; para mudar a lista, use o botão na aba Favoritos do app.")
+    with open(os.path.join(pasta, 'alerta_preco_titulo.txt'), 'w') as f:
+        f.write(titulo[:250])
+    with open(os.path.join(pasta, 'alerta_preco.md'), 'w') as f:
+        f.write('\n'.join(corpo))
+    return len(baixaram)
 
 
 def processar(anuncios, pub, pasta):

@@ -18,7 +18,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
-  issues: write   # aviso de apartamento novo: uma issue que menciona o dono (o GitHub manda por e-mail)
+  issues: write   # avisos (apartamento novo, favorito que baixou): uma issue que menciona o dono (o GitHub manda por e-mail)
 
 concurrency:
   group: coletar
@@ -45,6 +45,15 @@ jobs:
           # e os endereços que ela pesquisou para anúncios sem endereço
           cp /tmp/avaliacoes/enderecos.json dados/enderecos_rotina.json 2>/dev/null || true
           ls -la dados
+
+      - name: Favoritos para o aviso de preço (a issue mais recente que o app abriu com a lista)
+        continue-on-error: true   # se falhar, vale a lista da rodada anterior (dados/favoritos_issue.json)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/issues?creator=${{ github.repository_owner }}&state=all&sort=created&direction=desc&per_page=50" \
+            --jq '[.[] | select(.pull_request == null and (.title | startswith("Favoritos para o aviso")))][0] // empty | {numero: .number, quando: .created_at, texto: .body}' > /tmp/favoritos.json
+          if [ -s /tmp/favoritos.json ]; then mv /tmp/favoritos.json dados/favoritos_issue.json; else echo "nenhuma lista de favoritos"; fi
 
       - uses: actions/setup-python@v5
         with:
@@ -87,6 +96,18 @@ jobs:
             rm -f dados/alerta.md dados/alerta_titulo.txt
           else
             echo "nada novo de acabamento excelente"
+          fi
+
+      - name: Avisar favorito que baixou de preço (e-mail pelo GitHub)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f dados/alerta_preco.md ]; then
+            gh issue create --repo "${{ github.repository }}" --title "$(cat dados/alerta_preco_titulo.txt)" --body-file dados/alerta_preco.md
+            rm -f dados/alerta_preco.md dados/alerta_preco_titulo.txt
+          else
+            echo "nenhum favorito baixou"
           fi
 
       - name: Guardar o histórico
