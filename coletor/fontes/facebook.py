@@ -243,20 +243,10 @@ def _rua(*txts):
     return ''
 
 
-ITAJAI_SUL = ('praia brava', 'fazendinha', 'cabeçudas', 'cabecudas', 'fazenda', 'ressacada')
-
-
 def _regiao(x):
-    """Na lista: Balneário e Camboriú entram; Itajaí entra provisório (decide depois, pela descrição)."""
+    """Na lista: Balneário, Camboriú e Itajaí (a cidade inteira; quem decide é o tempo de carro até a Humains)."""
     t = (x['onde'] + ' ' + x['cidade']).lower()
     return 'camboriú' in t or 'itajaí' in t
-
-
-def _itajai_sul(x, desc):
-    t = (x['onde'] + ' ' + x['cidade']).lower()
-    if 'itajaí' not in t or 'camboriú' in t:
-        return True
-    return any(b in (t + ' ' + x['titulo'] + ' ' + (desc or '')).lower() for b in ITAJAI_SUL)
 
 
 def _sessao(b, ck):
@@ -280,7 +270,7 @@ def buscar(b, progresso=lambda m: None):
         progresso('entrando na conta')
         _sessao(b, ck)
     lista = {}
-    for lat, raio in ((-26.99, 7), (-26.935, 6)):   # Balneário/Camboriú e o sul de Itajaí
+    for lat, raio in ((-26.99, 7), (-26.935, 6)):   # Balneário/Camboriú e Itajaí até o Centro
         for lo, hi in FAIXAS:
             progresso(f'lista R$ {lo}–{hi} ({lat})')
             b.go(f'https://www.facebook.com/marketplace/{CIDADE}/propertyrentals?minPrice={lo}&maxPrice={hi}&minBedrooms=1'
@@ -333,16 +323,9 @@ def buscar(b, progresso=lambda m: None):
         progresso(f'fichas lidas: {sum(contagem)} ({contagem[0]} sem foto, {contagem[1]} com 1, {contagem[2]} com 2 ou mais)')
     os.makedirs(os.path.dirname(CACHE), exist_ok=True)
     json.dump(cache, open(CACHE, 'w'), ensure_ascii=False)
-    try:   # favorito entra mesmo de outro bairro de Itajaí (a lista do aviso de preço; o app mostra os favoritos fora do perfil)
-        import alerta
-        favs = set((alerta.favoritos() or {}).get('ids') or [])
-    except Exception:
-        favs = set()
     out = []
     for iid, x in alvo.items():
         f = cache.get(iid) or {}
-        if not _itajai_sul(x, f.get('desc')) and 'F' + iid not in favs:
-            continue
         onde = [p.strip() for p in x['onde'].split(',')]
         bairro = onde[0] if len(onde) >= 3 and not re.match(r'(rua|avenida|av\.)', onde[0], re.I) else ''
         q = _quartos(x['sub'], x['titulo'], f.get('desc'))

@@ -27,10 +27,10 @@ SITES = (
     ('viva', 'Viva Imóveis Itajaí', 'www.vivaimoveisitajai.com.br'),
     ('cati', 'Cati Imóveis', 'www.catiimoveis.com.br'),
 )
-CIDADES = ('balneario-camboriu', 'camboriu', 'itajai')   # Itajaí: só os bairros do sul (server.na_regiao)
+CIDADES = ('balneario-camboriu', 'camboriu', 'itajai')
 MIN_ALUGUEL, MAX_ALUGUEL = server.ALUGUEL_MIN, server.ALUGUEL_MAX
 # quadrado em volta de Balneário Camboriú: coordenada fora disso é geocodificação errada
-BC_LAT, BC_LON = (-27.08, -26.89), (-48.74, -48.56)   # BC, Camboriú e o sul de Itajaí
+BC_LAT, BC_LON = (-27.08, -26.89), (-48.74, -48.56)   # BC, Camboriú e Itajaí até o Centro
 # pontos genéricos que o Kenlo usa quando não acha o endereço (centro da cidade / do bairro Centro)
 PONTOS_GENERICOS = {(-26.99107, -48.63521), (-26.99309, -48.63563)}
 
