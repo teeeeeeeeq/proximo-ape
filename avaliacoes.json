@@ -12,40 +12,37 @@
 "quando": "2026-10-01 18:46"
 },
 "F1828370031941061": {
+"acabamento": "comum",
 "cozinha_integrada": "nao",
-"cozinha": "ruim",
-"piso": "antigo",
 "chance": "baixa",
-"melhor_foto": 5,
-"resumo": "Cozinha estreita e separada da sala, móveis soltos e azulejo bege datado; piso de cerâmica antiga com rejunte escuro e banheiro antigo.",
-"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t45.5328-4/825331441_1887240822248819_1662848816213869734_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=gl01lEGYtJUQ7kNvwFKxk-7&_nc_oc=AdqAyLi1Q2iEb-rZJdbWPsQEGS_eZrWQhiqm22YN8piSmJTkH2YAPbTfsDislUvm0VI&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=Ax8lcGPzE0BoyGYyAl7oqw&_nc_ss=792a8&oh=00_AQNFTb__BhnZ4IGvqyMM5jnet4a-ffj3m7fmtokr3Y94RA&oe=6AC4C0BD",
+"melhor_foto": 1,
+"resumo": "Prédio antigo: cerâmica velha, piso de madeira gasto, banheiro com louça marrom datada e cozinha estreita de azulejo antigo, fechada e separada da sala.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.84726-6/831142402_4669716703349471_6082722935535625751_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=105&ccb=1-7&_nc_sid=92e707&_nc_ohc=e6NvmTRh9eMQ7kNvwFMvsUx&_nc_oc=Adr7z3rUhHe9IWuTK6URGXnR6dOLgBmfwcpevD8T9eGfJfqtZbXfkTzd-9gvAaePyQw&_nc_zt=14&_nc_ht=scontent-ord5-2.xx&_nc_gid=Ax8lcGPzE0BoyGYyAl7oqw&_nc_ss=792a8&oh=00_AQOtGPSszYgZ_ZEl6F48mCkuHGs4ob10ISL9Vnfo-AVIBA&oe=6AC4A29E",
 "id": "F1828370031941061",
-"versao": 3,
-"quando": "2026-10-01 18:46"
+"versao": 4,
+"quando": "2026-10-02 13:57"
 },
 "F1357035849582954": {
-"cozinha_integrada": "nao",
-"cozinha": "simples",
-"piso": "bom",
-"chance": "baixa",
-"melhor_foto": 8,
-"resumo": "Sobrado; cozinha pequena em canto, com armários planejados azuis e bancada de granito preto, aparentemente separada da sala e sem equipamentos; piso porcelanato claro de rejunte fino.",
-"foto": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/829648706_2856696704705045_6616003977931753255_n.jpg?stp=dst-jpg_tt6&cstp=mx900x1600&ctp=s960x960&_nc_cat=101&ccb=1-7&_nc_sid=946e27&_nc_ohc=IZDdxZNv5rQQ7kNvwGZofpL&_nc_oc=AdqXOnUSImhj5v58o8cOmmqEkrIfyUqEkKA-k96-a6fulOmh0_mqzqjmI-Vk0y91wzo&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=4YO5hCVgRdHheWnNO8uU3w&_nc_ss=792a8&oh=00_AQOX4O1CE_6rNTCnX_Acx3zUUowq2L4RmGvMm0-cyv-BeA&oe=6AC491E4",
+"acabamento": "bom",
+"cozinha_integrada": "incerto",
+"chance": "media",
+"melhor_foto": 11,
+"resumo": "Sobrado com porcelanato grande, cozinha planejada azul com bancada preta e banheiros simples; lâmpadas soltas. A cozinha fica ao fundo da sala com moldura de madeira, sem porta clara.",
+"foto": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/833863929_2856696924705023_8998952181002890642_n.jpg?stp=dst-jpg_tt6&cstp=mx900x1600&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=946e27&_nc_ohc=YYmbyt3ZGI8Q7kNvwFReZHH&_nc_oc=AdrugzdsGn9UyRQfjzovhS_1zy259QUUmUr3W2wYovB7AqwzEsXsCUO9k0C-tkiAG5k&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=4YO5hCVgRdHheWnNO8uU3w&_nc_ss=792a8&oh=00_AQOfXKPE3rTpgjRuvbWgVFuQtcbbvUm8cSOAyEsm08rw9w&oe=6AC48F2E",
 "id": "F1357035849582954",
-"versao": 3,
-"quando": "2026-10-01 18:46"
+"versao": 4,
+"quando": "2026-10-02 13:57"
 },
 "F28034857916214431": {
+"acabamento": "bom",
 "cozinha_integrada": "sim",
-"cozinha": "bonita",
-"piso": "bom",
 "chance": "alta",
 "melhor_foto": 1,
-"resumo": "Ilha de quartzo claro aberta para a sala de estar e jantar; armários planejados brancos, bancada preta, forno e cooktop embutidos. Piso porcelanato cinza de rejunte fino.",
+"resumo": "Porcelanato grande, marcenaria branca com bancada de granito preto, ilha voltada para a sala, banheiros com box de vidro e cuba de apoio; atual e bem cuidado, sem muita sanca ou iluminação especial.",
 "foto": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/821223495_1711973633228433_6598411747897893563_n.jpg?stp=dst-jpg_tt6&cstp=mx712x950&ctp=s712x950&_nc_cat=108&ccb=1-7&_nc_sid=454cf4&_nc_ohc=uomgV69GtH8Q7kNvwEOshx-&_nc_oc=AdpribIL6pMAgkLvTuU_tlVT_aKNWaKEXWVD8DWEEg0vCaH9YJFjeU3JDv1QPaYBWJg&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=ffN90Bfl8JEwwa_dXRsNhw&_nc_ss=792a8&oh=00_AQPdAvOL-9wb56eTNRIfKFCQpeo-aE24pbyCbwQMiaSZ6w&oe=6AC4BB4A",
 "id": "F28034857916214431",
-"versao": 3,
-"quando": "2026-10-01 18:46"
+"versao": 4,
+"quando": "2026-10-02 13:57"
 },
 "F1775596503472413": {
 "cozinha_integrada": "sim",
@@ -71,16 +68,15 @@
 "quando": "2026-10-01 22:40"
 },
 "F2501161620296069": {
+"acabamento": "bom",
 "cozinha_integrada": "incerto",
-"cozinha": "simples",
-"piso": "bom",
 "chance": "media",
-"melhor_foto": 3,
-"resumo": "Prédio novo; cozinha linear com armários planejados cinza e bancada de granito preto, sem equipamentos, que parece separada da sala (não aparece junto). Piso porcelanato claro de rejunte fino.",
-"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/795369892_2472381263255512_2183262859925644531_n.jpg?stp=cp6_dst-jpegr_tt6&cstp=mx2048x1536&ctp=s960x960&_nc_cat=103&ccb=1-7&_nc_sid=946e27&_nc_ohc=RUeyay1kHxwQ7kNvwEmhgfp&_nc_oc=AdoEo8-cGjYwy6gtMNQ75R0kTs7li2aS6sG751Iuf1C4ed-dQaIH1LcKgbNXKsTk-Nw&_nc_zt=23&se=-1&_nc_ht=scontent-ord5-2.xx&_nc_gid=lfvYwhaYatgPTEkQDjreiQ&_nc_ss=792a8&oh=00_AQPMcJn_XIS_VbY8AEVHz0B62uBnt3KahnZUGCa8sk_dsQ&oe=6AC4A8D5",
+"melhor_foto": 2,
+"resumo": "Apartamento novo e vazio: porcelanato claro, marcenaria cinza sob medida com bancada de granito preto, esquadrias pretas e banheiro com box; gesso simples. Não dá para ver se a cozinha é aberta para a sala.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/797088083_2472381223255516_1365815420725524069_n.jpg?stp=cp6_dst-jpegr_tt6&cstp=mx2048x1536&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=FRkVeg8LQQgQ7kNvwHXaXYQ&_nc_oc=Adq6Ytzkz0TYi6Qog7PJnDMlwHoLUVEoBNI3OhqajjOI5L9rCB6brMV30kNPvNG89vs&_nc_zt=23&se=-1&_nc_ht=scontent-ord5-2.xx&_nc_gid=lfvYwhaYatgPTEkQDjreiQ&_nc_ss=792a8&oh=00_AQMnQMfCyYS_Gr-Oqd2P-cj3zI4o5W8vRURjRZUZI723Jg&oe=6AC4AFE1",
 "id": "F2501161620296069",
-"versao": 3,
-"quando": "2026-10-01 18:47"
+"versao": 4,
+"quando": "2026-10-02 13:57"
 },
 "F1034726546236552": {
 "acabamento": "comum",
@@ -116,16 +112,15 @@
 "quando": "2026-10-01 22:40"
 },
 "F1058600990126054": {
+"acabamento": "bom",
 "cozinha_integrada": "sim",
-"cozinha": "simples",
-"piso": "bom",
-"chance": "media",
+"chance": "alta",
 "melhor_foto": 6,
-"resumo": "Cozinha compacta aberta para a sala por balcão com banquetas; armários planejados brancos, mas pequena e básica. Piso porcelanato cinza de rejunte fino e vinílico nos quartos.",
+"resumo": "Porcelanato cinza, piso laminado nos quartos, spots embutidos, cozinha planejada branca com balcão aberta para a sala, banheiro com box de vidro; atual e limpo, mas simples.",
 "foto": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/800862905_38267477489565354_1300057321909561511_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=946e27&_nc_ohc=xMt8539XJIoQ7kNvwGPnUrP&_nc_oc=AdqPt4wuM-IUUIMpcUPFpyWxv36RT1qZrP0PjeyI4xew77RmDhsTgQX_hmDESooVPZg&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=S2WT8MAe_Fhykj5XvNOxxQ&_nc_ss=792a8&oh=00_AQNqsNH4IkUd6Ye8tWJnV7BiIX70Zha1KWjcxciCs-RYjw&oe=6AC4BE57",
 "id": "F1058600990126054",
-"versao": 3,
-"quando": "2026-10-01 18:47"
+"versao": 4,
+"quando": "2026-10-02 13:57"
 },
 "F778704208669137": {
 "acabamento": "comum",
@@ -139,16 +134,15 @@
 "quando": "2026-10-01 23:39"
 },
 "F1618161073275979": {
+"acabamento": "comum",
 "cozinha_integrada": "sim",
-"cozinha": "simples",
-"piso": "bom",
-"chance": "media",
+"chance": "baixa",
 "melhor_foto": 4,
-"resumo": "Kitchenette na mesma sala, sem separação, com módulos de madeira e cooktop pequeno, básica e apertada; piso porcelanato claro de rejunte fino. Imóvel tipo casa de tijolinho em corredor.",
+"resumo": "Casa térrea simples: porcelanato claro, forro de PVC e luz de lâmpada fluorescente, cozinha com armários básicos junto à sala, banheiro com granito simples; móveis soltos.",
 "foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/784572584_1714719929628116_3664125809030616168_n.jpg?stp=dst-jpg_tt6&cstp=mx720x393&ctp=s720x393&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=w0MfVwUc48UQ7kNvwGlYJQp&_nc_oc=Adpth-RoZnysTMWmkueIW9mAfzlhkiRI7LzmoRs5xIFMHyK244X-lVdYPJZMmEKddv4&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=_ARidp56jSzxHt4Y2T2GdA&_nc_ss=792a8&oh=00_AQMYC7iQsbz9-Xsf-CslqqOr7IBh8ebWi47hOrgvd20Zpw&oe=6AC4A0FD",
 "id": "F1618161073275979",
-"versao": 3,
-"quando": "2026-10-01 18:47"
+"versao": 4,
+"quando": "2026-10-02 13:57"
 },
 "5600|100|centro": {
 "cozinha_integrada": "nao",
@@ -174,15 +168,14 @@
 "quando": "2026-10-01 18:47"
 },
 "F2938411029855533": {
+"acabamento": "sem foto",
 "cozinha_integrada": "incerto",
-"cozinha": "sem foto",
-"piso": "bom",
 "chance": "baixa",
 "melhor_foto": 0,
-"resumo": "Anúncio de sala comercial de 50 m², não é apartamento residencial; sem cozinha nas fotos, só salão aberto com piso porcelanato cinza de rejunte fino e banheiro.",
+"resumo": "É uma sala comercial vazia, sem cozinha, com banheiro simples; não é apartamento para morar.",
 "id": "F2938411029855533",
-"versao": 3,
-"quando": "2026-10-01 18:47"
+"versao": 4,
+"quando": "2026-10-02 13:58"
 },
 "F1929608084378157": {
 "cozinha_integrada": "nao",
@@ -2241,5 +2234,258 @@
 "id": "F1054911240700103",
 "versao": 4,
 "quando": "2026-10-02 10:58"
+},
+"3800|65|centro": {
+"acabamento": "bom",
+"cozinha_integrada": "nao",
+"chance": "baixa",
+"melhor_foto": 1,
+"resumo": "Porcelanato claro, sanca com LED, planejados simples e bancada de granito preto; box de vidro. Cozinha em ambiente próprio, separada da sala; móveis soltos.",
+"foto": "https://resizedimgs.zapimoveis.com.br/img/vr-listing/afa17679d69a845e0193a43eaa247d76/foto.webp?action=fit-in&dimension=1200x900",
+"id": "Z2907654451",
+"versao": 4,
+"quando": "2026-10-02 13:56"
+},
+"F2917821188551083": {
+"acabamento": "bom",
+"cozinha_integrada": "incerto",
+"chance": "media",
+"melhor_foto": 2,
+"resumo": "Apartamento vazio, prédio novo: porcelanato grande na sala, piso vinílico nos quartos, esquadrias de alumínio; a cozinha não aparece nas fotos.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t45.5328-4/812804047_2090760118471304_8407878608684137959_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=jHvt6Ja1jKcQ7kNvwEp7mxv&_nc_oc=AdoWuQduF9FS14G_7GOoxuA04SkNofMCsL92ycLfcewXWf4s8WcwLhz2CzSZTeLL0RM&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=EmU8FzswKMvSOTO0IaMa4A&_nc_ss=792a8&oh=00_AQPAeB7aJNruhQmgfrCsjGSr71OJNbBrn-bkYsYbs87_gg&oe=6AC5A30C",
+"id": "F2917821188551083",
+"versao": 4,
+"quando": "2026-10-02 13:56"
+},
+"F1611654337358181": {
+"acabamento": "excelente",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 3,
+"resumo": "Prédio novo: porcelanato grande de rejunte fino, marcenaria sob medida, bancada de granito preto com ilha ripada em madeira, iluminação embutida; cozinha aberta para a sala.",
+"foto": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/831524675_2167184950888277_1373537825440047917_n.jpg?stp=dst-jpg_tt6&cstp=mx1280x960&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=946e27&_nc_ohc=RbDDLKZaCo8Q7kNvwHWZIFc&_nc_oc=AdpytolYT8cX2mVdk00LvMVF_UBpKHcfMbF74vRvmR7ntHiLUj9tt0OBy-GL8CaOIls&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=B11ndBCrs5yjJpzcBpg7BA&_nc_ss=792a8&oh=00_AQO_aMKSKh15isfCg_HjLELAPbi0Ly1nsJZBdo9QgdpOjw&oe=6AC57EF9",
+"id": "F1611654337358181",
+"versao": 4,
+"quando": "2026-10-02 13:56"
+},
+"F28687244034221335": {
+"acabamento": "bom",
+"cozinha_integrada": "incerto",
+"chance": "media",
+"melhor_foto": 4,
+"resumo": "Sobrado com porcelanato grande, cozinha planejada azul com bancada preta e banheiros simples; luz de lâmpada solta. A cozinha fica ao fundo da sala com moldura de madeira, sem porta clara.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/820013179_28322543314079682_8758546263225206361_n.jpg?stp=dst-jpg_tt6&cstp=mx1152x2048&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=IzEiDxiex5YQ7kNvwFSaJOd&_nc_oc=AdpGjVPQQpujaF8lV9xYccAl6bGnThOAOaD6cwtJx0Zut7RIRppkjw1477xYPuzrGx4&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=XuIkced2nQKkoYhznmzGaA&_nc_ss=792a8&oh=00_AQMJ4wfLAyHkhHEhSnsvt6PId9CeTtajbNyKA3UL3UD48w&oe=6AC59600",
+"id": "F28687244034221335",
+"versao": 4,
+"quando": "2026-10-02 13:56"
+},
+"F2264200651022953": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 7,
+"resumo": "Porcelanato grande, marcenaria branca, bancada tipo ilha voltada para a sala, banheiro com box de vidro e cuba de apoio; semi mobiliado, sem muito capricho de gesso e iluminação.",
+"foto": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/821705037_1401929172030301_7071432911606123831_n.jpg?stp=dst-jpg_tt6&cstp=mx712x950&ctp=s712x950&_nc_cat=101&ccb=1-7&_nc_sid=946e27&_nc_ohc=OLymJrJBORAQ7kNvwFJNuxz&_nc_oc=Adq40ueQj9Znl81RZw5XXE_2ZfJ-OLTD3O0-wJp2zdOxBFy7yy-ZCMiT2lAAvA7QgYc&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=SbfOc7unEyKuvByz0UQFTw&_nc_ss=792a8&oh=00_AQPvGKsIn72IjCVyVLvWdxgEnkZKpySSuOqJLeKW9b5OZg&oe=6AC574DA",
+"id": "F2264200651022953",
+"versao": 4,
+"quando": "2026-10-02 13:56"
+},
+"F1575809620801271": {
+"acabamento": "comum",
+"cozinha_integrada": "sim",
+"chance": "baixa",
+"melhor_foto": 2,
+"resumo": "Cozinha com bancada aberta para a sala, mas cerâmica antiga de rejunte escuro, móveis soltos e planejados simples; banheiro e quartos datados.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t45.5328-4/759225022_1044834134608472_7431654097615217265_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=hQektVWro5UQ7kNvwFbiHou&_nc_oc=AdqJXhBC96GeW66m51h08_Gy0r2084hKEm4Bhq-DPhjKUrvWRRxbZlas5i_vD10B_Ts&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=WkDsVggKJacmbKfuGuMJKA&_nc_ss=792a8&oh=00_AQOfLxMCXU-mxMpgxBpe0OVCuTDksrvWK8aThT3M0W284w&oe=6AC58818",
+"id": "F1575809620801271",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1051160984079980": {
+"acabamento": "comum",
+"cozinha_integrada": "nao",
+"chance": "baixa",
+"melhor_foto": 4,
+"resumo": "Apartamento antigo com móveis soltos e cansados, piso laminado velho, banheiro de azulejo datado; cozinha separada com área de serviço.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/758944062_2492266324528632_1478131265400702487_n.jpg?stp=dst-jpg_tt6&cstp=mx1179x861&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=-L5jWtZOy1YQ7kNvwFPjPAr&_nc_oc=Adre_s0BzcQDiRbgMA35jK7HNI4Qnc2ULtyK5srLi4T-ekLyBALInDSB3oNA4sc7DEQ&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=wCryN3djNFT4uc2q9E4iGQ&_nc_ss=792a8&oh=00_AQO9uJn7i8j9FR8u2ZgfZl4BF-aa3nLCMVV340jOGGM3qw&oe=6AC5A634",
+"id": "F1051160984079980",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F2426685867838052": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 8,
+"resumo": "Só uma foto de dentro: cozinha planejada clara com bancada de granito preto e churrasqueira, aberta para a sala; porcelanato e spots embutidos, decoração simples. Resto são áreas comuns.",
+"foto": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/753225169_3532171613606319_7369650675211240434_n.jpg?stp=dst-jpg_tt6&cstp=mx1220x904&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=day1SznXUQwQ7kNvwEFrnU1&_nc_oc=AdoU-1Z3YF7jOQ6P_SCjyMgze_l_k8Mm3BiR8QwVyA6BB0m7QD7syo8DIBB8eACXWxg&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=U_tjBZrKurye04U4yTG3oQ&_nc_ss=792a8&oh=00_AQNCLyTYOvm1xHj2JXgpNJXoHZVC_Y0IukPawiVZNJ8xjg&oe=6AC57CD2",
+"id": "F2426685867838052",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1667692627628125": {
+"acabamento": "comum",
+"cozinha_integrada": "sim",
+"chance": "baixa",
+"melhor_foto": 3,
+"resumo": "Cerâmica antiga de rejunte grosso, papel de parede datado e armários simples; cozinha com bancada de granito aberta para a sala, mas tudo envelhecido.",
+"foto": "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/785926714_122149133805128561_4186111885063256723_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1536&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=946e27&_nc_ohc=d8etEOUScFkQ7kNvwGHP5GH&_nc_oc=AdoTDlokLXYW39ZaENgQPSnMCnyEzWABKZPXvWpwXjyFzcyxk5bZ1JpC5hSl_Z2hq3E&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=ND0rMsNcUb7ZJwl25BwJrg&_nc_ss=792a8&oh=00_AQNIqOttHZe_rktNvhuhL5PR8REN2AKMhDZfwEv_T8BLaA&oe=6AC58B74",
+"id": "F1667692627628125",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1571256281047054": {
+"acabamento": "excelente",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 4,
+"resumo": "Porcelanato polido, marcenaria sob medida (painel de TV, cozinha com bancada clara e cooktop, quartos planejados), banheiro com box de vidro; cozinha aberta para a sala de jantar e sacada integrada, bem conservado.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t45.5328-4/774575476_1376463714600430_4963628974077210822_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=BXUa2pkePqAQ7kNvwGBxZ-f&_nc_oc=AdrQPeA51bmCuufdhNNCdaSK1xe8RG-qYpHaXj83PdNutvpKr9u6qDB3uDqIZ62YXzg&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=x4_YDrNZnnF74Q7cJ4eTbw&_nc_ss=792a8&oh=00_AQNnnrk6kovlnAWNKS1-6jKC3Hr2m0qpxCIFCEEENKb1qA&oe=6AC4E113",
+"id": "F1571256281047054",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F28426746123672478": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 2,
+"resumo": "Painel ripado, trilhos de luz, cozinha planejada com ilha de granito preto aberta para a sala, armários nos quartos e piso laminado; porcelanato simples e gesso básico, sem o capricho do excelente.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/820534878_3602525896570890_4463013734225101730_n.jpg?stp=dst-jpg_tt6&cstp=mx1220x907&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=r7htB7TeLIgQ7kNvwFzlTgl&_nc_oc=AdpC17Ir5FXz5C0xtcN9uhSjr-4lBCjXoZxjn95tOTotubvCpXsBy2LiwaF79-HVq7Y&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=Xds0MrRAuOxdHL772kFkmw&_nc_ss=792a8&oh=00_AQOcWdGiEJr4xkS1zJ9zS75y2fq5u1Km5hungbkJm__JSQ&oe=6AC48D96",
+"id": "F28426746123672478",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1615995870263962": {
+"acabamento": "excelente",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 2,
+"resumo": "Reformado: porcelanato marmorizado polido, sanca com LED, marcenaria sob medida com bancada de pedra e eletros embutidos, banheiros com revestimento moderno e box de vidro; cozinha aberta para a sala.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/799687973_10242050441258104_7980595501501106778_n.jpg?stp=dst-jpg_tt6&cstp=mx1448x1086&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=ZLDXZfWaWy0Q7kNvwEKQSZ1&_nc_oc=AdqdnmL3hYsG7qPaIjF1ZCgNoPv-l3nrWCJl3lXHm9R1HGJ7v5JfA_vUr6j_zdsFIgk&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=32EhigrM5JATNbZzoHUGmA&_nc_ss=792a8&oh=00_AQMj3yAUnD5GdIxexcQuVgK0O2-BQ7pN2Gi--yWSiiy8bg&oe=6AC4C783",
+"id": "F1615995870263962",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1374738931304379": {
+"acabamento": "bom",
+"cozinha_integrada": "incerto",
+"chance": "media",
+"melhor_foto": 4,
+"resumo": "Porcelanato claro, parede de tijolinho, marcenaria escura e cozinha planejada com bancada preta; spots embutidos, mas móveis soltos. A cozinha parece em extensão da sala, sem foto clara de integração.",
+"foto": "https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-6/786167181_3749310981901569_7253860320256019164_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=101&ccb=1-7&_nc_sid=946e27&_nc_ohc=k5fG8X6y6L8Q7kNvwECDyKM&_nc_oc=Ado5KGktagLCzda7ZVAumpldXtDQZhYBS2V0ypTU8eC-PMDI9MymZ5tT54xKeEBNSz0&_nc_zt=23&_nc_ht=scontent-ord5-1.xx&_nc_gid=BCw4lPRZ1ZEf_sVNP5SdDw&_nc_ss=792a8&oh=00_AQM6SvqD4OoUkq-wDAo8ATmRluUS7Y-sR78xHpqvEPS_ng&oe=6AC490D0",
+"id": "F1374738931304379",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1769506100865209": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 1,
+"resumo": "Sanca com LED e spots, marcenaria sob medida, painel de madeira e bancada de granito preto com cooktop aberta para a sala; detalhes de gosto duvidoso (cuba de cobre, espelho dourado) e banheiros simples.",
+"foto": "https://scontent-ord5-2.xx.fbcdn.net/v/t39.30808-6/799831327_1080633597682470_1623131257078412017_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=103&ccb=1-7&_nc_sid=454cf4&_nc_ohc=AiLWjSGcKGcQ7kNvwFEdBlE&_nc_oc=AdqUuZeWkz9ofjgQ1HvzCDXj-aWdSbh7aa3Y8U1FPgbvJ8JhNys1HGEdddAst8MhfAo&_nc_zt=23&_nc_ht=scontent-ord5-2.xx&_nc_gid=qZB68dgRT4a7OtmINCHelw&_nc_ss=792a8&oh=00_AQO62ezB34uPq7Hlty902LTBpDD6uPS5oMmtzW8Ca0B8GQ&oe=6AC4B643",
+"id": "F1769506100865209",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1317298220372093": {
+"acabamento": "excelente",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 2,
+"resumo": "Apartamento novo: porcelanato grande de rejunte fino, piso vinílico nos quartos, cozinha planejada com bancada e ilha de granito preto aberta para a sala, trilhos de luz, banheiros com cuba esculpida em pedra e box de vidro.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/825772912_4746554888913886_9023799676405775077_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=5Uh4eWA4BYQQ7kNvwF-EcPR&_nc_oc=Adqff2fUjWe80lQOUL_1Zx8RMSf7GK74neqylyNzTVnhLlreKg-y1K19cnf1pBd5_RI&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=oxlMOGRMY13qNF-XMhD5kA&_nc_ss=792a8&oh=00_AQNsV32ivlVd0_IOGFuHhMu2A9S0iKEqHCGSX9Jx53dXfw&oe=6AC49D28",
+"id": "F1317298220372093",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1105853528781915": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 1,
+"resumo": "Porcelanato polido, cozinha planejada com bancada de granito preto e tampo tipo ilha aberta para a sala, geladeira inox e forno embutido; decoração carregada e só poucas fotos de dentro.",
+"foto": "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/791600052_10241947313359971_6800830318220919608_n.jpg?stp=dst-jpg_tt6&cstp=mx1600x1200&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=454cf4&_nc_ohc=r9rN9fMI_hIQ7kNvwFTvAS7&_nc_oc=AdrIKJ81FLr_AGrDwiomU6NnMHRL1Z4Ml_qZ9smrKUeKm1ifFzBR0Rxk5mNs4GHftNQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=VPt_D_PINg5MJgloMFAKzA&_nc_ss=792a8&oh=00_AQNe82R3C_m_aE-MBeZZrC_evoYPgOemz9uCzeY7rhFNuA&oe=6AC57737",
+"id": "F1105853528781915",
+"versao": 4,
+"quando": "2026-10-02 13:57"
+},
+"F1045967891398984": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 1,
+"resumo": "Porcelanato polido, marcenaria cinza, bancada de granito preto tipo ilha e revestimento 3D, banheiro com box de vidro e bancada de madeira; cozinha aberta para a sala. Atual e cuidado, mas sem muito capricho de acabamento.",
+"foto": "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/819812919_28237760195894822_4453040010100067302_n.jpg?stp=dst-jpg_tt6&cstp=mx1600x1200&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=454cf4&_nc_ohc=-19vNQROj-IQ7kNvwEr0MZJ&_nc_oc=AdpIaHW7_pr1KP2cKFhg15t5rNA17G_EPrSphjK4pyIieXoujD3AG9mG68-Wl_l-m7k&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=0V1D5wUcPghjQT2eUt9zMA&_nc_ss=792a8&oh=00_AQORmSwQy4_trVdsYU97agKFKr8b3uYjzwp9kYssy2e4ag&oe=6AC592A6",
+"id": "F1045967891398984",
+"versao": 4,
+"quando": "2026-10-02 13:58"
+},
+"F915177994600410": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 1,
+"resumo": "Porcelanato polido, cozinha planejada branca com ilha e cooktop e LED sob os armários, aberta para a sala; banheiros com louça de coluna simples e lavanderia básica.",
+"foto": "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/793204051_10241946591741931_2829340686486611420_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1152&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=454cf4&_nc_ohc=fV3Mo2kOB_YQ7kNvwG4HuXi&_nc_oc=AdoBNWOTaSundm6I5izwyCt5Vaqo7YVm2E107XY-lhDQ2Eu7-5_Oo89k0qwDsYRWGSM&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=05wqf_me5M2U3_6FTG3Xeg&_nc_ss=792a8&oh=00_AQMYIFm264SmuhSyNQK4GJcmyg_D0bd0_-youqFV8c8fpA&oe=6AC55CA5",
+"id": "F915177994600410",
+"versao": 4,
+"quando": "2026-10-02 13:58"
+},
+"F4470206663221247": {
+"acabamento": "excelente",
+"cozinha_integrada": "incerto",
+"chance": "media",
+"melhor_foto": 3,
+"resumo": "Prédio novo: porcelanato grande, painel ripado de madeira, guarda-roupas sob medida, rodameio, banheiros com bancada de granito e box de vidro, spots embutidos; a cozinha aparece só em fração, sem ver a integração.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t39.30808-6/785665576_3112024605669470_7961674598904289029_n.jpg?stp=cp6_dst-jpg_tt6&cstp=mx1392x3013&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=d9mIbMiWM4AQ7kNvwFX3l9V&_nc_oc=Ado6QMGIFCOdoU3yQYwtx2eC7CmFV2XlgM86rbOFK2gwmRj_7RdVeXe7LoWQFL6LQvI&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=6RIA1V_ww_4P0hhkwIte2g&_nc_ss=792a8&oh=00_AQPTuyb7GcRugp65tUEpD1tSTdbhmG4F-R82lO0rE-G9RA&oe=6AC4A5F1",
+"id": "F4470206663221247",
+"versao": 4,
+"quando": "2026-10-02 13:58"
+},
+"F1271282565094517": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 1,
+"resumo": "Apartamento novo e vazio: porcelanato, cozinha planejada clara com bancada de granito preto aberta para a sala, churrasqueira embutida; paredes lisas e gesso simples, sem marcenaria nos quartos.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.84726-6/814972005_1486226573264452_4852287660115352180_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=109&ccb=1-7&_nc_sid=92e707&_nc_ohc=7pt5554rZYsQ7kNvwG52dwV&_nc_oc=AdrBx4pNQhkBYGSofDpwFh_2ZJ8wUeX8AOJZ_MegAPCaRT-Pg3YlpyGXbDU3UVHyJoQ&_nc_zt=14&_nc_ht=scontent-sjc6-1.xx&_nc_gid=mJFYa6NMeb7U3pGvhIVn6w&_nc_ss=792a8&oh=00_AQNiHGWatxNFRQ5i3uHK7OkHCQjj_nNJCbEKHE6tGAx5kg&oe=6AC4AA62",
+"id": "F1271282565094517",
+"versao": 4,
+"quando": "2026-10-02 13:58"
+},
+"F28010362391980046": {
+"acabamento": "bom",
+"cozinha_integrada": "incerto",
+"chance": "media",
+"melhor_foto": 4,
+"resumo": "Sobrado com porcelanato grande, cozinha planejada azul com bancada preta e escada metálica; lâmpadas soltas. A cozinha fica ao fundo da sala com moldura de madeira, sem porta clara.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/806687286_28322626604071353_1748341877550496948_n.jpg?stp=dst-jpg_tt6&cstp=mx1152x2048&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=946e27&_nc_ohc=NV9i9J6g4hUQ7kNvwHsjAvX&_nc_oc=Adqttt3GzsB8aA8l-T6bE1Jxa8q5cNoyNBK_ehTF1F-y3AT0yfwKOLgLsB5M2ewbB34&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=qdu9u4UuPvwkCUCaVO8YEw&_nc_ss=792a8&oh=00_AQPCrnGLkjtPam-Xzo9pzF0D_9JlOAbI0JE3DUr7fwJesw&oe=6AC4A8E4",
+"id": "F28010362391980046",
+"versao": 4,
+"quando": "2026-10-02 13:58"
+},
+"F1572844981205316": {
+"acabamento": "comum",
+"cozinha_integrada": "nao",
+"chance": "baixa",
+"melhor_foto": 2,
+"resumo": "Cerâmica antiga de rejunte escuro, forro de PVC no banheiro, louça datada e ventiladores de teto; cozinha separada da sala com armários brancos e granito.",
+"foto": "https://scontent-sjc3-1.xx.fbcdn.net/v/t39.30808-6/786840438_3949793981818222_938292167433666775_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=946e27&_nc_ohc=_wSUmuhJXo0Q7kNvwEdw0Ur&_nc_oc=Ado6R3UkJlfpDQk92NT1riNzrmvrPt-EDyKLF8nt9Y7TaLiO_CsdD-A5--RdyaZQNTA&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=Y5t0wX9sc-Fy5ZeiZNQpzQ&_nc_ss=792a8&oh=00_AQOBh5odRkOaGKox6dMZXAtzGzhMRFZ3Ud_WmmVH13qVvw&oe=6AC48BCF",
+"id": "F1572844981205316",
+"versao": 4,
+"quando": "2026-10-02 13:58"
+},
+"F1568738487826047": {
+"acabamento": "bom",
+"cozinha_integrada": "sim",
+"chance": "alta",
+"melhor_foto": 2,
+"resumo": "Porcelanato claro, cozinha planejada em madeira clara com balcão de granito preto aberta para a sala, spots embutidos, banheiros com box de vidro; móveis soltos e decoração simples.",
+"foto": "https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/829736142_122124293643074753_6219186910268983040_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=101&ccb=1-7&_nc_sid=946e27&_nc_ohc=yRIVw4pbKBUQ7kNvwEcAqnP&_nc_oc=AdoEygqB7DlMyj873De74Ah1UC1FTokrsAMJswbEy9WagKqRTTVWQ2yI-9sox6c29-4&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=0_eiRXaWaWjYGTt2LCqX4A&_nc_ss=792a8&oh=00_AQPQvPB9f_rPZup5w75H78tGL6s6hiCK_cd5CVg-_Zfw8w&oe=6AC4AFB9",
+"id": "F1568738487826047",
+"versao": 4,
+"quando": "2026-10-02 13:58"
 }
 }
