@@ -19,6 +19,8 @@ preço, texto). Veredito:
   nao       - cozinha fechada, acabamento comum ou ruim, ou chance baixa: o app esconde.
 O e-mail é uma issue que menciona o dono do repositório (o GitHub manda o e-mail); cada imóvel vai uma vez só
 (dados/avisos.json).
+Sem endereço: a fila leva também os anúncios do perfil sem endereço (até FILA_ENDERECOS por rodada); a rotina pesquisa o
+endereço do prédio citado e grava na branch avaliacoes (enderecos.json), que a busca seguinte usa (server.endereco_pesquisado).
 """
 import base64, io, json, os, re, shutil, time, urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -45,6 +47,7 @@ VERSAO = 4           # muda quando o que se pede ao Claude muda: o que foi avali
                      # (3 era "como o do Piatã"; 4 é a nota de acabamento com a cozinha integrada obrigatória)
 FILA_MAX = 30        # sem a chave da API: anúncios por rodada da rotina do Claude (os mais recentes primeiro)
 FILA_FOTOS = 12      # fotos por anúncio na fila, em duas folhas de 6 (512 x 384 cada foto)
+FILA_ENDERECOS = 10  # anúncios sem endereço por rodada da rotina, para ela pesquisar o endereço do prédio
 
 
 def a_pe(m):
@@ -131,6 +134,14 @@ e dos quartos; prédio dos anos 90, a cozinha não aparece.").
 
 As fotos mandam; o texto do anúncio ajuda. Fotos de áreas comuns do prédio (piscina, academia, fachada) não contam \
 como foto do apartamento."""
+
+_PEDIDO_ENDERECO = """Estes anúncios do perfil não dão o endereço (o app mostra "Bairro não informado"). Para cada um, \
+descubra onde fica: pelo texto, ache o nome do prédio ("no Brava Bells", "Edifício X", "Residencial Y") ou outra pista \
+(rua, esquina, ponto de referência); pesquise na internet (ferramenta WebSearch) o endereço desse prédio em Balneário \
+Camboriú, Camboriú ou Itajaí. Grave só o que uma fonte confirmar (construtora, imobiliária, mapa, outro anúncio do mesmo \
+prédio com endereço); na dúvida, grave tudo vazio. Campos: predio (o nome do prédio; "" se o anúncio não cita), rua \
+(rua e número, ex.: "Rua 3100, 255" ou "Avenida Atlântica, 3500"; "" se não achou), bairro, cidade ("Balneário \
+Camboriú", "Camboriú" ou "Itajaí"; "" se não achou) e fonte (o link que confirma; "" se não achou)."""
 
 _RESPOSTA = {
     'type': 'object',
@@ -256,7 +267,7 @@ def _folha(imagens, primeira):
     return folha
 
 
-def montar_fila(grupos, faltam, pasta):
+def montar_fila(grupos, faltam, pasta, avals=None):
     """Sem a chave da API, quem confere é a rotina do Claude (pelo plano do dono). Para os que faltam (os mais recentes
     primeiro, até FILA_MAX): folhas com as fotos numeradas e o texto do anúncio em `pasta` (o workflow publica na branch
     fila-claude), com o pedido e o formato da resposta, que a rotina segue."""
@@ -280,9 +291,14 @@ def montar_fila(grupos, faltam, pasta):
             _folha([im for _, im in ims[j:j + 6]], j + 1).save(os.path.join(pasta, nome), 'JPEG', quality=82)
             folhas.append(nome)
         itens.append(dict(chave=k, id=o['id'], url=o.get('url'), folhas=folhas, fotos=[u for u, _ in ims], anuncio=_ficha(o)[:2500]))
+    # sem endereço e ainda não pesquisados (os descartados pelas fotos não precisam): a rotina pesquisa o prédio
+    sem = sorted((g[0] for k, g in grupos.items() if (g[0].get('praia_m') is None or g[0].get('humains_m') is None)
+                  and not any(x['id'] in s.ENDERECOS for x in g) and ((avals or {}).get(k) or {}).get('v') != 'nao'),
+                 key=lambda o: o.get('visto_em') or '', reverse=True)
+    enderecos = [dict(id=o['id'], url=o.get('url'), anuncio=_ficha(o)[:2500]) for o in sem[:FILA_ENDERECOS]]
     with open(os.path.join(pasta, 'fila.json'), 'w') as f:
-        json.dump(dict(gerada=time.strftime('%Y-%m-%d %H:%M'), versao=VERSAO, pedido=_PEDIDO, resposta=_RESPOSTA, itens=itens),
-                  f, ensure_ascii=False, indent=1)
+        json.dump(dict(gerada=time.strftime('%Y-%m-%d %H:%M'), versao=VERSAO, pedido=_PEDIDO, resposta=_RESPOSTA, itens=itens,
+                       pedido_endereco=_PEDIDO_ENDERECO, enderecos=enderecos), f, ensure_ascii=False, indent=1)
     return len(itens)
 
 
@@ -341,7 +357,7 @@ def conferir(grupos, agora):
         if os.environ.get('SOMENTE', '').strip().lower() == 'nenhuma':   # rodada só para publicar: a fila fica como está
             print(f'Claude: {vindos} veredito(s) novo(s) da rotina; {len(faltam)} ainda sem conferir')
             return avals
-        n = montar_fila(grupos, faltam, os.path.join(s.RAIZ, 'fila'))
+        n = montar_fila(grupos, faltam, os.path.join(s.RAIZ, 'fila'), avals)
         print(f'Claude: {vindos} veredito(s) novo(s) da rotina; {len(faltam)} sem conferir, {n} na fila para a próxima rodada da rotina')
         return avals
     hoje = time.strftime('%Y-%m-%d', time.localtime(agora))
@@ -471,7 +487,7 @@ def avisar(grupos, avals, pasta):
         titulo = f"{len(novos)} apês de acabamento excelente (aluguel a partir de {_brl(o['aluguel'])})"
     corpo = [f"@{DONO} {'apareceu um apartamento' if len(novos) == 1 else f'apareceram {len(novos)} apartamentos'} "
              f"de acabamento excelente e cozinha integrada à sala, {'conferido' if len(novos) == 1 else 'conferidos'} pelo "
-             f"Claude nas fotos. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2+ quartos, até "
+             f"Claude nas fotos. Aluguel de {_brl(s.ALUGUEL_MIN)} a {_brl(s.ALUGUEL_MAX)}, 2 quartos, até "
              f"{PRAIA_A_PE} min a pé da praia e {HUMAINS_CARRO} min de carro da Humains ({HUMAINS_CARRO_ITAJAI} em Itajaí).", '']
     corpo += [_bloco(g, avals[_chave(g[0])]) + '\n' for g in novos[:MAX_POR_AVISO]]
     if len(novos) > MAX_POR_AVISO:

@@ -38,6 +38,8 @@ jobs:
           # vereditos que a rotina do Claude (pelo plano do dono) gravou sobre as fotos da fila
           git clone --depth 1 --branch avaliacoes "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" /tmp/avaliacoes \
             && cp /tmp/avaliacoes/avaliacoes.json dados/avaliacoes_rotina.json || true
+          # e os endereços que ela pesquisou para anúncios sem endereço
+          cp /tmp/avaliacoes/enderecos.json dados/enderecos_rotina.json 2>/dev/null || true
           ls -la dados
 
       - uses: actions/setup-python@v5

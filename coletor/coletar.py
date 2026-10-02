@@ -21,6 +21,13 @@ def main():
         print('falhou:', s.STATUS['erro'])
         sys.exit(1)
     anuncios = s.load('anuncios.json', {})
+    if os.environ.get('SOMENTE', '').strip().lower() == 'nenhuma' and s.ENDERECOS:   # endereços que a rotina pesquisou
+        for o in anuncios.values():
+            try:
+                s.completar(o)
+            except Exception:
+                pass
+        s.localizar_pelo_bairro(list(anuncios.values()))
     # esquece o que saiu do ar há mais de 14 dias
     limite = time.strftime('%Y-%m-%d', time.localtime(time.time() - 14 * 86400))
     anuncios = {k: o for k, o in anuncios.items() if o.get('no_ar', True) or (o.get('visto_em') or '') >= limite}

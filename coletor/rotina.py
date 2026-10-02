@@ -6,6 +6,9 @@
   python3 coletor/rotina.py gravar CHAVE <<'FIM'    confere o formato da resposta (o JSON, nas linhas seguintes) e
   {...}                                             guarda o veredito
   FIM
+  python3 coletor/rotina.py endereco ID <<'FIM'     guarda o endereço pesquisado de um anúncio sem endereço (o JSON,
+  {...}                                             nas linhas seguintes)
+  FIM
   python3 coletor/rotina.py enviar                  commit e push da branch avaliacoes
 
 A busca seguinte (GitHub Actions) junta os vereditos ao app e manda o aviso por e-mail (alerta.py).
@@ -16,6 +19,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = os.path.join(tempfile.gettempdir(), 'rotina-proximo-ape')
 FILA, AVAL = os.path.join(BASE, 'fila'), os.path.join(BASE, 'avaliacoes')
 POR_RODADA = 30
+CIDADES = ('Balneário Camboriú', 'Camboriú', 'Itajaí', '')
 os.environ['TZ'] = 'America/Sao_Paulo'
 time.tzset()
 
@@ -44,14 +48,37 @@ def _feitas():
     return json.load(open(os.path.join(AVAL, 'avaliacoes.json')))
 
 
+def _enderecos():
+    try:
+        return json.load(open(os.path.join(AVAL, 'enderecos.json')))
+    except FileNotFoundError:
+        return {}
+
+
 def fila():
     baixar('fila-claude', FILA)
     baixar('avaliacoes', AVAL)
     f, feitas = _fila(), _feitas()
     faltam = [i for i in f['itens'] if (feitas.get(i['chave']) or {}).get('versao') != f['versao']][:POR_RODADA]
-    print(f"Fila montada em {f['gerada']}: {len(f['itens'])} anúncio(s); {len(faltam)} para conferir agora.")
-    if not faltam:
+    end = [e for e in f.get('enderecos') or [] if e['id'] not in _enderecos()]
+    if not faltam and not end:
+        print(f"Fila montada em {f['gerada']}: {len(f['itens'])} anúncio(s); 0 para conferir agora.")
         return
+    print(f"Fila montada em {f['gerada']}: {len(f['itens'])} anúncio(s); {len(faltam) or 'nenhum'} com fotos para conferir agora"
+          + (f" e {len(end)} sem endereço para pesquisar (no fim)." if end else '.'))
+    if faltam:
+        _fotos(f, faltam)
+    if end:
+        print('\n\nENDEREÇOS (depois das fotos):\n' + f['pedido_endereco'])
+        print("\nPara cada anúncio abaixo, pesquise e grave na hora (também quando não achar, com tudo vazio):\n"
+              "  python3 coletor/rotina.py endereco '<id>' <<'FIM'\n"
+              '  {"predio": "...", "rua": "...", "bairro": "...", "cidade": "...", "fonte": "..."}\n  FIM\n')
+        for n, e in enumerate(end, 1):
+            print(f"=== endereço {n}. id: {e['id']}  ({e.get('url') or ''})")
+            print(e['anuncio'].strip() + '\n')
+
+
+def _fotos(f, faltam):
     campos = ', '.join(f'"{c}": ' + ('|'.join(f'"{x}"' for x in p['enum']) if 'enum' in p else 'N' if p['type'] == 'integer' else '"..."')
                        for c, p in f['resposta']['properties'].items())
     print('\nO PEDIDO (siga à risca):\n' + f['pedido'])
@@ -90,8 +117,31 @@ def gravar(chave, texto):
     print(f"ok ({len(feitas)} vereditos guardados)")
 
 
+def endereco(id_, texto):
+    if not any(e['id'] == id_ for e in _fila().get('enderecos') or []):
+        sys.exit(f'o id {id_!r} não está na lista de endereços')
+    try:
+        v = json.loads(texto)
+    except ValueError as ex:
+        sys.exit(f'JSON inválido: {ex}')
+    campos = ('predio', 'rua', 'bairro', 'cidade', 'fonte')
+    if not isinstance(v, dict) or any(not isinstance(v.get(c), str) for c in campos):
+        sys.exit('responda com os cinco campos, todos texto: ' + ', '.join(campos))
+    v = {c: v[c].strip() for c in campos}
+    if v['cidade'] not in CIDADES:
+        sys.exit('cidade tem de ser "Balneário Camboriú", "Camboriú", "Itajaí" ou ""')
+    if v['rua'] and not (v['cidade'] and v['fonte'].startswith('http')):
+        sys.exit('com a rua, diga também a cidade e o link (fonte) que confirma o endereço')
+    v['quando'] = time.strftime('%Y-%m-%d %H:%M')
+    feitas = _enderecos()
+    feitas[id_] = v
+    with open(os.path.join(AVAL, 'enderecos.json'), 'w') as arq:
+        json.dump(feitas, arq, ensure_ascii=False, indent=0)
+    print(f"ok ({sum(1 for x in feitas.values() if x.get('rua'))} endereços achados de {len(feitas)} pesquisados)")
+
+
 def enviar():
-    git('add', 'avaliacoes.json', cwd=AVAL)
+    git('add', 'avaliacoes.json', *(['enderecos.json'] if os.path.exists(os.path.join(AVAL, 'enderecos.json')) else []), cwd=AVAL)
     if not git('status', '--porcelain', cwd=AVAL).strip():
         print('nada novo para enviar')
         return
@@ -107,6 +157,8 @@ if __name__ == '__main__':
         fila()
     elif cmd == 'gravar' and len(sys.argv) in (3, 4):
         gravar(sys.argv[2], sys.argv[3] if len(sys.argv) == 4 else sys.stdin.read())
+    elif cmd == 'endereco' and len(sys.argv) in (3, 4):
+        endereco(sys.argv[2], sys.argv[3] if len(sys.argv) == 4 else sys.stdin.read())
     elif cmd == 'enviar':
         enviar()
     else:

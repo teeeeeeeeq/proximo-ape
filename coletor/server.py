@@ -62,6 +62,13 @@ def norm(s):
     return unicodedata.normalize('NFKD', str(s or '').lower()).encode('ascii', 'ignore').decode()
 
 
+def descolar(t):
+    """Palavras grudadas quando o anunciante cola o texto sem quebras de linha ("MobiliadoNão aceita petLazer",
+    "CAMBORIÚViva"): volta a quebra de linha, para as regras que procuram palavras inteiras e param no fim da frase."""
+    t = re.sub(r'([a-zà-ÿ])([A-ZÀ-Þ][a-zà-ÿ])', r'\1\n\2', str(t or ''))
+    return re.sub(r'([A-ZÀ-Þ]{2})([A-ZÀ-Þ][a-zà-ÿ])', r'\1\n\2', t)
+
+
 def clean(s):
     s = re.sub(r'<br\s*/?>', '\n', str(s or ''))
     s = html.unescape(re.sub(r'<[^>]+>', ' ', s))
@@ -153,7 +160,7 @@ _RESSALVA = re.compile(r'^ (?:de )?(?:grandes?|medios?)\b|\b(?:porte|quilos?)\b|
 
 
 def nao_aceita_animais(texto):
-    n = norm(texto)
+    n = norm(descolar(texto))
     for m in _SEM_ANIMAIS.finditer(n):
         resto = re.match(r'[^.!?;\n]{0,40}', n[m.end():]).group()
         if not _RESSALVA.search(resto):
@@ -299,6 +306,25 @@ def achar_rua(nome, cidade=''):
     return None
 
 
+_TITULOS = {'de', 'da', 'do', 'dos', 'das', 'e', 'doutor', 'dr', 'prefeito', 'pref', 'professor', 'prof', 'senador', 'deputado',
+            'governador', 'coronel', 'cel', 'general', 'padre', 'vereador', 'engenheiro', 'eng', 'presidente', 'marechal', 'almirante'}
+
+
+def achar_rua_flex(nome, cidade=''):
+    """Como achar_rua, aceitando o nome escrito de outro jeito ("Avenida José Medeiros Vieira" = "avenida doutor jose
+    medeiros vieira", "Rua Delfim Mário de Pádua Peixoto" = "rua delfim mario padua peixoto"): para o endereço pesquisado."""
+    x = achar_rua(nome, cidade)
+    r = nome_rua(nome)
+    if x or not r:
+        return x
+    pal = r.split()
+    tipo, chave = pal[0], {w for w in pal[1:] if w not in _TITULOS and not w.isdigit()}
+    if len(chave) < 2:
+        return None
+    iguais = [k for k in RUAS if k.split()[0] == tipo and {w for w in k.split()[1:] if w not in _TITULOS} == chave]
+    return achar_rua(iguais[0], cidade) if len(iguais) == 1 else None
+
+
 _RUA_INI = r'\b(rua|r\.|avenida|av\.?|alameda|travessa)\s+'
 _PERTO = r'(proxim\w*|perto|a \d+ ?(m|metros|km)\b|metros d|minutos d|passos d|poucos|quadras? d|ao lado|paralela|entre (a|as|o)\b|acesso|saida|via\b|esquina|frente (a|para)|atras d|rodovia|fundos|vista|caminhando|ate a|ate o)'
 _FORTE = r'(endereco|localizad[oa]|situad[oa]|fica na|fica no|fica em|localizacao|end\.|localizada em)'
@@ -410,6 +436,34 @@ def praia_pelo_texto(texto):
     return None
 
 
+# Endereços que a rotina do Claude pesquisou na internet para anúncios sem endereço (pelo nome do prédio citado):
+# id do anúncio -> {predio, rua, bairro, cidade, fonte}; vazio = não achou. O prédio vale também para outros anúncios
+# que citem o mesmo nome. O workflow baixa da branch avaliacoes.
+ENDERECOS = {}
+_ENDERECO_PREDIO = {}
+
+
+def carregar_enderecos():
+    ENDERECOS.clear()
+    ENDERECOS.update(load('enderecos_rotina.json', {}))
+    _ENDERECO_PREDIO.clear()
+    for e in ENDERECOS.values():
+        k = chave_predio(e.get('predio') or '')
+        if len(k) >= 6 and k not in _PREDIO_RUIM and e.get('rua'):
+            _ENDERECO_PREDIO[k] = e
+
+
+def endereco_pesquisado(o, txt):
+    e = ENDERECOS.get(o.get('id'))
+    if e and e.get('rua'):
+        return e
+    t = ' ' + re.sub(r'[^a-z0-9]+', ' ', norm(txt)) + ' '
+    return next((e for k, e in _ENDERECO_PREDIO.items() if ' ' + k + ' ' in t), {})
+
+
+carregar_enderecos()
+
+
 def localizar_pelo_bairro(itens):
     """Último recurso: anúncio sem rua nem pista recebe a distância típica do bairro (dos anúncios com local exato)."""
     import statistics
@@ -418,10 +472,12 @@ def localizar_pelo_bairro(itens):
         if o.get('no_ar', True) and o.get('lat') is not None and not o.get('local_aprox') and o.get('humains_m') is not None and o.get('bairro'):
             ref.setdefault((norm(o['bairro']), norm(o.get('cidade')) or 'balneario camboriu'), []).append(o)
     for o in itens:
-        if o.get('praia_m') is None and o.get('bairro'):
+        pesquisado = o.get('local_fonte') == 'pesquisa' and o.get('humains_m') is None   # avenida longa: só a praia
+        if (o.get('praia_m') is None or pesquisado) and o.get('bairro'):
             g = ref.get((norm(o['bairro']), norm(o.get('cidade')) or 'balneario camboriu'), [])
             if len(g) >= 3:
-                o['praia_m'] = round(statistics.median(x['praia_m'] for x in g))
+                if o.get('praia_m') is None:
+                    o['praia_m'] = round(statistics.median(x['praia_m'] for x in g))
                 o['humains_m'] = round(statistics.median(x['humains_m'] for x in g))
                 o['local_aprox'] = 'bairro'
 
@@ -532,7 +588,13 @@ def completar(o):
     mq = re.match(r'^(\d)\s*quadras?\s+(.+)$', o['bairro'], re.I)   # "1 Quadra Barra Sul"
     if mq:
         o['bairro'], o['quadras_bairro'] = mq.group(2), int(mq.group(1))
-    txt = (o.get('titulo') or '') + '\n' + (o.get('desc') or '')
+    txt = descolar((o.get('titulo') or '') + '\n' + (o.get('desc') or ''))
+    pesq = endereco_pesquisado(o, txt)
+    if 'cidade_site' not in o:
+        o['cidade_site'] = o.get('cidade') or ''
+    o['cidade'] = pesq.get('cidade') if pesq.get('cidade') and not o['bairro'] else o['cidade_site']
+    if not o['bairro'] and pesq.get('bairro'):
+        o['bairro'] = pesq['bairro']
     o['bairro'] = bairro_canonico(o['bairro'], o.get('cidade')) or bairro_do_texto(txt, o.get('cidade'))
     txt_lazer = norm(txt)
     o['lazer'] = bool(o.get('marcado_lazer') or re.search(
@@ -565,12 +627,15 @@ def completar(o):
             rua = rua_desc.title()
     elif rua_desc and nome_rua(rua_desc) != nome_rua(rua):
         rua, lat, lon, exato, fonte = rua_desc.title(), None, None, False, 'descrição'
+    elif not rua and lat is None and pesq.get('rua'):
+        rua, fonte = pesq['rua'], 'pesquisa'
     o['rua'], o['lat'], o['lon'], o['local_exato'], o['local_fonte'] = rua, lat, lon, exato, fonte
-    o['predio'] = (PREDIOS.get(nome_predio, {}).get('nome') if pos else '') or (nome_predio.title() if nome_predio else '') or (o.get('predio_site') or '')
+    o['predio'] = (PREDIOS.get(nome_predio, {}).get('nome') if pos else '') or (nome_predio.title() if nome_predio else '') or (o.get('predio_site') or '') \
+        or pesq.get('predio') or ''
     o.pop('local_aprox', None)
     o.pop('praia_rua', None)
     if o['lat'] is None and o['rua']:
-        x = achar_rua(o['rua'], o.get('cidade'))
+        x = (achar_rua_flex if fonte == 'pesquisa' else achar_rua)(o['rua'], o.get('cidade'))
         if x and x['modo'] == 'rua':
             o['lat'], o['lon'], o['local_aprox'] = x['lat'], x['lon'], 'rua'
         elif x:
@@ -586,8 +651,8 @@ def completar(o):
                 p = {1: 100, 2: 230, 3: 350}.get(o['quadras_bairro'])
             if p is not None:
                 o['praia_m'], o['local_aprox'] = p, 'texto'
-    o['mobilia'] = mobilia(o['titulo'] + ' ' + o['desc'], o.get('marcado_mobiliado'))
-    o['temporada'] = temporada(o['titulo'] + ' ' + o['desc'])
+    o['mobilia'] = mobilia(txt, o.get('marcado_mobiliado'))
+    o['temporada'] = temporada(txt)
     o['escritorio'] = escritorio(txt)
     # última vez que o anúncio foi mexido: o que o site diz, a publicação ou uma mudança de preço que o coletor viu
     if 'atualizado_site' not in o:
