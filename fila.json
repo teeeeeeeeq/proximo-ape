@@ -1,0 +1,794 @@
+{
+ "gerada": "2026-10-03 17:04",
+ "versao": 4,
+ "pedido": "Você confere anúncios de apartamento para alugar em Balneário Camboriú (e arredores) para quem procura um apartamento para morar, com acabamento muito bom e a cozinha integrada à sala. As fotos vêm numeradas, e depois vem o anúncio. Responda:\n\n- acabamento: a nota do acabamento e do estado do apartamento, pelas fotos de dentro.\n  \"excelente\": impecável. Tudo novo ou recém-reformado, materiais de qualidade e bem feitos: porcelanato ou madeira bem assentados, de rejunte fino; bancadas de pedra ou quartzo; marcenaria planejada sob medida, bem acabada, na cozinha e nos quartos; banheiro moderno (box de vidro, metais e louças atuais); iluminação embutida, gesso ou sanca. Bem conservado e com bom gosto: dá vontade de morar.\n  \"bom\": atual e bem cuidado, com planejados e piso atual, mas sem o capricho do excelente (mais simples, algum detalhe datado, gasto ou de gosto duvidoso).\n  \"comum\": apartamento comum ou datado: acabamento antigo, móveis soltos ou cansados, cerâmica ou azulejo antigos, rejunte grosso, banheiro antigo.\n  \"ruim\": malconservado, feio ou desagradável.\n  \"sem foto\": as fotos não mostram o apartamento por dentro (só fachada, áreas comuns ou planta).\n- cozinha_integrada (obrigatório para servir): a cozinha é aberta para a sala, na mesma área (cozinha americana, bancada ou ilha voltada para a sala, sem parede nem porta entre as duas)? \"sim\", \"nao\" (cozinha fechada, separada da sala) ou \"incerto\" (as fotos não deixam ver).\n- chance: a chance de o apartamento ter acabamento bom ou excelente e cozinha integrada. Se as fotos mostram tudo, \"alta\" quando tem e \"baixa\" quando não tem. Quando faltam fotos de dentro ou da cozinha, estime pelo que dá para ver: prédio novo ou antigo, padrão do que aparece, o texto, e o preço para o tamanho e o lugar (barato demais para a região costuma ser apartamento antigo).\n- melhor_foto: o número da foto que melhor mostra o apartamento por dentro: de preferência a cozinha integrada com a sala na mesma foto; senão a sala ou a cozinha; 0 se nenhuma mostra o interior.\n- resumo: uma ou duas frases curtas em português sobre o acabamento (piso, marcenaria, bancadas, banheiro), a cozinha e a sala, e o que falta ver (ex.: \"Tudo novo: porcelanato claro de rejunte fino, marcenaria sob medida em toda a casa, bancada de quartzo e cozinha aberta para a sala; banheiro com box de vidro.\" ou \"Só fotos da fachada e dos quartos; prédio dos anos 90, a cozinha não aparece.\").\n\nAs fotos mandam; o texto do anúncio ajuda. Fotos de áreas comuns do prédio (piscina, academia, fachada) não contam como foto do apartamento.",
+ "resposta": {
+  "type": "object",
+  "properties": {
+   "acabamento": {
+    "type": "string",
+    "enum": [
+     "excelente",
+     "bom",
+     "comum",
+     "ruim",
+     "sem foto"
+    ]
+   },
+   "cozinha_integrada": {
+    "type": "string",
+    "enum": [
+     "sim",
+     "nao",
+     "incerto"
+    ]
+   },
+   "chance": {
+    "type": "string",
+    "enum": [
+     "alta",
+     "media",
+     "baixa"
+    ]
+   },
+   "melhor_foto": {
+    "type": "integer"
+   },
+   "resumo": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "acabamento",
+   "cozinha_integrada",
+   "chance",
+   "melhor_foto",
+   "resumo"
+  ],
+  "additionalProperties": false
+ },
+ "itens": [
+  {
+   "chave": "4400|70|centro",
+   "id": "Z2904000470",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-ar-condicionado-centro-balneario-camboriu-sc-70m2-id-2904000470/",
+   "folhas": [
+    "001-a.jpg",
+    "001-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c40a7459997a97b1de7d31e1d843773e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/84b189534f4e0d2c3c6b8fe4c44cab46/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/ba58a12a754fa2756c0558ca80b0cf7c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/80ba0b83cbfe58ab0493314d7877be44/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/5510ce64887472253e88849291b8b424/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/0486a2c7082e795db151696d36c4b9f9/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/1f2c1099b4365e48882f0fdb6a83a16e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/94c8027d1776e6265912f7f15e31cf2e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/fc5287e6908ce91a2a9de496f3148311/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/721bc4c3a100d51c8da1a6705709635d/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e21ebb9a4202ad466c704bf10a0f4017/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6f0c8bb7ccf3fbc965c89a5f084e6b59/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.400 + condomínio R$ 250 · 70 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento para alugar com 70 m², 2 quartos, 1 banheiro, 1 vaga\n\nApartamento Semi-Mobiliado na Região Central de Balneário Camboriú\n\nExcelente apartamento para locação anual, localizado no coração da cidade de Balneário Camboriú, poucos metros da praia, próximo a restaurantes, Shopping, conveniências e comércio em geral.\n\nO imóvel conta com aproximadamente 70m² de área privativa, distribuídos de forma inteligente para oferecer conforto, amplitude e funcionalidade.\n\nCaracterísticas do apartamento:\n\nSemi-mobiliado\n2 dormitórios\n1 banheiro social\nSala com porta-janela e guarda-corpo\nCozinha\n1 vaga de garagem\nMóveis que podem ser retirados\nAr condicionado\nPoucos metros da Av. Brasil\n\nInfraestrutura:\n\nEscadas\nHall de entrada com acesso restrito de moradores por blocos\nZelador\n\nValor da locação:\nR$ 4.400,00 mais Condomínio (IPTU e Lixo isentos)\n\nGarantia locatícia: Seguro Fiança ou Título Capitalização\n\nUma excelente opção para quem busca morar com conforto, sofisticação e em localização privilegiada.\n\nPara mais informações e agendamento de visita, entre em contato."
+  },
+  {
+   "chave": "4500|105|centro",
+   "id": "C45286849",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-centro-105m2-RS4500/id-45286849/",
+   "folhas": [
+    "002-a.jpg",
+    "002-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-00.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-01.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-02.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-03.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-04.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-05.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-06.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-07.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-08.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-09.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-10.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 105 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento para locação no centro de Balneário Camboriú, 2 quartos, suíte, sacada\n\nApartamento espaçoso e mobiliado para locação anual bem no centro de Balneário Camboriú.\nCom 105 m2 privativos, 2 quartos, sendo um com suíte, sacada, vaga de garagem...\nExcelente localização na rua 700 no centro bem perto da praia, comercios, igreja, etc...\n\nLocação anual por R$ 4.500,00 mensal ja incluso o condominio.\nExige deposito de caução como garantia da locação.\n\nMais detalhes e visita entre em contato no fone/whatsapp\n47 -\nCreci 54195F"
+  },
+  {
+   "chave": "5000|66|praia brava",
+   "id": "C45913644",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-itajai-praia-brava-de-itajai-66m2-RS5000/id-45913644/",
+   "folhas": [
+    "003-a.jpg",
+    "003-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-00.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-02.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-03.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-05.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-06.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-08.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-09.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-11.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-14.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-15.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45913644/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a875173-17.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.000 + condomínio R$ 750 · 66 m² · 2 quartos · Praia Brava, Itajaí): Apartamento Mobiliado, na praia brava, locação anual, lazer completo\n\nApartamento com 2 quartos, sendo 1 com suíte, 2 banheiros, sacada com churrasqueira a carvão e fechamento em vidro, 1 vaga coberta, cozinha com móveis planejados, eletros, tv, ar condicionado, todo mobiliado, fechadura eletronica, pronto pra morar.\n\nApartamento fica no 10 º andar, face leste, sol da manha.\nPrédio com 3 elevadores, hall de entrada, zelador, piscina, academia, quiosque gourmet na piscina, espaço gourmet, amplo salão de festas, academia, brinquedoteca, lavanderia coletiva, espaço de trabalho (coworking) mercadinho, acesso por biometria facial\n\nDisponivel para locação anual.\nR$ 5.000,00 mensal + taxas"
+  },
+  {
+   "chave": "6000|66|praia brava",
+   "id": "C46341023",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-itajai-praia-brava-de-itajai-86m2-RS6000/id-46341023/",
+   "folhas": [
+    "004-a.jpg",
+    "004-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-01.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-03.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-04.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-00.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-07.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-09.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-14.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-16.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-17.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/46341023/sc-itajai-praia-brava-de-itajai-rua-suecia-apartamento-para-alugar-2-quartos-6a98bd53-19.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 · 66 m² · 2 quartos · Praia Brava, Itajaí): Apartamento para alugar na praia brava, 2 quartos com suíte, moveis planejados\n\nApartamento mobiliado com 2 quartos, suíte e sacada, disponivel para locação na Praia Brava.\n\nApartamento fica de frente no Prédio com vista livre. Com moveis planejados, sacada com churrasqueira a carvão, vaga privativa coberta, eletros...\n\nPrédio com área de lazer completa, 3 elevadores, piscina, salão de festas, salão gourmet, quiosque goumet na piscina, academia, cowork, mercadinho, lavanderia coletiva, zelador, acesso por biometria facial...\n\nAgende sua visita"
+  },
+  {
+   "chave": "5500|88|centro",
+   "id": "Z2914841871",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-piscina-centro-balneario-camboriu-sc-88m2-id-2914841871/",
+   "folhas": [
+    "005-a.jpg",
+    "005-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/39d77470a6a2691296246530f810ed65/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c5f52ea91444916c2c5a9d4eadaa3e33/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/7985bbbc9408e260d3c877a0e481f54d/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c2c34b0f946d3aaff8b050bf2fc383f3/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/850da17ab02df6337c404488fb45b0e3/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/d67dbd7289a3702e8fbc3b1b6ff372e8/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e577fe2643f3b31b73d42661ca17fc35/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/a3b44f14b2b3bbedcf009cf2715974ee/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/00a80e4a53f6c6d93589e85ef8de73d0/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/29754b5bd376381d21f25d831c515de3/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6f3b0ebed379b407685d2ffbd51ad6de/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/033af4036cd4474cd55de6f50039277b/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.500 + condomínio R$ 790 · 88 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento para alugar com 88 m², 2 quartos, 2 banheiros, 1 vaga\n\nLocalizado na Terceira Avenida, esquina com a Rua 2870, próximo das panificadoras, mercados e restaurantes da cidade.\n\nO apartamento:\n02 dormitórios sendo 01 suíte;\nChurrasqueira à carvão;\nMóveis planejados;\nSemi-mobiliado;\nÁrea de serviço;\nCozinha;\nSala de estar e jantar;\nAquecimento à gás;\nBanheiro social;\n02 vagas de garagem.\n\nO empreendimento:\n02 elevadores;\nSalão de festas;\nAcademia;\nPiscina.\n\nValor da locação: R$ 5.500,00 (aluguel) + R$ 790,00 (condomínio) + taxas de consumo.\n\nGarantia locatícia: Seguro fiança ou fiador.\n\nImóvel atualizado em \n\nCaracterísticas do imóvel\nAcademia\nAr condicionado\nÁrea de serviço\nArmário de Cozinha\nArmário embutido\nChurrasqueira no apartamento\nCopa\nCozinha\nElevador\nInterfone\nLavanderia\nPiscina\nPiso Vinílico\nPortão eletrônico\nRecirculação de água quente\nSala de almoço\nSala de estar\nSala de jantar\nSala de TV\nSalão de festas\nVaranda"
+  },
+  {
+   "chave": "6000|80|praia dos amores",
+   "id": "C47228477",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-praia-dos-amores-95m2-RS6000/id-47228477/",
+   "folhas": [
+    "006-a.jpg",
+    "006-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-3.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-4.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-6.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-7.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-9.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-13.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-15.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-16.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-18.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 + condomínio R$ 750 · 80 m² · 2 quartos · Praia dos Amores, Balneário Camboriú): Apartamento com 2 quartos para alugar na Rua Clarice Lispector, 77, Praia dos Amores, Balneário Camboriú\n\nApartamento mobiliado para Locação Anual\nPraia dos Amores, Balneário Camboriú\n80,00 m² Úteis | 95,00 m² Total\n\nLindo apartamento a 700m do mar, com excelente localização, próximo aos comércios locais.\n\nApartamento, mobiliado, equipado e decorado, possuindo:\n\n2 dormitórios sendo 1 suíte\nSala de estar e jantar integradas\nCozinha com churrasqueira\nBanheiro Social\n2 vagas de garagem privativa descoberta\nCondomínio não possui salão de festas ou elevador\n\nEste apartamento oferece a combinação ideal de conforto, localização e funcionalidade, tornando sua estadia ainda mais agradável."
+  },
+  {
+   "chave": "3900|67|praia brava",
+   "id": "C47228476",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-itajai-praia-brava-90m2-RS3900/id-47228476/",
+   "folhas": [
+    "007-a.jpg",
+    "007-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-2.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-4.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-5.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-6.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-7.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-9.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-11.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-14.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-15.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 3.900 + condomínio R$ 550 · 67 m² · 2 quartos · Praia Brava, Itajaí): Apartamento com 2 quartos para alugar na Rua Suécia, 300, Praia Brava, Itajaí\n\nApartamento para Locação Anual Praia Brava | Itajaí\nLocalizado na Praia Brava, próximo ao Mercado Angelina da Osvaldo Reis, com fácil acesso a Balneário Camboriú e ao Centro de Itajaí.\n\nO apartamento:\nTotalmente mobiliado\n02 dormitórios sendo uma suíte\nAr-condicionado\nBanheiro social\nCozinha funcional\nSala de estar\nSacada com churrasqueira\nExcelente circulação de ar\n01 Vaga privativa\n\nIdeal para quem busca conforto e praticidade em uma das regiões mais valorizadas do litoral.\nÁrea de lazer completa:\n\nPiscina\nSalão de festas\nEspaço gourmet externo\nSala de jogos\nAcademia\nBrinquedoteca\nPlayground\n\nCondomínio com infraestrutura completa para morar com qualidade de vida o ano inteiro."
+  },
+  {
+   "chave": "5100|89|centro",
+   "id": "CDatlantida-5671",
+   "url": "https://www.atlantidaimoveis.com.br/imovel/apartamento-balneario-camboriu-centro-2-quartos-1-garagem-aluguel-ref-5671/",
+   "folhas": [
+    "008-a.jpg",
+    "008-b.jpg"
+   ],
+   "fotos": [
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6089-17909730977639.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6103-17909730977656.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6097-17909730977649.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6099-17909730977652.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6102-17909730977654.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6092-17909730977643.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6094-17909730977645.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6104-17909730977656.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6106-17909730977658.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6109-17909730977661.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6115-17909730977665.jpg",
+    "https://dig4.casteldigital.com.br/atlantida/ig/il/imoveis/5671/img_6090-17909730977641.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.100 · 89 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento semimobiliado com 2 dormitórios (sendo 1 suíte) no Centro - Balneário Camboriú\n\nApartamento mobiliado com 2 dormitórios, sendo 1 suíte, localizado na Rua 1061, no Centro de Balneário Camboriú.\n\nO imóvel conta com sala integrada em L, cozinha, 2 dormitórios, sendo 1 suíte, banheiro social, sacada de aproximadamente 14 m² com churrasqueira a carvão e a gás, telas de proteção nas janelas e sacada, aquecimento a gás, aparelho de ar-condicionado e garagem privativa térrea para carro e moto.\n\nLocalizado em andar alto, com ótima posição solar e ventilação.\n\nO condomínio dispõe de salão de festas, sistema de monitoramento por câmeras e estrutura para TV a cabo, SKY e internet.\n\nExcelente localização, a poucos minutos da praia e próximo a bancos, correio, posto de gasolina, Shopping Atlântico, supermercados, farmácias, padarias, restaurantes, lanchonetes e transporte público.\n\nAluguel: R$ 5.100,00\nInclusos no aluguel: condomínio, água e saneamento.\n\nO locatário pagará a parte: luz, gás, IPTU, taxa de lixo e TFDI residencial de R$ 46,00.\n\nEntre em contato para mais informações e agendamento de visita."
+  },
+  {
+   "chave": "F1406604804307600",
+   "id": "F1406604804307600",
+   "url": "https://www.facebook.com/marketplace/item/1406604804307600/",
+   "folhas": [
+    "009-a.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/825267243_29871412869125752_6580406565743499223_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=454cf4&_nc_ohc=rGsLmHjblooQ7kNvwEuJUXx&_nc_oc=Adr6B4Z8X0xOgqoQMdIAioUftn-pK5UWZcUmWIsCFaDFEUnllH9Th03mXAY8DeJJuis&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=bdxA1rRZCpSBycxHeUk-7Q&_nc_ss=792a8&oh=00_AQPcorh6PTAcrVDqZrTP5iUe6-UGi_1KlAtyvMqiC8VKkw&oe=6AC625BA",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/832634803_29871372292463143_7807456842682042551_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=80qszcjLJaAQ7kNvwGTnFmn&_nc_oc=AdqSvatUmp7au85rz7RF201I7dF2JQ4HtGfZ0loowB3TdLf8_wII623yQuy9uyMLIKg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=bdxA1rRZCpSBycxHeUk-7Q&_nc_ss=792a8&oh=00_AQMoIR5XLxcVdzFuamMJ3O1hZgSXI8u0Km5SG8wJ0mFPoA&oe=6AC61D75",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/829340705_29871372325796473_7647739326337406416_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=DAud3uij-5MQ7kNvwEF0QTO&_nc_oc=AdqyNKgrQ5kuobgNjt0Btmn7hXKmCCy5ox47G8zT6kuG8Tbw7Tf9KqaOfS0vevksuRc&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=bdxA1rRZCpSBycxHeUk-7Q&_nc_ss=792a8&oh=00_AQOgDkMU7qyQBXYcm7RnEw-V6arTZKC7RFafDd6iNTpewQ&oe=6AC61837",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/831280668_29871372282463144_8708886752742651194_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=pYn-1X-ucScQ7kNvwGtral2&_nc_oc=AdoxUIQ6WusB9dAV-jNLFJHm83FfAAQjfqRb4Ch2wz1vby735z-aHplrNzW7u9tAqhs&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=bdxA1rRZCpSBycxHeUk-7Q&_nc_ss=792a8&oh=00_AQOpp_CrV4GTNsiJ8P25qr5J5Tx4-e2ClOyjqhY2uedu8g&oe=6AC60A9F",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/834360165_29871372309129808_7805850470228628962_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=9PbNfpIL3fkQ7kNvwHpSdXz&_nc_oc=AdqRAS4ND9-1P_SMs3lBXr4QjhaGcy_X7AUl_umBm2Foq6TL0tnx-JLkPB15zO6Tkqc&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=bdxA1rRZCpSBycxHeUk-7Q&_nc_ss=792a8&oh=00_AQMlDuCw8ZFLGFGmyUoG-F4PM0y3WUxHhZKJQRRvOHFBTg&oe=6AC628CA",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/831255163_29871372305796475_6612416193298788177_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=kcvnuWtwMcMQ7kNvwERpL5H&_nc_oc=Adr3tYwYnE6ZKfJITqvpZlo3kJoFKnTNa06yy2BPqyOi6lfxpePLQU7Hx1Z2OdVPWC4&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=bdxA1rRZCpSBycxHeUk-7Q&_nc_ss=792a8&oh=00_AQMk3vbNWJ9Tip1aE9P5hOlj1w8frPXGiJ5Dw72oJ4WR3A&oe=6AC62E07"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 3.650 · 1 quartos · Centro, Balneário Camboriú): 1 quarto 1 banheiro – Apartamento\n\n🏢 LOCAÇÃO COMERCIAL | PLAZA CENTER — BALNEÁRIO CAMBORIÚ\n\n📍 Centro de Balneário Camboriú, na esquina da Rua 500 com a Avenida Central. Localização privilegiada e de grande circulação!\n\n✨ Sala comercial com 43 m², ideal para:\n• Consultório\n• Boutique\n• Esmalteria\n• Salão de beleza\n• Escritório e outros negócios\n\nA sala conta com:\n\n✔️ Gesso rebaixado\n✔️ Piso vinílico\n✔️ Banheiro privativo\n✔️ Pequena cozinha\n✔️ Excelente localização\n\n💰 R$ 3.650/mês — condomínio incluso\n\n📲 Marque já uma visita!\n\n⚠️ Leia o anúncio completo antes de chamar no privado.\n\nBruna valente Corretora \nCreci 42698\nContato [hidden information]"
+  },
+  {
+   "chave": "F1068222642703457",
+   "id": "F1068222642703457",
+   "url": "https://www.facebook.com/marketplace/item/1068222642703457/",
+   "folhas": [
+    "010-a.jpg",
+    "010-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/825328650_29242854401964564_2353226928464347492_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=101&ccb=1-7&_nc_sid=454cf4&_nc_ohc=5nRzrRFqTGYQ7kNvwHwnknx&_nc_oc=AdoxvcKM1uB482dXaRMsUFNe6Vrd1UTqHXbx-x5AFQL0254yDApNaDqsGzoWj_0wNJo&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQOtm_bm8Ws6oKOuYa9FACaBQN6MWwWGgsNt1LgTaTkd5Q&oe=6AC62C7B",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/831438882_29242826595300678_9070595786325390563_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=103&ccb=1-7&_nc_sid=946e27&_nc_ohc=bQ4g1UZL5E8Q7kNvwEixcOl&_nc_oc=Adrv1ZcBjxl_4Xos_bFtBiy5LdDsoFBq0cou35USc9qtghiEdslit7vb_oOpb8WY3J0&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQN0uAZOXwwkI6zGQWDOeKwbtddqfpa2_xPmpei35QAmgQ&oe=6AC60330",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/829765735_29242826535300684_2833984235636135508_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=ro3GzOToKxAQ7kNvwF9vMOL&_nc_oc=AdoQVNYBaOLlSmsXwE7V8FpWJltUUMRWE1jLfXn01ZHOSwOMywxc3QPTGrP0TmNddCw&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQMkn6kSk0S-h2sYsoQsfbG6WtIqKY8X96hk0b7IC5C-Pg&oe=6AC632C9",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/830282842_29242826385300699_3800887349129259595_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=946e27&_nc_ohc=gS2C5zQKkqEQ7kNvwHq-aFC&_nc_oc=AdoT8orveMhf2zAhAUx1rCF3Kv2LSBX7caoBCbJAQ1SN9bOIVVRNrE6G9ISYF5K_W_M&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQMfRUxznEUCCC-wrg0R3D-iWT84q-lFNy93IfpxIH-cqA&oe=6AC60774",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/831726571_29242826915300646_3969147607237682445_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=viuOqy4U3AUQ7kNvwEZ5fmU&_nc_oc=Adoy4EhsDqWBk4wVxJ3LoRCizMiCQ2Izo3cvGdgo4s8q-Qer9QuzbAhJomy4I8tf9u0&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQPUV3WIMA2y6YFYXmak9IGSWWkUKkFm5QWzUUmWpYKWhw&oe=6AC620C5",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/833110932_29242826738633997_4851961149139536125_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=RNJJQfULfhAQ7kNvwGlJy-_&_nc_oc=AdpeS--cBaFhJl0aMkJ7j5XArpatald6al-tqZFhkVBEsda9Z69HHBQhMz0MD4VfMF0&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQOfGamlErFm7V_WsrnbOL6XMUZrR3TD4_L28OoORNtUHg&oe=6AC60741",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/829809254_29242826241967380_8259678158674952357_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=RXmL4J4ZUrIQ7kNvwFW3t88&_nc_oc=AdqwsKyCo_7V6FgOdAoktwhSc4dFTiJI29Cmna9B67Uryw5C1oOdVinDBP-ayNN2J7c&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQP9olAKNPv5Br58XyLLF39b4taNC6i7lX9VR_6LKpdhug&oe=6AC6068F",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/831327310_29242826635300674_4594107747121088417_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=haMeKo0N-NsQ7kNvwGJ-M8u&_nc_oc=AdrPo1q9IJJoMPZ5zPjdDani820OqgPbWHowwf5EI65YLgMgiH3dAWUUuK2VQzDizRw&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQOxtvKVUNpfOF9ztWaxbcGkMi9faUmrTr24Pe2rYEh5dw&oe=6AC63151",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/833780259_29242826318634039_4690803747323859393_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=101&ccb=1-7&_nc_sid=946e27&_nc_ohc=VddDp1gOWgIQ7kNvwFy9tMP&_nc_oc=AdpKqNNq5hS4A2UaNeJ46hfmju5oaFqN9UZncNTNbwk2WjdsCn70Vrqcib8Znch-WZE&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQPyeiXHkfXO4xcRgPES_2hjFvfUppuwMs2MJiyBlyjdBg&oe=6AC627DF",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/835886706_29242826425300695_5405619069911774536_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=uhhCnvs3amUQ7kNvwGXzBFI&_nc_oc=AdoxSGQP9eEaP_3IHFMNVw8UBukugEsSQahKEkijxFn3wLw1J7ja8473mxtAJRZ4YtM&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQPeU74IkQb6Rm0RY1WGZLQHPfkzm6VLBfkzt8gpFr3Pog&oe=6AC62E82",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/830352353_29242826868633984_8531058163804986297_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=yBjVWW9EY7AQ7kNvwEP2wzC&_nc_oc=Adp1WGLRRlhZKC7CuRDmJ8MWJuIQa2lXtbxG-VZQAZcjNysU3sq4QYNc_U2k9h71Gdw&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQNEZFI0QWja4eTa_NES4yxpa7Y7QvMSWjXSXlIUTWtHDg&oe=6AC619F9",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/830199195_29242826698634001_6006103283435011790_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=946e27&_nc_ohc=zayfaiE-gQAQ7kNvwE7JiwV&_nc_oc=AdomV9Oo1okvbilf12RO3bbIX6UdKeMNFwugewAGa7qEIJLR-E4t6FyF9vRjYPYfplk&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=GD50FPG2yuo1DfcKOygW4g&_nc_ss=792a8&oh=00_AQO3Uwe2ySk7UV99mKiB8Sb_Mcmm0H7Fg2Ix2h0WZevBdQ&oe=6AC62835"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Praia Brava, Itajaí): 2 quartos 1 banheiro – Apartamento\n\n🏡 LOCAÇÃO ANUAL | SOUL BRAVA CLUB\n\n📍 Rua Suécia | Praia Brava\n✨ CONCEITO CLUBE | PRIMEIRA LOCAÇÃO\n\nApartamento mobiliado, com armários planejados novos e pronto para morar!\n\n▪️ 2 dormitórios\n▪️ 1 banheiro\n▪️ 1 vaga de garagem fixa\n▪️ Primeira locação\n\n🌿 LAZER COMPLETO:\n🏊 Piscina adulto e infantil\n🏋️ Academia\n🎉 Salão de festas\n🍽️ Espaço gourmet\n🎮 Sala de jogos\n⚽ Quadra esportiva\n🧸 Brinquedoteca\n🛝 Playground\n🐾 Pet Place\n🎳 Boliche\n💦 Deck molhado\n\n💰 R$ 4.500,00 com as taxas\n\n\n🔐 Garantia: caução ou seguro-fiança\n\n📲 Consulte disponibilidade e maiores informações."
+  },
+  {
+   "chave": "F1866276677506917",
+   "id": "F1866276677506917",
+   "url": "https://www.facebook.com/marketplace/item/1866276677506917/",
+   "folhas": [
+    "011-a.jpg",
+    "011-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/828648572_28917166147901340_5238624613187817490_n.jpg?stp=dst-jpg_tt6&cstp=mx1196x1595&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=454cf4&_nc_ohc=-y-4CWnZj_YQ7kNvwHqHdP9&_nc_oc=AdpjDGKNetIYZyRQW4UDjb6rPo_wOYCmGqboqfFf1NDsct97mNh4ftHCPYjeTIoEO9w&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQOsp00t7LQG3uutgdoL06FfsYwLdpoleKxmhJm9Ppcb5A&oe=6AC5FD22",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/836112452_28917113287906626_2472057731807591044_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=4qtv79De2OcQ7kNvwFkmjsk&_nc_oc=AdqRYZm9go4ityOFwuyAopBGVcu_VZm4L9ahWKyQQJ876RlH94kqpYjCGjBzYJUeDqA&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQNCCS09aKLSvn9ee02NCfequb_z4-fO2-vysiKReeDacg&oe=6AC62B4C",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/825351129_28917113377906617_2078243642689269542_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=11sXcaEXosQQ7kNvwF0Dq7o&_nc_oc=Ado7AsGwCoFPIPwStq9cbO30nQA0dQLRtQ-zoShRFWh6huTk4OkJzwaX1oh29D_aEXI&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQPWRu96fVS-nJMkzvR40lbkBzDMQ_uci_GfJJaQjWW18w&oe=6AC62C39",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/833574813_28917113371239951_4324081933637245889_n.jpg?stp=dst-jpg_tt6&cstp=mx1191x1588&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=946e27&_nc_ohc=UnybRrvkYKgQ7kNvwFhYnFO&_nc_oc=AdrZ1SZszEwFRQmeYj2gs_XAUEqtiv1pRdnAIt6_U53c0q8sLaExKX3ZJ3VExUG5SKo&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQPhPl6ktrcThZG9qozbiHT5X5k54iay0acNPZws0i3fdQ&oe=6AC604FD",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/832237062_28917113381239950_3286124757392377124_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=E1ziiomDDb8Q7kNvwGnOHQZ&_nc_oc=AdorfC6VgZEgMQ3Kf7cnVkx8RoX4uv1wUhvkOehJjnuxw_tHVT7N_TEPWE5ZR5se2LU&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQPlq-SVVN_haGGxV0MaLvzlpeY0dNLgDTmREVoGY2boGA&oe=6AC62223",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/833276139_28917113427906612_5521647571468217677_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=SAFQ9K1fthkQ7kNvwFne5Xm&_nc_oc=Adq9wJ6BXtz0dIIzojSiVKC2ORFvoBAU8-aHP7O-4eo5mV4lgK9h50r66zFgtDrB0e4&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQNkc9hGzndb-5sRU2E5L4uKbVex0bDX137-2oUmiR3n7A&oe=6AC60C24",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/833276771_28917113511239937_1977034236588982254_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=5mB7H30nU0wQ7kNvwHHia-l&_nc_oc=AdoMnMezA9f8clgFip3dXf0K_WPGGaD7kA3BC81gyE6B1SRjr2nRniMNPatjyFYN5KI&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQPaljQdhkaxSedjPNtjEvqYZggBaQ5PlZucm1lfMrqbEA&oe=6AC6039B",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/825267385_28917113514573270_7776198280731454917_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=sjiV9Cqh9E8Q7kNvwEERtEg&_nc_oc=AdoZ4ACbNwTP1IYLWI9CnGkGOjmXLD5e_0kgBD8l9mt2mQNYWoXPVy0WuelQn29j6p0&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQPBvlFGyGFAUXHnkbA9V3Sku1CrH-V_KgmOJVxIM4GwWg&oe=6AC608C8",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/831002661_28917113611239927_334223487910608275_n.jpg?stp=dst-jpg_tt6&cstp=mx1200x1600&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=s7pjW67CV5oQ7kNvwEp2Y6B&_nc_oc=AdosahGeelT1RuW2fTzorzSrwmrOVCcqGvKx-jJy8wv2zpaYO19MQnCr8fadVk27tlw&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQOolOPXNAsATYAgXWbPZgcEZtNPivIdzc8kP5tcYkmcXA&oe=6AC626FD",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/830199195_28917113517906603_7463008332486797551_n.jpg?stp=dst-jpg_tt6&cstp=mx1204x1600&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=4mSEGXSKj5UQ7kNvwFoHpOK&_nc_oc=AdqPnI-q1WyFsPEZfGX3wNAbWFhL0G0E4CQn_bRCmIT7Cd4W6XE3ea71XgiLWWnu1vw&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=UBhoWFYNZreauy57RQtcLA&_nc_ss=792a8&oh=00_AQPVzyuNslnAHaqhvOsq5KobCYX3XjaMTllv5GAqUlVfrQ&oe=6AC60A08"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Barra Sul, Balneário Camboriú): 2 quartos 1 banheiro Apartamento\n\nAPARTAMENTO  para LOCAÇÃO na BARRA SUL  de  ➡️ Balneário Camboriú SC \n\n150m da Praia \n\nValor R$ 4.500,00 (incluso condomínio ) +IPTU + Consumos (Água, Energia Elétrica e Gás) + Seguro incêndio anual + Taxa de lixo\n\n🟢LOCAÇÃO ATRAVÉS DE SEGURO FIANÇA 🟢\n\n⚠️ AVISO 👉🏻 visitas só serão agendadas após análise de crédito ( aprovada )por se tratar de seguro fiança.\n\n - 02 dormitórios \n- Cozinha planejada com bancada \n- Mobiliado \n- Banheiro social\n- 01 vaga de garagem\n-Prédio com portaria\n-02 elevadores\n-Salão de festas"
+  },
+  {
+   "chave": "F2175006999730365",
+   "id": "F2175006999730365",
+   "url": "https://www.facebook.com/marketplace/item/2175006999730365/",
+   "folhas": [
+    "012-a.jpg",
+    "012-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.84726-6/801477197_1583911062575928_7833058430814621540_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=92e707&_nc_ohc=GC3jb1sE1sYQ7kNvwH1J4WO&_nc_oc=Adq8Ig2E9hTI8z5e2ySoZNpW3u9fMAV8MUNtT2Q7k3KnfDZf_svh5aFaTWL1YdaINlc&_nc_zt=14&_nc_ht=scontent-iad6-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQPrSNTkTBzzTUEKIi7S1NllvF7YCOWFsoYj7ghxvQ-8Kg&oe=6AC602B2",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/802121214_2020573011915628_144234225754694776_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=CcolcwC-MXwQ7kNvwH1WHiv&_nc_oc=AdoO7-QC49QDCJeyUn3yzDIusVmB2_b5-tlO6FQA2kGesAbxp-4PPMvoXl3eH9nnt-Q&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQPEgJyi8bNRESTbdcgb4SdaVxVYJwNBnCKglGB4y8So6A&oe=6AC6101D",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/802033131_1068893372694837_6794819042427922681_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=ShQx5Jblv2YQ7kNvwGntQWa&_nc_oc=Adqv0ipGu0qx9HEcFUkLnFjOFe3i8oRC300K6PHkDWRbiEvore4nWKudSfV97GKjxkc&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQP5h93300ssAOgrdhfA4rISJX3dOTy-G9sp6jwZoMcLSg&oe=6AC62F8F",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/802245131_1630349898762006_6036673763180819289_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=J0G0uUn1G94Q7kNvwEGEoy3&_nc_oc=AdrGgJ8W1Y9diziS2jOdj6W7K6v-IgaEkhX-ZPFUhP-Xpyjn6jop-dNEDLcm7-_YU0M&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQNO7mOVWmmzm6Qjem93Nx6w8jWr7zXUFl37eZ-E2m-yag&oe=6AC61B39",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/802200379_2148041152726922_3599801179600673833_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=1Ixt-kDRyzsQ7kNvwFT3hH1&_nc_oc=AdpsEB09-3j0eKR9XlJTet7dVE95MYfPfnSM9KlOIqrUwOwWDdMI5OodfyLcSfk43nc&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQPyYB6T-GYzXas9R3Iv1zJnyy4b2C0cxea1S1VRtA0ZPQ&oe=6AC611FD",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/802121635_1972821086725223_1180723766698651506_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=W21U2RIPzuYQ7kNvwFmTCbr&_nc_oc=AdqJNLZ4lrcAhYAOlmp9-G4SjYcrJxU_yezo9rXuiF_aBXu0K3EcnACpLmUCUmyC2i4&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQMno3gtEPace8Y_YCZc1keoCPLbnNjFGFK1y_yCfd6Vhw&oe=6AC6096F",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/802033210_1107109778526235_4730520057101799718_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=O-cSzQMjqj8Q7kNvwEZMM1C&_nc_oc=AdpxgcroeQlxk1hyadCTDiTuM1bNsDbTDqVvgpl6Nn5alVE0IA_CRvsynLw_VyMWdi4&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQN4ubJYQDbqA3UQlZSkIx6bNVf4IRjEMtLmzrydPF6QvQ&oe=6AC62AFC",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/802033227_924916654012626_3224153831944825612_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=GLTF1WprZRMQ7kNvwFCpjhz&_nc_oc=AdrsA0LWO0ihxSbd9_InMY3PXheXYr9CcRZfQ1AIMawETQF8uTHaeCRhQVMQiFUQaFs&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQMoMzi8coiOYvtD4mYVtgG88-R5GYZfIlAqc7JW3Xr09g&oe=6AC622F6",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/802094800_1618073226344177_1207715164041171316_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=wF2wh-8rK3sQ7kNvwHqu65D&_nc_oc=AdoAjuWJ4ND1aEaBWTWnseUC-DM0YYeQS6fWN3RGKjdOCp0ZXh9Ld-vfx5QiOz3qO8Y&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQMqcQje_p2xDXPYYJNfXq26MpXJ2Znn17qgNzC5H6pX8Q&oe=6AC60C59",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/802308254_2226990308156366_1101288647167609342_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=3DbzsRGWXtsQ7kNvwGdxnwV&_nc_oc=AdrXI_3TXT6Vsy6CSHYy12a0EfRAOCLs1-rgIQp0r12o-xXRz1NMDddB6e6fertY_kk&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQPLNLq6DKHAtGlDhPKR9Ik2vfIZ9-qFRtthbwl29WOyGQ&oe=6AC62DC8",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/802200354_2698213620593968_4957561232339739952_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=jXOxuWwnYc4Q7kNvwFcrc7I&_nc_oc=Adpal62sEsxRv5jGG3hnztLVH0xMYpw9xHr32aE3XfANylG2gCdTfJdxmo0dLEihqwM&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQPW4vw2oP4V_zlw57f55205pWiM-gX9sI093L6PpbmG0g&oe=6AC62231",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/802334340_941389165099029_6557658176786312202_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=lxPR-4NLC3YQ7kNvwH_3bH4&_nc_oc=AdomMTVwHPOAbt5JTqFFdM4jvMyZF9tHDy4SGEYscMu6aukVn6IdW_8V34bR0xbRA5o&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qbZdXaIzf_ldp25R62TecQ&_nc_ss=792a8&oh=00_AQNJsGhl-pGUOYER5Mvka46fS9E_pA0K6bM3Vv4NIQ1nNw&oe=6AC60C0F"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Centro, Balneário Camboriú): LOCACAO Anual 2 dormitorios av central\n\n✨ALUGO APTO ANUAL CENTRO BC✨\nlocalizado a poucos metros do shopping atlântico no centro.\n\nComposto por;\n2 dormitórios sendo 1 c/ sacada frontal\n1 banheiro \n1 sala com sacada \n1 cozinha e lavanderia \n1 vaga de Garagem \n\nR$ 4.500 + CONSUMOS\n\nModalidade locação \nCaução ou seguro fiança\nCRECI 42570 João [hidden information]7"
+  },
+  {
+   "chave": "F1854617572624587",
+   "id": "F1854617572624587",
+   "url": "https://www.facebook.com/marketplace/item/1854617572624587/",
+   "folhas": [
+    "013-a.jpg",
+    "013-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/828616128_28766750072960765_4573920158639214728_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=454cf4&_nc_ohc=v-bm8KDoUQMQ7kNvwHluXZ6&_nc_oc=AdrkdNQInUQtubgi-vl3Ul6mazfCRwTH9zJbmS107OrcMKkQzw06l5Kj16o8jawzPf4&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQNQDLlUeQvGiUnyS4Fo2jWWh-7sJPavabXYJj39KahIqg&oe=6AC5FDCA",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/834201699_28766659909636448_3466391373607171092_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=vJLGmEcYDPwQ7kNvwHaYET8&_nc_oc=AdqW2G9BbFHACqC0FgxvvUE8meF7PssWHG20Mc1VVTQh4LPNRgJh5ac7b6cZ0Nr11Zo&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQOrmbd-HltU-X1aVrGFSDCi17DHfclqezZ6fVa-Nid6IA&oe=6AC600AD",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/830968576_28766659826303123_4393801979465178779_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=tF7ueX6FrckQ7kNvwFTvjPQ&_nc_oc=Adq6T-Na1dg8LPOHSvQ8uECwW-sCZousisnLj2bo70wkTTHq4VMgnYx683HTScbVvVQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQNgGpA1TbgxNGxM-dAZ-SunhheoI-bzQQD7DOX4EI_FnQ&oe=6AC6054C",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/831574998_28766659829636456_2079405446194466621_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=LrERJegIE-EQ7kNvwHTgCQv&_nc_oc=AdqZj3SkrDorkHMEDDzaprTXgPocIpq-LmTRzX023avrAkcWTzzPfDARQLnDlaSZtO4&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQNraZ8Vq_UdIJIY9Coj2R_sgoXuJZaFDp4vyWvQJHyFbA&oe=6AC628DB",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/834420764_28766659906303115_6838684002688131429_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=946e27&_nc_ohc=mif_M77kwuoQ7kNvwF9PlRl&_nc_oc=AdpS4NoqAqMVd4r1g-OACxAiltyWBRA8tAWKOxyBtLdqPED1QtJOSvfIsHmqvXL53GI&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQPvqf5E72zFDStAANlDwvxjbi8PieecsuX-9ssy6Kj_8w&oe=6AC606B7",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/832559185_28766659892969783_8186090974213589926_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=gHuevs7HyzcQ7kNvwHZV-wq&_nc_oc=AdqyGqHZnpHLbByyynyxtuIWkdRM5-mpaTEjEBXuAxVDrLTPWv1Fu03DjflYPoLWDMQ&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQM38PZXysdXw9V_wHSDNixc-yWkucWGXFjzpPpaWwJRTA&oe=6AC60197",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/831342116_28766659889636450_1957577923280175771_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=mrGm4i9fX98Q7kNvwH_PU8f&_nc_oc=AdroNegius9D5wmvTqsm5gLjPTJz_gKOnojrw3eYkIa8fWA9nkCLWxILwNRoTLKtuHc&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQOZPLsZEEhQ0AmP2_3pZ382zclwTtzoNCrUJoFXBgblPg&oe=6AC61AA3",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/831533942_28766659902969782_7212746925402522754_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=103&ccb=1-7&_nc_sid=946e27&_nc_ohc=622WMXJK5xsQ7kNvwGAWRDH&_nc_oc=Adr0l8VnkDrM_P7tABgnX4wUMP0_f_Tu3wq7nyV3R96wFYgGWdn6uRz9W45DXV49e3g&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQNIwsNubTJO5wwIuQXumhmsIJVbOMt30D7ifMvm7MRaBA&oe=6AC600E9",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/825267482_28766659896303116_7430527275313896744_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=946e27&_nc_ohc=VYFHCU-XZqgQ7kNvwGFy0rx&_nc_oc=AdqwOyjRpVOw0jYGhsPazOShRtLX2vps15BEUMY72Im9otow0SW2Ct5zRxs6MffbjCw&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQPkBZrWJIzUacHFPmaNyro8etxm24-phqd8NQ17Exawsw&oe=6AC62110",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/832513647_28766659832969789_2022913063777140152_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=DXTEGJ3TrhoQ7kNvwEuu7YL&_nc_oc=Adq5HRCOsM8LsnL5d19EQTq2ll1Wti7PFliuVZ5F7dTZ1pPVTYEjJLCYDjEu8Zbcmd0&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=Wdv-NWBZkejfiIXujmWy8Q&_nc_ss=792a8&oh=00_AQMwKPJnor6jsiUzz7MxpjQS1pfTn_YZu4FwNkDBY-r8HA&oe=6AC61801"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.500 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 3 banheiros – Apartamento\n\nREF.5500\nRequisitos SPC e Serasa sem restrições.\nCondições caução ou seguro,\ndefinição após validação análise CPF.\n\nApartamento mobiliado anual quadra mar.\n2 suítes \nSala estar e jantar \nCozinha e lavanderia \n1 vaga garagem \n\nAluguel 5500,00\nCondomínio média 700,00\n"
+  },
+  {
+   "chave": "F1438311148151937",
+   "id": "F1438311148151937",
+   "url": "https://www.facebook.com/marketplace/item/1438311148151937/",
+   "folhas": [
+    "014-a.jpg",
+    "014-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.84726-6/791144993_1572480467214457_556454778802409540_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=105&ccb=1-7&_nc_sid=92e707&_nc_ohc=uOfUJ05XqQ4Q7kNvwHCGCF2&_nc_oc=AdrV3K65q8GTrFny5R8ifzj8Ds_z5C2T_xzpRa_-J1vMJlxB6F_D9Z9yInH0GLQoVTQ&_nc_zt=14&_nc_ht=scontent-iad3-2.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQPvFTtYsl02f627_ztzXI8e3R26gOpYpe1EocvTzrStnQ&oe=6AC60657",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/793853227_1051553370817302_5038954322043025184_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=kvZFtERcchUQ7kNvwEcd0ZK&_nc_oc=AdprD6591232afKsOmH2MGL5kllXRRcJEVXDKW6bjpKQ2I10qWvFP3I1F7smEUqaDS8&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQMaNx5wgBGmgj_NVrkUzypwCRN3X8lkQ9hYvfhC1KIc_w&oe=6AC61643",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/793458578_1084944967447302_4906524437340266313_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=111&ccb=1-7&_nc_sid=247b10&_nc_ohc=DRvA0aFAG4oQ7kNvwGsuvz4&_nc_oc=AdrxwN2TSkMIzfuRaT-KQYctYWmnZRUsN4gb0Izhn3IKbBte3tQDifVxPfm6-p5y2Y4&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQNm21poSGKizcfc7LJyMgvZX8qi2flGnWEz9ly8eNWbmw&oe=6AC618F2",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/791383764_27530909493254251_7377339572238470842_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=xSSjrKBxzE0Q7kNvwGld8sV&_nc_oc=Adrgv5IJCUeateLTnt2w9JN-W1wpv_XnqRkVSWay26Vd3pASwsw89gc4ufms_9VWWq0&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQNYEz4ZXCXOfGrNl3nai6t3aMOAFyJyBLS03jR2rz8PVw&oe=6AC61DE3",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/788017464_1051673494173257_6990942805604777541_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=miHuOIenLO4Q7kNvwGw3qpk&_nc_oc=Adr4HakJWrAkeDkpebEqvA1Jqc0Uh5cMqS-pzOTeFpEPEkn2jmbc0xbnp8fLBmYKQUU&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQNBP7ule8pbgWVkS_dorhzwuNPp6Mh8qCn4b5v0JCByKA&oe=6AC60EBB",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/793581038_1621516885997103_7525088448057800666_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=1agXoaonNeIQ7kNvwHbBZoN&_nc_oc=AdrFTL4eSIDbm_5K4_qLr5Lp10tf98HEk5cv5TZTd8P8YT9dihFfyEm8J-U7QJyCUHY&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQM2TXVkuHjcnToL2tjCp1ZgDLUTQnIKPygu6edcZXnkUQ&oe=6AC61F5D",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/788851431_1820083209371274_2951496555647875187_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=NRuOJWSKmawQ7kNvwE90pON&_nc_oc=AdqoHic17a9jb4XYWJ05syUCS9brYlmMr2_KbCsC9KZQBJe_3PAL-FPvxHcQNKo6S_o&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQNODwQ2oTd2CPac6pDTJDI5nov3qHVD_YpTTWje6lhADg&oe=6AC62C39",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/791513487_1421984109819358_4572516262099733469_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=YTkhhdFI5doQ7kNvwHT_bSH&_nc_oc=AdpfgO7FFCC99PZBuCxaS2uuwpRzV2cbROQAbgfn5kkoDZhR16pzRTGKPw0MKDryu84&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQM-Wz-RnJhf6TNehGHz4-ZP8OXZx3UBJstJPdrRcs_kHw&oe=6AC61533",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/793245441_2318271088981598_7712647020113507133_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=Q7eKGAlxAJQQ7kNvwGpr6DY&_nc_oc=Adp44strJu5RnexSoR4MVlsWYqPXfAaUWe2pYCjwKQLlTqabL-XeGJfqCMc8YaditrA&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQOHxj8bQZThWwvKTWROwZZ9Q4uKib7rIb66SFG9KdXJ_g&oe=6AC61A08",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/791943536_1322160509994242_7551934755354389125_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=0UY7q5uBO9YQ7kNvwF0uukZ&_nc_oc=AdqqnPYTLO8CfXMGT3rZH8CEk1Lno3t8gCwfi_bhWq9IcSolc2ONl9qBs0jHlSGg8Bs&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQOy2kb-wyHWQn-g7hNtQ65Mo85uELFKANcRQlznwxrUmA&oe=6AC611B2",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/793399443_1419558186694621_7741553619941336017_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=CKAwgkQ6hscQ7kNvwF7XB20&_nc_oc=AdoyVZSI-du3_kIMwMcWUtvKc_6ou4zEXI_IGjqQXiPQw3ERfSsIHlH9lywMxmqunV0&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQNoIzeipG9rCKQ5uuoDR4kZ0T_HPeQZ0XQrE6yu3d2e4g&oe=6AC60294",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/791996988_1326088299378641_7049402337276671464_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=eWCNrMeb3wkQ7kNvwFvOm1z&_nc_oc=Adp6hLrkf2efS0i0F8eDxBKzZK-4hD4C2pj9dL3UfL2ZggteS2eNBBP7ucpkmJ79iTM&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=0ghlXgaLEvgHfWAWOax6Pg&_nc_ss=792a8&oh=00_AQM8NOetWCNhvuQNFjMgUZDUPceMQltGmpRfeTfUT2iiow&oe=6AC611A6"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Balneário Camboriú): LOCACÃO ANUAL 2 DORMITORIOS AV CENTRAL I\n\nLOCAÇÃO ANUAL CENTRO de BC \n  02 dormitórios sendo 01 suíte \ncozinha \nbanheiro social \nsacada\nvaga de garagem \nR$ 4.500 com taxas \nCRECI 42570 João [hidden information]7"
+  },
+  {
+   "chave": "F1116745574378405",
+   "id": "F1116745574378405",
+   "url": "https://www.facebook.com/marketplace/item/1116745574378405/",
+   "folhas": [
+    "015-a.jpg",
+    "015-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/831196017_28871207472473775_2577641681365453444_n.jpg?stp=dst-jpg_tt6&cstp=mx1149x677&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=454cf4&_nc_ohc=LrkK4LJLL5UQ7kNvwE0DdC3&_nc_oc=Adoe-fJfLR_q6u6pa2PFG2ELUm730rRNEMXGeEkbUk2qtu4IeA-7bCYzTvAe7DZiCKg&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQPgt6-N9Lg_m52EZfdyRfYuWaOYzh0bxL1apk6BuoilPA&oe=6AC6183F",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/833364098_28871137025814153_1089031884654327051_n.jpg?stp=dst-jpg_tt6&cstp=mx1145x698&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=eRGThbZflq0Q7kNvwEgRar7&_nc_oc=AdogMwBLd3_dNgyInuwlO-jZAyPfbXKDJgkCWma0gxs6moCeUhDJmCLllR3TE-AXt8Q&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQPyyszunRfG1d7NF2KGMupaYbWvjqoYdlq4K4vOFh5muQ&oe=6AC631D6",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/825267270_28871137912480731_259554758971069402_n.jpg?stp=dst-jpg_tt6&cstp=mx1150x763&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=My6zFRfamK8Q7kNvwHP0UxG&_nc_oc=Adq_0clMGbkSNLcwDx1WiecwsGYuB0S_NIyQdxvCeki6CYuent-lkNQeSInNlCbL2Vs&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQM4YH0rlSvplR9JKJpbkpe__iSyYBlwxQ-GSaltwt-iUg&oe=6AC60CE5",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/831533951_28871132435814612_1732896789820540934_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x757&ctp=s960x960&_nc_cat=103&ccb=1-7&_nc_sid=946e27&_nc_ohc=3tAeq_eJxDcQ7kNvwGyhC8m&_nc_oc=AdopZ1AzxgNkQjVbrZIDS2WwSk_00fibD-krsyxPQLxccAlXqvFoOS0YeIAfm-8SP2k&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQNo0z4hWSfgmKmk45F2bXQisl5R5_oEuI8dsAxDxjEOmw&oe=6AC5FFB0",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/834238358_28871138392480683_4194486867672826450_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x757&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=btS2s_Z-ensQ7kNvwGAV_MN&_nc_oc=AdpjWpi68tCgScCJSJIha0fPajfI3g2qMN-sT3lpwsWxwgugFewbCNhoMKUD_6rU4gY&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQNZBeJ434etuWTALz_NoegtzHQ1Q-klmvRIumEFhMebwA&oe=6AC62E2F",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/831240216_28871137085814147_5561207239990120705_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x702&ctp=s960x960&_nc_cat=103&ccb=1-7&_nc_sid=946e27&_nc_ohc=Tymk_Vqoig4Q7kNvwHJi2ir&_nc_oc=AdpzVLdXDqe7ru8vRsqQobbl26mp0_s7mBsDWpT7g1TenTXlXee-3-Da4VKWM1bDi5s&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQN9ooLporwW94sS_JLAig8j_oS0HsTNtLppAgDNdb-JSg&oe=6AC62246",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/831240212_28871136975814158_6820616510958518505_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x767&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=946e27&_nc_ohc=DFX1rsITB0sQ7kNvwG7yt5H&_nc_oc=AdoVs7qR5rxjMeaCaTVR-SxPQOIYdSEGOyKhMTzBgrR5w7U59Dgf4Mnic2KLcWj0VvQ&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQPR4Dj4g8SS8DdS4efJKA1SdN0B7bGh1MH_2y2E9Iigdg&oe=6AC6331F",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/831468777_28871137232480799_3227654565327322333_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x753&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=3AUTBb5lbFEQ7kNvwEc68DR&_nc_oc=AdoeEAq09sc4Pc4HdNK2Kl8cLKFjGun88pFYseg8TQEBu9cIhAfDBgP2z8ab8y_UTBQ&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQP0yJUopUadLi1MTJSJzdsIRtzooLkNPdxVq8UABQqKYw&oe=6AC603BB",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/832965044_28871138395814016_4971484384530016275_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x745&ctp=s960x960&_nc_cat=101&ccb=1-7&_nc_sid=946e27&_nc_ohc=RzqO1KSBBzQQ7kNvwFUEKRL&_nc_oc=Adqk7qAdu29_JLz6Yh1jxl7tLn7uqzH4tK6wmivX0J9IVRmuk_KTi5kiFggtGstu1sY&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQNPLkucQEzeDjGmapnWC7d7Q6KSLPrHw7jNqdhztVZhdg&oe=6AC5FE8C",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/834040035_28871138059147383_7487271898566983996_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x780&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=1ijHMWKYl_4Q7kNvwH6cnRr&_nc_oc=Adpw6sRPEpddz8AJmmL5X7vwENydeev3Kplhkw375TYagS68QYJLPFuR-ikiq3-gkgA&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQOu9gBacN0OkOlBnt2HCok0eoGZXALu6ePyXoaF3p2pOw&oe=6AC6255F",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/831455647_28871137072480815_4963601641951643498_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x756&ctp=s960x960&_nc_cat=103&ccb=1-7&_nc_sid=946e27&_nc_ohc=O3EVNhjQtAEQ7kNvwH3VxCG&_nc_oc=AdreTf3q1k5i590vzzX5PTSRStNhsMnn3BGELN27BMGfD18ndAht0_XQ9qDvteuDzn4&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQNHy_LAY5iZfeZIMmhnZoWGJ4Y9zLAvww_55he3KisG_A&oe=6AC62B56",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/829874740_28871137225814133_7015698166622191686_n.jpg?stp=dst-jpg_tt6&cstp=mx1206x769&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=QH0mHvWKg0sQ7kNvwEzMzKD&_nc_oc=AdozTqmwOMmgq-FjeMtRuvZwlkpfPxp_MSfq0TgoiNf0RcOO3h_82bwy0aY2bDuwPaY&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=JLvp3WM_b25iyhLTKuu9jg&_nc_ss=792a8&oh=00_AQOiZ80utC2f71aPOJGCeRMOIV1HG0WcF2rMs-X9NHa1yg&oe=6AC608D7"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.700 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 5 banheiros – Apartamento\n\nApartamento para locação\nANUAL\n📍Avenida Atlântica, Centro de Balneário Camboriú, SC\n Frente ao mar.\n\n02 dormitórios sendo 1 suíte\nSala \n02 Banheiros\nSem garagem \n\nValor R$ 4.700 mensais \nTaxas inclusas"
+  },
+  {
+   "chave": "F1116446974302168",
+   "id": "F1116446974302168",
+   "url": "https://www.facebook.com/marketplace/item/1116446974302168/",
+   "folhas": [
+    "016-a.jpg",
+    "016-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.84726-6/833095018_1401452978865922_2295652352827829065_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=107&ccb=1-7&_nc_sid=92e707&_nc_ohc=lysZ6TNYR6QQ7kNvwGzFHPQ&_nc_oc=AdrHXPNuU-510c9vgxYi9C3v_5GjqZk__vBa85uR1KcInWm-yFnq8FvXk88K7nCpnpk&_nc_zt=14&_nc_ht=scontent-iad6-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQP47g3Y82GCkrzKvn0TkCjoHkEK-Y5tBY3a44Ry8-qi6A&oe=6AC62BA7",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/828255570_1906295007001566_9180752312934867412_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=pGWdsV6qoWQQ7kNvwF5PfPZ&_nc_oc=AdrgSqpVpqN0--MYolhO_E5y8GaXRt6rrNtfyeX_vmysEfjCDbqZJSL9fvkuwOmzwlA&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQMmimysXyBRSfQvewjSRnlEF2zv2h6PeXO05Mt_Qfz-9Q&oe=6AC623D1",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/830594630_1491293076364835_5736590206855879328_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=sxmA0NdG3swQ7kNvwHqnXhR&_nc_oc=AdrzaILs0luDtVvAOvSnWMtd7rIb_ZSb9swi2ktH9ATNPsttlI1gGyb6RMMFqYWCw1w&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQM4HWgJFgPqGc8eJws3TIF4Gby8htEGdP0LpEXaWmEvRA&oe=6AC60E42",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/828018332_1086939487073238_5183968362934588151_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=vqQ8Vn7c7dEQ7kNvwFsr_ua&_nc_oc=Ado-RDXC7ZSceeY4SUDSMqU9MdgMV2jCtKJsSwmo33Ek2TRoZkBQGUdfVzu0p-fan9c&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQP_p8knQ1JGNyg3ABQ6Du2bgAWPROKgHiE7Ec9KAr0BFQ&oe=6AC611B4",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/829868274_2044968589488026_1232978173833601492_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=105&ccb=1-7&_nc_sid=247b10&_nc_ohc=etS6cetAsYcQ7kNvwE99C6H&_nc_oc=Adpac-Vov3k2Y2bg_ufY5w98vHm4xZOCUhXuQuq42CR49pNyI6Io9qgM-F-Rrf2XagM&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQM9okzEZd3oJVocAI4GYFl08zE0VNcUPyE2O9lfiXJjgg&oe=6AC61F73",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/831021804_2116052059303539_5258382735371771399_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=111&ccb=1-7&_nc_sid=247b10&_nc_ohc=QNF-ioVCFsEQ7kNvwHVOrmU&_nc_oc=AdqH1bo2sc9zCFIxXPTdktK3qJN2GV_CaLT95gfyroAFRVZcbaoRJor4RV2nzqsjWQU&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQOmE0w8fW-7bEhzLrMyughxOGyZTQtLtYQ5a1WbOK8xww&oe=6AC619BC",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/833059998_1151718310655680_3504703061508914087_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=S5K3dSm5NvQQ7kNvwF3WInY&_nc_oc=AdqiXw4gGmOe9xSDNYD_lQaCa0ygixpSi9Ts6omiVW1GDNd8ViBe62UfvNxyGMxhnoo&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQM05UVIQ9Q-fOXdf4oheU8Vo0t-aSM0qW-dcGXC821JnA&oe=6AC60D29",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/830095291_1088092300292971_3284074891562762547_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=knTDyETN9QMQ7kNvwE-IEMD&_nc_oc=AdrPdvz34IBcm15ApiELnqGJ3BL6Ldrp6sgamGiXp-e_F40RsFQj0HhOBNPGJCM0TXs&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQOcdvG1w4ZYN3TMAKReJXiyiHxwNck4vlxDjsn31NzhAw&oe=6AC606F5",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825275509_1419027109556870_8463220325081023772_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=injU01yZoZsQ7kNvwFPYui7&_nc_oc=AdpwiSxy6lwq-Lu-cfcM4s8BBELVpmuLiYubjxM_uMyO33ogdPreJKDNTParJivY-2o&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQNA2Z0rDajWQhXIIMGHCap-tDgTtGoO_jt3yBnaIVjBuw&oe=6AC61E9F",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/830857293_1966293334043886_811723867781646667_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=yZskp1y2zFoQ7kNvwGbRwS9&_nc_oc=AdqXDHjYC_UGpRcT2t4hT9oxYSnliUiahPHCXhtTzPF9-XlWn67miEw30g0E3F32eSQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQPrNJBR9HIFuhRY_WWshqiVub6fytVt9WRNa0IZrREmSg&oe=6AC61D72",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/828811178_1447722743918720_6563890553796115568_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=cYqlg9Y0rcsQ7kNvwER8PXI&_nc_oc=Adqb8m9X2fBEJ-f7J7N1TrruWbT4Y89Me5wdFlM7QiOCL5ymt941kWCMCJYYqV92u4E&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQOjldumAAdFVrxRZ8sGKygVw8lEUnRxOYBPU7xvod7gPQ&oe=6AC60B8D",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/830233510_1881074643258078_5628431146970327830_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=z5BB6vohzaQQ7kNvwHUqLp2&_nc_oc=AdqW2yoLcnnOqL0FMF12xEGqKGPXjg_sdiiViaPTqEseQTiS8TBCkd17TOji7XV0ab4&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=Jv03c90hwvMJJ7l4odjPhA&_nc_ss=792a8&oh=00_AQMLDmEkSWIVMGuysvAMHVLUyHh6IFfOmv_IidibNGJ96w&oe=6AC62F78"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.500 · 2 quartos · Praia Brava, Itajaí · prédio Brava Valley): 2 quartos 3 banheiros Apartamento\n\nApartamento no Edifício Brava Valley, localizado na Praia Brava, com uma planta de 84m² privativos, bem distribuída e ambientes pensados para proporcionar conforto e praticidade no dia a dia ✨\n\nO imóvel conta com 2 suítes, 1 vaga de garagem e uma varanda com churrasqueira, criando um espaço agradável para receber amigos, fazer refeições e aproveitar momentos de lazer.\n\nO lazer é o que mais chama atenção: mais de 30 itens em 3.000 m². Quadra de padel e quadra poliesportiva, rooftop com hidro e lounge, coworking com sala de reunião, espaço kids e playground, jardim de especiarias, wine bar, spa e lavanderia compartilhada. É lazer que se usa no dia a dia, não só no fim de semana.\n\nDa porta, você está a poucos minutos do Brava Mall, do Colégio Bom Jesus e do mar, e a menos de 10 minutos do centro de Itajaí e de Balneário Camboriú.\n\nUma excelente opção para quem busca morar na Praia Brava ou investir em uma região com forte valorização e grande procura 🌊\n\n📍 OBSERVAÇÃO: GARANTIAS LOCATÍCIAS ACEITAS: FIADOR OU SEGURO FIANÇA/CREDPAGO. NÃO ACEITAMOS CAUÇÃO. 📍"
+  },
+  {
+   "chave": "F1679251663712792",
+   "id": "F1679251663712792",
+   "url": "https://www.facebook.com/marketplace/item/1679251663712792/",
+   "folhas": [
+    "017-a.jpg",
+    "017-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.84726-6/825266654_1679456380494305_2007527167816492787_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=110&ccb=1-7&_nc_sid=92e707&_nc_ohc=OYU5a8CDcJMQ7kNvwEMNCEB&_nc_oc=Adr4Gf7McuzBGIN_nixuUFEs0LHYpXwJ8MMLoQ9CkPGjukWFeBqXiTEN1khs7rtQwuM&_nc_zt=14&_nc_ht=scontent-iad3-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQNzbYSYgBn9ItVkrzBUZAw362nOJIhlSQRqTLTXUaOs8Q&oe=6AC5E95D",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/825816526_1116039100928200_2730190593945959095_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=111&ccb=1-7&_nc_sid=247b10&_nc_ohc=6oyyBGgYi4sQ7kNvwFsvzMK&_nc_oc=Adr4CYkilBBbwdL8iyDBWqKJOaovvicNHWcCBXskWRUQxTQYknT0hSKNEuurs3cf-dM&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQNyh_Z7h8eZMr2yjS2LukzvOhe6CHWGgcCemEirEYr12Q&oe=6AC5C9AE",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/829171568_1128413179521927_7741026712467193825_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=NgLDzQmgv0wQ7kNvwEBd-Nt&_nc_oc=AdpmwNUQZMHZSEDiuVH5COjxTG3VBFq-N8GozXf-9hE-galuVfYgowWWz6FKjUlnr9w&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQOiTMT5CfZj9IzM5Y11rl676GIHnYe85U9hYsB1-vWLEg&oe=6AC5D22C",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/828020574_968977016245891_9166579727294383311_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=kNvXwbm9yuYQ7kNvwEhQsW1&_nc_oc=Adri9gPhGRuyv6u0s_AZp_XLwSBI6RA1U03o_qjj5p5r-1RsmMtXEyGnSmfpc7Xu6E8&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQNQMyXuHLX33z18ZKYSQSRDIcLqNEWE3yAH-oLDydMJew&oe=6AC5E5BB",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/830352117_955543627624738_4843252343798666289_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=RSi7BRdyPQUQ7kNvwG9Hjem&_nc_oc=AdoY05QTb-5xmYChC7czLnPTVIfppQey11m-NVR4bsizm42bOXsbfMqJ1_lqVF7n5ls&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQO383oQvnnLQSRN7aHP4mQAiDZYpxwcmqHTjrDvySPrxA&oe=6AC5CFCD",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/825289722_1466897038633890_8725709960482781876_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=YcScLttGNaUQ7kNvwFNS6RD&_nc_oc=AdpUxL0_Eiyf0VuliXZMr57LlKUYyNSc36jBRzJ2f_lFE1wW8btLyc_Owf9vgVrM1kg&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQO_ybEs2YbbJlyfWFBPPTjDYf66rYepaythkyW1JuYHWQ&oe=6AC5C1A1",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/827680149_1083453767659855_6815759214657761729_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=111&ccb=1-7&_nc_sid=247b10&_nc_ohc=5ThrVsBDlc8Q7kNvwEMztAV&_nc_oc=AdqHtXXfY1PPvA0lOvUKKslPXzE9M7R_Wc3j-nB3BqEKh71MLXMKWenQf0ht3CgK2TQ&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQPDf1LA0K8EK7oJgpt99f13u3YpUHHH-GvJzdG4n5C9IQ&oe=6AC5D2FB",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/825761041_29313150791619022_1591244390257600684_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=xXsYsm4hVrMQ7kNvwGb0u-N&_nc_oc=AdrvEaMFGxJb7veK-ZwY8NnH1LyBP0QTmdDwj8nqGuRTyZx1qg9ICBq_tHdxvdtJXOc&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQPnF6KywXBFWbv2VKpyGqpU0fL2XIhsRrsG21eq-X8PVQ&oe=6AC5DE6B",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/830161286_1071983909043773_3862541788420194930_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=x3DBuan78PcQ7kNvwF_BrHI&_nc_oc=Adry0MvR8Wgq-RRJKeTf4Nnd4pMzdzqnfxDeX3EwiUSOnHETDlZNU7-DYx7Mi0o2D2w&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQNuCBXYBDIC2G8bKNM4X1WwbBetv-wX4KjiNkwXhNa1bg&oe=6AC5C9C2",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/835413444_1024412597308543_478120595688627391_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=E7acIb6CK4UQ7kNvwEYlxx0&_nc_oc=AdqBq1UQjnJT6lcD0czpK756OZTUczxhbCT9SVOnD92KNJMfEgLoGC1T0TqmdK0ixis&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQMjq1Fap4Uj6dkxWwqu44xNluwETDqT_Ox0zGLki_SE3w&oe=6AC5D049",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/825860668_1827471935339314_4923584614259134501_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=LWQkzcMxdQ0Q7kNvwG8iWm0&_nc_oc=AdqGcxzlwT6QFL6alodAbp5MSq5XGs0-VpzDX5Zob7mzHfV28iKBuk-IbQxIJnuao6c&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQONFU9zgZoJitxY6MGGM3vnqIYzg5Rr_7veJfCymHuhhA&oe=6AC5C1ED",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/833084219_5527683104123728_1250424161254074049_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=S9wWOiGzd9cQ7kNvwH_kE4i&_nc_oc=Adp8Kg2j1OjM8SjctjAx707hJ9wrbNBCoK_u_7tryHVSNIWIOCPErizzpSFOyZORZas&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=iEwnCuIKzxvOi4VprqioDA&_nc_ss=792a8&oh=00_AQOy7y-0_HYJ2QvP2RDWuhvX1UzD6kk74B2oc7abnaL-pw&oe=6AC5D87B"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.000 + condomínio R$ 599 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 2 banheiros Apartamento\n\nLuar do Atlântico Sul - Av. Brasil, 3590, Centro de Balneário Camboriú (próximo ao Carrefour), a cerca de 400 m da praia.\n\nApartamento amplo e bem distribuído, em uma das regiões mais práticas da cidade.\n\n✔ 87 m² privativos (129 m² total)\n✔ 2 dormitórios, sendo 1 suíte\n✔ 2 banheiros\n✔ Living confortável com sala de estar e jantar\n✔ Sacada com vista para a Av. Brasil\n✔ Móveis planejados\n✔ 1 vaga de garagem privativa\n\n💰 Aluguel: R$ 5.000,00\n🏢 Condomínio: R$ 599,00\n📄 IPTU: R$ 257,00/mês\n\nAgende sua visita!"
+  },
+  {
+   "chave": "F2152126839063576",
+   "id": "F2152126839063576",
+   "url": "https://www.facebook.com/marketplace/item/2152126839063576/",
+   "folhas": [
+    "018-a.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.84726-6/834722218_978408517873198_267130277444008130_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=106&ccb=1-7&_nc_sid=92e707&_nc_ohc=ZphdomJVJREQ7kNvwEDbJ9l&_nc_oc=AdpnU-q5pmE9sbOLli_JSY4srcrU5ZJmBaD1sIs5s7fGFuPfHcQa4aBVQAlSWxg2XRI&_nc_zt=14&_nc_ht=scontent-iad6-1.xx&_nc_gid=p16pX1_-J3NEp4Ldt04eGA&_nc_ss=792a8&oh=00_AQPZbkubYyH0gIIxRcJBYAj00NzVr-oWgY_U7vdmjmdZgA&oe=6AC5E5FF",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/830327387_1313568847418753_4633015827930548620_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=-yjHYRs5bFQQ7kNvwEJd5-1&_nc_oc=AdoWoThY0KHjirySWo1WZkU2RP0zT24uehHbgjeeBMuG6_-4piyzzR3ToaidYTgUM9A&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=p16pX1_-J3NEp4Ldt04eGA&_nc_ss=792a8&oh=00_AQPzCna6q5Lf_xQ2GDoAhXPUxpgWAhw_c7qrxOAJVmvCHQ&oe=6AC5E606",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/828258187_1421735962748024_4853700360100406089_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=7gMqNgwcY8QQ7kNvwEpltoz&_nc_oc=AdrNMJ6UPknJSSIubRJizpCjQe-n8tGml30cgjA_h5wixaYmcuQOA1Z4rSx1l1TsNvk&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=p16pX1_-J3NEp4Ldt04eGA&_nc_ss=792a8&oh=00_AQNeFiJ8bDdtL47vClPDX94v1FNzlTcM24Qz4Td_Y42iqA&oe=6AC5DF71",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/828020572_2727880234355013_4806371196181119784_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=rCohob08tyMQ7kNvwERf7XK&_nc_oc=AdoW_reSoRvZaQX_nbSI3q0mVTO2Km6HXbrGm8WIBIOLlP3NpyrXmrgPFupVlqnFymk&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=p16pX1_-J3NEp4Ldt04eGA&_nc_ss=792a8&oh=00_AQOeIupgU3-uUgHd8H-ziRBfaR5GcyvWRgsFbts_BwOiUQ&oe=6AC5C2C7",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/831326057_2587489581695924_821998705045729115_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=105&ccb=1-7&_nc_sid=247b10&_nc_ohc=Ugq1RyWPocQQ7kNvwFM7MFK&_nc_oc=Ado2EAg8G5uSRdPUHl_mkmI_HlJVPmHzZKx8Hc_6VhRcYAUxPKeHAq-KxDriT2RwGXo&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=p16pX1_-J3NEp4Ldt04eGA&_nc_ss=792a8&oh=00_AQPoLr99YSJWs9SZ_J_Jvt2CB570Enqf_cwzV6Q3cZQ9xA&oe=6AC5CA0A"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.000 + condomínio R$ 500 · 2 quartos · Centro, Balneário Camboriú · prédio Marajoara): 2 quartos 1 banheiro Apartamento\n\nApartamento de 2 dormitórios no Centro de Balneário Camboriú, a apenas 400 m da praia (5 min a pé) - Ed. Marajoara.\n\n✔ 81 m² privativos\n✔ 2 dormitórios + banheiro social\n✔ Cozinha com armários e despensa\n✔ Piso em porcelanato\n✔ Ponto de internet\n✔ 1 vaga de garagem\n\n💰 Aluguel: R$ 5.000,00\n🏢 Condomínio: aprox. R$ 500 a R$ 600\n\nAgende sua visita!"
+  },
+  {
+   "chave": "F1776371483648200",
+   "id": "F1776371483648200",
+   "url": "https://www.facebook.com/marketplace/item/1776371483648200/",
+   "folhas": [
+    "019-a.jpg",
+    "019-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.84726-6/820552822_4393205044327401_2076047618895554364_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=92e707&_nc_ohc=sOBGHaUBS0MQ7kNvwGyZaqs&_nc_oc=AdozgUvVLyQJJuQFPYbD_9wxNHKBZ_xLALh7yWewKP3xeKbekKZWaK3acz6lnM8m_4Q&_nc_zt=14&_nc_ht=scontent-iad3-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQMRtqkwzu3CMfcCnmiTwbjZ6kxA4KVBGfOkzOECTEwqRw&oe=6AC5C563",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/822310996_1408927248082137_6147301469255730407_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=k-6YM5SvA-cQ7kNvwG3xeo9&_nc_oc=Ado_pQPpW25D5pqvddL9q3iZJROsxfKOihd6IZLxC4V6EfAHb_TYZqLeLU2TNXoX7MA&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQM0CEy4ptjPdTiSgeN76WmzJx98L7hBNYt2fANtCoVtYw&oe=6AC5D881",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/825577330_1115856274130795_3136974892243751051_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=XPX-GTsHcc0Q7kNvwEhh8QC&_nc_oc=AdoffUyVtDGS2UKjJa47kPK72-yFHBw9rhqwiY12PTVT-ntjW0avbP1HfzNZ40_lBJU&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQNq3x5O4nKjtejqKtEfB56w7FLX5uLU5LDSFgXrcZmsPw&oe=6AC5EE57",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/823412746_2640596206357397_2223072601199568176_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=2DGMauYjU-cQ7kNvwF-SKeQ&_nc_oc=AdqFl-odu3WTzbOLAUvesQoc4dwW6VObYrlX3EvVh72PE3kaIps4stgpC2teXiAufi0&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQPNCQaUTGvYwVgYDRK0wx5Mdp95hFub5w520XRZYHMkBQ&oe=6AC5C5F1",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/823412746_1609821640461477_6952048180081954526_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=111&ccb=1-7&_nc_sid=247b10&_nc_ohc=KOW5wt4dhE4Q7kNvwHLab9T&_nc_oc=AdpjwR4HlzfZeGsI6uWjsWuzUsaIgqrifu36ilSJXfNycR5IQzz8qiswBOJf5OLNnZw&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQPNC1Ea_Ozd4zEH47iIN8Drr7PJBKriKwwvdwqqqJYshA&oe=6AC5BD29",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/825282918_1362037225699671_4534391949258201830_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=105&ccb=1-7&_nc_sid=247b10&_nc_ohc=xykZluzvAbIQ7kNvwHKWeAc&_nc_oc=Adrpo1SceFLC9lsaFu294jasw0QOD5bJN_s8RO_BjNrDUvpc14lLHpANeOo5OF8Xie0&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQN02wBsQ7D_-LI5ltuDAMukA4OfizV1JB5k9PkIC6Mfgg&oe=6AC5E23B",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/821470722_1163429442820455_3740346306339116528_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=ngNrO6bUqjwQ7kNvwFIuVMa&_nc_oc=AdoDqR9z_NWnPf196tuOr0UuMQWMiSRF2oDUtcFddM2brYqE9KlzfbXXl1A8xc5Ocyw&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQOYfMT3aDTx3XG0NQfbmmYW_sgHvY8s0R0eMvMD7V5Imw&oe=6AC5DEAF",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/823412720_1081449598070495_1971058431532171449_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=FPDppCu_AtgQ7kNvwG-yKZC&_nc_oc=AdqvNp60gFp8zX2wJUvaXonk55Z2iG_frS5Xnc_fizqqdzE-a2hIi0UGECuI10Icz3w&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQNaFTO11HOLCbjX_e4gMoa7omzxazDgLSNuGIj-4RCpkQ&oe=6AC5DC92",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/823872517_1735418814237311_1585683370050667196_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=IfDiyKBawE8Q7kNvwFNUdey&_nc_oc=Adr4LFVKb0BY8SRBCFqbb3Zo_fYPGyP1zCdQVlxNnI-yBQNtZE2vGC38vm8jNcjHfz8&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQMI5Ic7D61aSSZ_vM6nlE_iqdq99Jn3YaEON0Ec73p15w&oe=6AC5D6BA",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/821710384_962196173609551_4101252379749171392_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=tZwvjhfhQ2cQ7kNvwEi3fe3&_nc_oc=AdpWjC4lstddmJbBogE_WbInpCC4lHO3kI6dVssaEv7z850j-ubTt8DNiVD1qdgFWF4&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQO4pFHitMHbx4i1oYRWhfgXa2WceNMCMYP0KYUTuyLrUw&oe=6AC5E87A",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/821731177_1963218168415919_8305503734596011361_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=8X9iVzwYCoAQ7kNvwFTHKpD&_nc_oc=Adppo18U7Pli7gS5ubqBu3desMFt7K6atpmy6_xbJh2FUXtnTrjC61WpknHhth22L-8&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQNh1NVrW38dUPwozPKe9wlVFqtcjqcDLswY4yWMV0zkvg&oe=6AC5C274",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/823759892_1107516308890904_7804519192471452332_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=jOV2EC4zNsYQ7kNvwFfxyf7&_nc_oc=AdqDjQsr4DJuUDhIC2FMijTfhnZefo_JGjOdo_5Q7oaBApBxrJSsA-A7mvgR0cvW38s&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=pO-X4nHxG7aFEcMUDZWzcg&_nc_ss=792a8&oh=00_AQNCr5SQvME4cYvko0llEKBmAIyjisgTXHe6Adc-NyfdTw&oe=6AC5D788"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 · 2 quartos · Balneário Camboriú): Locação Anual Lindo apto 2 dormitórios laser completo\n\nLOCAÇÃO ANUAL EM  BALNEÁRIO CAMBORIÚ 🔥Quadra Mar \n✔️ 2 dormitórios  um suite \n✔️ cozinha /sala \n✔️ lazer Completo \n✔️  VAGA DE GARAGEN \nVALOR $ 6.000 INCLUSO TAXAS \n🏢 Excelente laser \n💰 R$ 6.000,00\nApto está todo automatizado. Se tiver Alexa, liga e desliga todos os aparelhos (TV, Ar, aparelho de som, celular) e luzes [que mudam de cor se quiser].\nCRECI 42570 João [hidden information]7"
+  },
+  {
+   "chave": "F2284040779108728",
+   "id": "F2284040779108728",
+   "url": "https://www.facebook.com/marketplace/item/2284040779108728/",
+   "folhas": [
+    "020-a.jpg",
+    "020-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/825266355_2365295370542144_2828477815891175021_n.jpg?stp=dst-jpg_tt6&cstp=mx947x2048&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=454cf4&_nc_ohc=5dyKKoF8vNYQ7kNvwFSOFqe&_nc_oc=AdrriZ3R4YD2Rk8nEGezYfX4GhvZ-HHllLAAMbc-Y0_LqpNWXr70HU8wMA02cZxbbQw&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQNPV_MXYYhMF8gmTl7keDKeQcYDdjLXLu8u5IA-XgKDLg&oe=6AC5E206",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/788487100_2339760906428924_3277665600230378954_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=BQd2Gr65TeoQ7kNvwHIsTf-&_nc_oc=AdqCEccSY1P0PPlm1z4GPYLxcrtHtNaAD8knaAHCIilSO46kgYoOJDSGKfJCeh95x1Y&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQNnyaZfFar6JZ3QxHMRmZLVOIc-eYNSpeS1r1NguLZ7Pw&oe=6AC5E446",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/788599052_2339760499762298_4377657884078448978_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=88yyBgEakC4Q7kNvwG2KQi9&_nc_oc=Adrn-UVL4EJqvNvwxq4Z9csq-WTnQucs-ayVsCH0fc-0_ZhfDqoWqCy5-g5e5VrNpfE&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQOt1l1T-ACpozNFFNDUMihOjRJB62VZsSEpCuZ65RT-Sw&oe=6AC5C3E0",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/787365888_2339760793095602_8161009829724197612_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=jlJUSb4yd1EQ7kNvwHLdnzG&_nc_oc=AdqxMeWAlGJGH7qmvo7cBXv7sAckKokROSZzxE2W_bn4xDI7kPG8Lvqo6NZ8UtBw0Dg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQNGecripd3N_tLgYStdQfy6krL512sx9ciAqSOJs1eNcg&oe=6AC5EAC0",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/788253264_2339760623095619_6915579137880052027_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=xPMBd8x8k9wQ7kNvwGwZCoY&_nc_oc=Adq-UO5qgjHyCFZtgNMAytzap8mgiJbiktOSXlYq-vFnU_mvChnmD-DqTfWFyfHhB2Q&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQN98xsrQVwNPkmqt4E_AkkuYhtuDNYG5VcaaqBD1uY1kA&oe=6AC5CE54",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/788008858_2339760863095595_8003201607247593471_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=Y9e2EuY4g4MQ7kNvwGimamy&_nc_oc=AdrcecXPXEGoNCp_2xgq03fzf1viHmqO-PjntyS0Xar-z-RMgsM3s0aWeFLG7O_Yea0&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQNLkSCit_b626R7wam_lrs81FZKOvc8oqnUhixAxn8ixQ&oe=6AC5D423",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/787406297_2339761019762246_2714600612644470900_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=bAH1z4uBCrsQ7kNvwFVMj3M&_nc_oc=AdpWGgRz5_idAUwrWY178NRKd1hjWUm31Ls_7e-AJ4nIqCbGBXHEBNKqTposeMW3ea0&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQPuK-rvhGLvhX-KmYYBaha0Afn5Q7tUrJsv5xU0GM7jiA&oe=6AC5D1D7",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/787406346_2339760963095585_7000735481925996463_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=pY7R7sKWkaYQ7kNvwFomUVc&_nc_oc=AdqBZE7ON7LHwnBXNV-Vzf8lcp-es0PvLvJzYcF16V5n5O9kxQbIfJ4VOhSdlTuEnT8&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQPU9ygKoWgwtTxhN06WjG3h7y2_dzIHlYVPtZTPNapYlQ&oe=6AC5C933",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/788487095_2339760596428955_7610637992320745129_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=vCSO3nWbaiAQ7kNvwFBEfds&_nc_oc=Ado9npBntxfvn-kVvfbx5qK6rI-ywVOvdThQ_PzEw-elWd3cwY7aYXxrbZQj79rLFUY&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQOCerqL7MRVjqPxWslkg02Jf-yvYEwzImE9stD3uKte2Q&oe=6AC5BD93",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/789863149_2339760833095598_961804399192618705_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=ktMs6LqL15YQ7kNvwH0KFuq&_nc_oc=AdoOvw97Rqm0yjoYTkHQ3ooUSRxVE7Mne6elfLXiZPvicmtVP5WExRKKWFym_Pj_sHI&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQOXUOf_-cFR51xfa1_cThbxZml66jDDhVYWFjnb0zuAdg&oe=6AC5C9FE",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/787850329_2339761049762243_177946916753760739_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=946e27&_nc_ohc=oWuPOMDGgOoQ7kNvwGs1uBY&_nc_oc=AdoQe59rBIsqybbjl2S5RaY_-NE2tv_SZm1Auyd0_p9kcWee9UcuZ28z7m9nYJsRjRU&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQMmLZIW3bvlNVe_9CK8fahbfmcyzNwzBTxhCuViwutwgg&oe=6AC5E7AE",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/789918926_2339760969762251_1627557146839323149_n.jpg?stp=dst-jpg_tt6&cstp=mx1153x2048&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=5ugljJhBVXwQ7kNvwEUIBoW&_nc_oc=AdqZrrk_hOFJP0MgXmEK7PS8uRLVnNMNLFMLjk5jy8JtRzOuizOxuvRRlf4eulB1LWI&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=FH9wswN9rIBMCQwt-Luc9Q&_nc_ss=792a8&oh=00_AQNa7groK1AK2H6OhR0XWImVch-FyNLKpfFfpF--w9CROw&oe=6AC5E58D"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 · 2 quartos · Praia Brava, Itajaí): 2 quartos 1 banheiro – Apartamento\n\nALUGA-SE ANUAL | PRAIA BRAVA – ITAJAÍ/SC\n Vista mar \n🏡 Detalhes do imóvel:\n• 70 m² privativos\n• 02 dormitórios\n• Sala para dois ambientes\n• Cozinha\n• Área de serviço\n• 01 banheiro \n\n🏢 Condomínio com lazer completo:\n✔️ 3 piscinas (incluindo raia de 25m e borda infinita)\n✔️ Quiosques com churrasqueira\n✔️ Academia\n✔️ Sauna\n✔️ Salão de festas\n✔️ Sala de jogos\n✔️ Playground\n✔️ Horta coletiva\n✔️ Lavanderia pay per use\n✔️ Ampla área verde\n\n💰 Valores:\n• R$ 6.000– Aluguel / condomínio e IPTU incluso \n➕ Consumos e seguro fiança à parte\n\n📲 Agende sua visita pelo WhatsApp:\n📞 (47) 99612-6215\n👉 https://wa.me/5547996126215\n\n👔 Luciano Alles – Gestor Imobiliário\nCRECI/SC 31.262\n\n⚠️ Exija CRECI. Segurança na locação!"
+  },
+  {
+   "chave": "F1416109990478788",
+   "id": "F1416109990478788",
+   "url": "https://www.facebook.com/marketplace/item/1416109990478788/",
+   "folhas": [
+    "021-a.jpg",
+    "021-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.84726-6/778985219_2246044305938492_2515538082469499795_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=92e707&_nc_ohc=ZOujK62YBu0Q7kNvwFHgSas&_nc_oc=AdpjcTf6yPplC8lMXxBOf4nTSQ8S12CbrLryzc0WVTlH1aU_bBrXx5BVIfkj52o8Q3M&_nc_zt=14&_nc_ht=scontent-iad3-1.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQOwtHMnt2EYKBmrvXKKbAT9loTr_BAvt5RCg-3nR7XUaA&oe=6AC5DA05",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/785147227_1423400282975851_5559776944391375014_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=QuZVKvJdjVYQ7kNvwHD1KG8&_nc_oc=AdpQtwhnNkkEovXjNPU1NlqS2nYN-ei-yARGavgMOcZLnay-hjUDKrnYV8tOHImcLNQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQN1ORRlD6YWE3-Lxyt5JO8PdhBQfu1RFo3DlkfeYD8Jtg&oe=6AC5CB35",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/784155250_2545280449218425_1038087652339516572_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=yGMo8Jg1ojsQ7kNvwG8FpMu&_nc_oc=Adov3__aXoBPhMkk4z0d4vLhryqNUXTBNFgDXf3gVXZ1ZhzFzWDeFhHAcQKSRgle-rQ&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQMHijv4BhYbDMIPlYR2EWO2l1OyDhdSWTNA9j1fIk7G8A&oe=6AC5E3FB",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/786423531_1078437917913308_7912144378246668599_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=iutMb1e74p4Q7kNvwGuTXpB&_nc_oc=Adqjn5W14j1KDmQX7JIvn8cloqbCKYYXY9BDqKYlSU13SamDf2f8cbOdOBwy0DnFKjI&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQOeTaGzkbgOiz33Fk9NGhJbEdDM2nNlY9PvpNOtxzu13A&oe=6AC5BF07",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/784734976_970318235784197_2313302930753590502_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=QmSkDoLQEc0Q7kNvwE9Ri_q&_nc_oc=AdpMRL-YJHQbGEnc0hBD8aokd39cTGKS5jQK1Q_tTmNwYm-S-_TNw0YO1XWoW4ij92k&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQM5wo8pf315rCrVTGwdsave4lSJutZfCgxstLbfEbb_ZA&oe=6AC5D71E",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/784251986_2069813336961269_2898994841084889720_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=apZI8B_jaqUQ7kNvwHwsxuR&_nc_oc=AdoixI9NzqcgyRwpo6MNX6V4fqb4qWw8c1OCrz_jbh66QCByEF2Kl2WFL1-SyXZKVT4&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQPNp898OOsoqi78lTHV_j6lQFeuokomZm0F_fxAA1ackQ&oe=6AC5C5BF",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/784491473_1613366103836457_8440650972755187641_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=aXTVMRo8pAYQ7kNvwEaHKjx&_nc_oc=AdplePrCfzLATeMMCak3sGvVM2qYTMrLez5bev5uQhSIPLGCtxidXu6B_A8O-bT1ouI&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQNyZyRGruOmvj_6wNhJrP8tkwYQNMhTf2tfRLqHvQQyQw&oe=6AC5BDF1",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/784519185_1612726117121597_2692566307580241561_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=eyf5LtKGz0QQ7kNvwEg7Lkp&_nc_oc=AdqsoTkR6e6cGCb4u7nj6U8WiA6ioUKCTtLYn8Eiz8UEuqA-DgbtZVxwWFdKLPYKWZQ&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQNoL6F90M4Vpu4j2j29KuQ3RMONQwANW1K_u0L-DOhlVA&oe=6AC5D04F",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/784507574_1074476358395700_8881180739887986511_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=4xQmdqQSoiIQ7kNvwGxOhMf&_nc_oc=Adq73Idz5BNX0cnZx4UqDtp_dYyLm5BADUnDPj3uMHLMk1R5lc6ON-dUYPxPiJkluVo&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=1i2i6BKh51TInaL1GDr4lg&_nc_ss=792a8&oh=00_AQP28gX-katv1voEmptoW9IE9ZR9IQCzgDkzm_8fslTAog&oe=6AC5D61C"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Praia Brava, Itajaí): 2 quartos 1 banheiro Apartamento\n\nImóvel disponível para locação Praia Brava \n2 dormitórios \nliving \nárea gourmet \nmobiliado "
+  },
+  {
+   "chave": "F2554005948393552",
+   "id": "F2554005948393552",
+   "url": "https://www.facebook.com/marketplace/item/2554005948393552/",
+   "folhas": [
+    "022-a.jpg",
+    "022-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.99422-6/833172068_1619702719901212_6378135415333796682_n.png?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=454cf4&_nc_ohc=c3pJUiwJNwUQ7kNvwEPNzY3&_nc_oc=AdpAQmrAucpe1FapDLfXHhnxKh7p6MLAmnEqUkeiVtWFJbIyhL44Dd-Gu4K65aq1WyI&_nc_zt=14&_nc_ht=scontent-iad6-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQNySYEOwtgRl71IAiPvZdh1Cacz6IeAMFbFaobySAqZMA&oe=6AC5C696",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/825328555_28603359532655051_4589587252083075993_n.jpg?stp=dst-jpg_tt6&cstp=mx947x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=OsUX58Vx83EQ7kNvwEtPTtY&_nc_oc=AdoLLJ8qZHbIbPwYoU932pSMzXP8pgU6p07MCp_3_jMwcWjvZEVwdmQlPQJyRzX7CK0&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQO2Fa2vIwP6jfux1iSpe1QzRf81OQ5vAfwRLnj5dbY9Xw&oe=6AC5DDB7",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/825286536_28603359485988389_3594884873599721601_n.jpg?stp=dst-jpg_tt6&cstp=mx947x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=pDmYCwq6gSIQ7kNvwG0WEmt&_nc_oc=AdpsllhjvudqB_SHnipwdiBO7T2HCg7LOC8_0yQ6kdJCFCOLobpASlPQ1UP-6mNEhdw&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQN0HMm4gcob4VrXU83nhFxxd2HEkCm8jkHkswanXo6izA&oe=6AC5E5E2",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/825328500_28603358602655144_8414532097944909872_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=WHtfUkPGgPwQ7kNvwEEC5IC&_nc_oc=Adot0TIrpNCRBU6vLwaH9WZb5E-5S_G2gHkYhCTh8faCaN6IsForEKXdVqVGQathWr4&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQNtF7AdcuPyvX6QyqopJD58lawsBPg-n2lhPmL_6AMJHw&oe=6AC5E4A1",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/825328746_28603359392655065_4574800239619453813_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=Ozu_l00Qlb4Q7kNvwEjpdCN&_nc_oc=AdpjGC_rWEmJ0Hp1lPfoeJC3SxYRMRgq4AEezOm_MFixaT8-SxwIZAAo90IbPejszh0&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQMhnQzBGYR0A7Xu-1I6adX23w19YjwVSl_3YrtgNEgd6w&oe=6AC5C57B",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/830351409_28603359619321709_4169227424924458633_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=946e27&_nc_ohc=g3OuE-OqZKAQ7kNvwHZG7WR&_nc_oc=AdqtoBAp1jRWkfD6rPlg0r8-Cx5LtsKeelDoVOi8wpxXcB8S9L3H5WMcKR8a_KHWtAs&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQOUiXGF_a5kRUdac009SGGGCQX363tFdnFNoqU6zke_Mg&oe=6AC5D40C",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/825286305_28603359435988394_1092770059075646604_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=tQm13PUNzPQQ7kNvwG_qN9b&_nc_oc=Adq9MZVtQUrBU3rHcNsZjhbZ7NWvdMtXmixYULyQxIOi3u4Dcxa8MYd05CyZlpNFeXc&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQMBQ-c-_H1YZPgQ3JmCgtRaa7cThS5X5yHYhGyheMRofQ&oe=6AC5F30C",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/825286396_28603358555988482_1925659254140817570_n.jpg?stp=dst-jpg_tt6&cstp=mx1537x2048&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=RMvpOePpGs0Q7kNvwG9vJux&_nc_oc=AdrHRNkh2HyPQ8sSQit8ZOFBccB0rv_NX8tNZugMMY0ivZvQhGlTGUH_pqcN5g0ynzg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQNzEyrfE33aM0gDovKbCtnse81owpjVpd1XN24kYtUIEg&oe=6AC5EC84",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/825600264_28603359579321713_1599684887631261318_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=R5LiZ3hzCuYQ7kNvwH0LlsH&_nc_oc=AdpjUQxzagYfZcQ18aoQJ5PRj5IkKqKrpVEh0iGGMc9vSkgcZj1cwvNjNceDdD3oa8o&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQNg2NtvQhCQSCl_VPjEcaXlaWo9zqMwULw4KBMDAEkhdw&oe=6AC5C64E",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/833882771_28603358649321806_1498242194868194239_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=8rGuNKb1sBsQ7kNvwENzbD6&_nc_oc=AdqQKT0UCw1Olidqq6WckH711kZexQcE65TM3bJaIV-ZRHO69ZY5Hh-pxrIxrdlEVgQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQPH3qNLmMbSM4uLcy7nRYajOJE_959qhtmW7iLag03t9g&oe=6AC5CDDA",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/825328320_28603359419321729_955135061522754778_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=GyYKMeJbKm8Q7kNvwFfefgz&_nc_oc=AdrYd-AWWLDdIWUt-2v8E3sLAXrsR_-rcjConPgMuC6DWrEURV77EPMjljFjq-JoCqg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQM6w27cxYhGxNlPhpjABWuEif7CGxnHgbcd1PtfiKUA7Q&oe=6AC5D185",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/829123684_28603359535988384_90717080327813307_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1537&ctp=s960x960&_nc_cat=101&ccb=1-7&_nc_sid=946e27&_nc_ohc=jFtLdT_eosQQ7kNvwF96y3s&_nc_oc=AdqmcPWAtNbFIYQAufdGgMy1uyc3EG9buadD7ukyAIjuBW7iIkYKdgDqIy0IUYv0Gac&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=OuXArYdzpre_-YyH3aWFZA&_nc_ss=792a8&oh=00_AQMW0UNpHAkXo5ttWRtgtLvQMK0n9MciaohkBI3-Lc1MTg&oe=6AC5BCEA"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.700 · 2 quartos · Balneário Camboriú): 2 quartos 2 banheiros – Apartamento\n\nApartamento novo para locação anual.\nCentro, próximo da Av Central e prefeitura.\nApartamento novo e moderno com ar condicionado em todos os ambientes.\nSacada com churrasqueira a carvão.\n2 dormitórios sendo 1 suite.\nMobiliado. Com guarda roupa planejado.\n1 vaga de garagem privativa.\nPrédio novo e moderno com salão de festa gourmet, academia completa e salão de festa, box de praia e carregador para carros híbridos.\nElevador.\n\nR$5.700 incluso aluguel, condomínio, IPTU e ambiental.\nCritério pra locação: Seguro fiança. \n\nAgende uma visita. [hidden information]  \n"
+  },
+  {
+   "chave": "F2181476446116849",
+   "id": "F2181476446116849",
+   "url": "https://www.facebook.com/marketplace/item/2181476446116849/",
+   "folhas": [
+    "023-a.jpg",
+    "023-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.84726-6/793090651_1835504657878610_8280137989351207521_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=105&ccb=1-7&_nc_sid=92e707&_nc_ohc=m77WZEa59iAQ7kNvwEb-rxM&_nc_oc=Adp2fTlJLgAGt7Jyqfe7PY4R4FPvzDA8cui5LfZTB2euKWcouujdamLSbOVgxlEPQsQ&_nc_zt=14&_nc_ht=scontent-iad3-2.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQPAnblmliX9xEK2oUfv2dAXm9lmzz2qD81NPe1YPW3hDw&oe=6AC5D3BA",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/793417151_970580736068038_8180925613741555328_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=tX_QU3iNgoIQ7kNvwED7aS8&_nc_oc=Adq-FnhzHHnAy-N0dZS9hskhAmDzEfHTxiWoe5Z99x2LgQhTCvmLc4XHZnwpfaxj6X8&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQOOrF4iIoX10gNVXD09fdysmxwExFUHwXhWl0Bjo6TC4A&oe=6AC5E951",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/793597477_1042677098754791_8310697428458171819_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=111&ccb=1-7&_nc_sid=247b10&_nc_ohc=syHluoy1eikQ7kNvwGczZ_M&_nc_oc=AdqgYKfWL18GwWjivX7G9vekPbapT_KBMyIhDZztE4mBW5uAF-QZUDfq-eZTrFqRxwQ&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQOL3bkPgJAkv_DXhEKVqMUnuGpoH0M3pPVdmmjKrpzSDg&oe=6AC5EA2B",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/794176642_2273840393462682_8972765044680155736_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=5bYrJ1pMwcwQ7kNvwEig79V&_nc_oc=Adq2lFL1YRgcc-phSLCrO29d-ZJ2_SC9QHDrxIqph1mkuZ3oHyU3n9un0rUBWi1WZAc&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQPt2qrIouEq2Fm3WZEJs_87OJPfX7mTkjSYv98rC7iwog&oe=6AC5D6AD",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/793458034_1112370708023269_3083544756542018394_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=66CeO9RDt04Q7kNvwE-RyBC&_nc_oc=Adq4KD-x02VtskyKQYlI-g0vge10n1rDTysFd_CQ7kYnJgzozwdCpDNOdfNpdH2C0iA&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQNQoIb6oeIPQCRgFe-yUslEzdJdgvO8Q1i6x95EbKRtXQ&oe=6AC5C8D7",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/793457995_2082246422678595_607992645484120007_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=DGDirhhZ4_0Q7kNvwHqB8rF&_nc_oc=AdqLRTiWR-Wojf4d5WGdGul5OwjDNwUq6srzL1Cqm35tLOS82eN2GiFM7AEXdjrElns&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQNho9r-9s1OxBbZaqZNOZnjpgGqYnyXsTwRc2IZ0D01_g&oe=6AC5E4F2",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/793457987_28227671686866979_438573102842143293_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=105&ccb=1-7&_nc_sid=247b10&_nc_ohc=5zpPSi8if88Q7kNvwEeyhAm&_nc_oc=AdrxHul8pisLIP_MaaR8FGLqNDF8NmQMVIing2sdCE62rJSumT-8Znf8cDSnmR5koBo&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQMB2zL18rydmoKYA9fgGYpqKpBDG4Y6en5gJ7B6gNhmsA&oe=6AC5CDB8",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/794144860_1736498667403379_4329050657579917626_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=f9kXvdK8AewQ7kNvwFwPZgy&_nc_oc=Ado0pzAZPkhkxKmKZ9RO9Gt2otOHz5CuduYRxPnEXjEJ4Nk-dt8AegUd_n3sjBpAEDc&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQODbJsTxXu90cYjmcUaCXOYYAQlgYWLXq85k2_IvuSXgg&oe=6AC5EE26",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/792407132_1929916304652334_1185453097530936503_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=ggTJUzSlsykQ7kNvwFttgib&_nc_oc=AdrxHakwcGT1Ptfn234sxptkLiaD4q9k_k-tlP4teaUiyPk9NYuONE3bJgYI89HOsmg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQOAu8N1TR60bW8cEmPHQtfWCaoF_c2foshSmLfa2oco_w&oe=6AC5F0A2",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/793457986_1053759380792161_8955419757255039717_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=100&ccb=1-7&_nc_sid=247b10&_nc_ohc=OVEgdMV0T0UQ7kNvwG-7c4U&_nc_oc=AdpOzsaaL0CohthpR3xRuQDgYOtYP-c9eBePpkSsLswBpA3UXURPUsfvhxWetZgu95U&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQMym8_G_RHiM_4vPcj12EapaBjVXA_scZOtj7p-rCHDbg&oe=6AC5C0F8",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/793507113_28053528670982617_5457673586667833134_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=BYICclK4yOcQ7kNvwHb9Is2&_nc_oc=Adr6ir4_2W--GFvUf-uggzlVhTpgItLubOnrcSamx16Ys7sfrGqPcoHx2E_U0bJY1MA&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQPToNt8xsa2niEPetCOfg4lyXixK_ymqhgSPZIWJL6PaA&oe=6AC5E3B6",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/792407132_1788775392567642_2452707680011207228_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=g-SetmdPbNAQ7kNvwEecvAU&_nc_oc=Adpb5va0NwTHF1OjmKqilcaCV-9UhDd-0iVqVU-ACopkvQGvVc5ugzwkSCO-PSAtVUI&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=ShEDWr4W25KQ8QwI3NE3mg&_nc_ss=792a8&oh=00_AQM-d8Lpi_yBIO8gP70Xb4iJcAYXvUtkJ8wZ82ab1k51SA&oe=6AC5D105"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.900 + condomínio R$ 800 · 2 quartos · Praia Brava, Itajaí): 2 quartos 2 banheiros Apartamento\n\nAPARATAMENTO NA - PRAIA BRAVA, ITAJAÍ NOVO\n \nCom 84 m² privativos, o imóvel oferece ambientes modernos, funcionais e totalmente mobiliados, proporcionando conforto e praticidade para o dia a dia.\n\n2 suítes\nLavabo\nSala de estar e jantar integradas\nSacada com churrasqueira\nCozinha planejada\nTotalmente mobiliado\n2 vagas de garagem\n \n\nConta com uma completa estrutura de lazer em estilo Home Club, ideal para toda a família, com diversas opções de entretenimento, bem-estar e convivência.\n\nValores:\n\nValor do aluguel: R$ 5.900,00\nCondomínio: R$ 800,00\nIPTU: R$ 105,00"
+  },
+  {
+   "chave": "F1411298674423605",
+   "id": "F1411298674423605",
+   "url": "https://www.facebook.com/marketplace/item/1411298674423605/",
+   "folhas": [
+    "024-a.jpg",
+    "024-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.84726-6/831013659_971015782026028_6857093218033598583_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=102&ccb=1-7&_nc_sid=92e707&_nc_ohc=OJ75HSwxMawQ7kNvwG75m27&_nc_oc=AdpTPgxTR3OsoTPyRBIyhtk1QJ9c26ZIrkuMwsnpPoTMpmSF2__w6jGTBq7odB7KQEQ&_nc_zt=14&_nc_ht=scontent-iad6-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQMdPvLjbpT-Bfso-T_9Uh20bhErQVhRTJ1sZxr-0kgnJQ&oe=6AC59C7E",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825269291_1595968855346239_5505531048118312857_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=pcYwDOY6J_MQ7kNvwGjqYlR&_nc_oc=Adp2xhA16vcOpMXsQhG88KzZCOHrzb4tfsWfY3r0x3To0yDNjg6roFwjCKxt0ObMSSI&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQPPhXwFyaBK318Z6UsAvNjc839pFc1uh3ryrlRm29exQg&oe=6AC59C21",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/830233075_28554036317562314_7408830935178220854_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=SOZzWLNGME8Q7kNvwEy1AqQ&_nc_oc=Adqz8XKRKDMn0JV24jg6JulzCkHdJJPW7GofvLN184seecsVWXfr5nJgGATch1Ty4qg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQPaldTBZeHnv5MqsjeXjoUpeTih1s2NeNZ3rZ5Mi62P5g&oe=6AC5CBEC",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825270783_1124456846581180_6026925244467292403_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=f7MAGYRetI0Q7kNvwEd1yZO&_nc_oc=Ado1Gqa3ZBdGo27V_0QJYRdygLeZomrE8xMjDHXBW4iLCIB9ucgesdHYqTWbYXGJWlY&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQOT9sdAO4ROvpgwl11gl7UmWY7sLYw-IEfyIt30VcxiEQ&oe=6AC5BD28",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825269229_4542758409277710_3552142703122650052_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=olXDJA_UFRcQ7kNvwFYXUHx&_nc_oc=AdqdATGgRfKmNahcNgANrBd54HnLYTlqI4b1gDLeNS5vlVIYo2RQQfjve7nMu9Yanzc&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQN0bU-fwR86G-lhPJ7Ovmjc2EL6vZlB2yCWM3LvfNwb-g&oe=6AC59DC6",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/833040030_2578709949301501_4920078453939980443_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=XMKMjfRn8wQQ7kNvwGdFiDg&_nc_oc=AdqQ_fxxvdCe45W2Q58OUSVn70pDjDKN9qEiq-vSDusTp-SQSC3rg_4ZGxL5_Oq10Aw&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQP854Z4HTmozB6eJeci7TsbRZt5UlYhFq5sWiDrwbXzcA&oe=6AC5C05D",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825270810_2953272131671882_6728588236678114205_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=tY8Q5rtA3BMQ7kNvwHipCu3&_nc_oc=AdpQaNKw1o9dK-IQ5obCJL53SaXS_PS7hGTa1mztng28GBf2FIWqXiMnO3Fesvpr4TM&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQM4g0OPGBfdTcxkp7dSU-Toonty7c4sLc9oYx2jsps6RA&oe=6AC5ADCA",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825270878_1410847323808876_6887221666182776040_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=vO3smj9tDFoQ7kNvwH5OKU5&_nc_oc=AdqUXdZRsJEQf_pFZq9hvvA_L21Tzxc3UBf_eJQo41U7vZqmyegpijYGfAbDo4bpm1A&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQPHRYDQF8XjPMkhQ2nWiIm0spmLpvexHARBgW3RNUYf4g&oe=6AC5B3AE",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/832590743_28672255425743567_7133519592458856130_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=x49m_A26zroQ7kNvwGlQK-m&_nc_oc=AdrN7rsoHtQpvgg0b9bslQ1ns9mgUfZZB7O03xPJh0MMSssbzX0-eHGg03b-ATxzcBE&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQPe221mMt6PISfTKyU5BctBDmCmMR-vwuf088MlhpoRaw&oe=6AC5B4DD",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/831155548_2023837314948595_7382270790439302456_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=105&ccb=1-7&_nc_sid=247b10&_nc_ohc=JIlIkX6KLAgQ7kNvwGcVWz8&_nc_oc=AdpD2gK9KycrJjalVDhCIe_Jr8UaKdS7_vI0eDvgc0BxCO4TbxVspYBuZaQ9NCBsBsE&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQPMQ6ra7QDfm4Q5jVdPwlNQOZnJiZPkJ9vzKhrhfHFqzg&oe=6AC5BDF7",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/825269103_1849512993083022_5891522632409029548_n.jpg?stp=dst-jpg_p180x540_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=MwqseJJG7pUQ7kNvwFFJ3p4&_nc_oc=AdpH0D-PLZuJiKgvnA94LNi5vRYgK7cntHncc2wPdffCDCFQAH749NL2mLPwcvfev5M&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQNJZsAfRvJFJpGJxKrV3zjWnHw_z1hPpVS6edamsKG78A&oe=6AC5B935",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/831135342_1552380423599993_1134511901959743621_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=105&ccb=1-7&_nc_sid=247b10&_nc_ohc=zBO12gvGpD0Q7kNvwG8-Ehr&_nc_oc=Adpq5jxHO3lIKiaAwUCmbslgA6hsGu4Bi5HD1k7b2zLv_L9L0K_NwKG03pUmwsdYaKg&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=q6_T_TSDmeGBdXv0itSWOg&_nc_ss=792a8&oh=00_AQMDYcO16mHAbzlQMPrlEGA58ZvDAAu_fwkFEWPlohEnzQ&oe=6AC5B582"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 1 banheiro Apartamento\n\nApartamento para LOCAÇÃO na Barra Sul em Balneário Camboriú/SC\nLocação por Seguro Fiança!\n\nValor R$ 4.500,00 (incluso condomínio) +IPTU, + Consumos (Água, Energia Elétrica e Gás) + Seguro incêndio anual + Lixo + taxas\n\n- 02 dormitórios \n- Cozinha planejada com bancada \n- Mobiliado \n- Banheiro social\n- 01 vaga de garagem\n- Edifício com portaria\n- 02 elevadores\n- Salão de festas\n"
+  },
+  {
+   "chave": "F2126478001276348",
+   "id": "F2126478001276348",
+   "url": "https://www.facebook.com/marketplace/item/2126478001276348/",
+   "folhas": [
+    "025-a.jpg",
+    "025-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/828910817_28717777977915011_678774238440119871_n.jpg?stp=dst-jpg_tt6&cstp=mx780x624&ctp=s780x624&_nc_cat=101&ccb=1-7&_nc_sid=454cf4&_nc_ohc=N1oaytN5mIMQ7kNvwFSVm65&_nc_oc=Adr3BdQ3fEg5I3cL_Opn3kttDgHCWfq0RRFw6hXh4rXyD71Wv43Kt-es6RwRxkmrxqk&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQNTk5R_LwYOW7ZDCT8cOivMV5ExIj5ObpP7BBwBSuujqw&oe=6AC5B47B",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/825267443_28717696181256524_8508770572932643001_n.jpg?stp=dst-jpg_tt6&cstp=mx1280x960&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=CqrWGVDvB6YQ7kNvwGnyo8_&_nc_oc=Adq_QDXvz_-_BBpwDbVRKyuaepr_u91oGA3LG3OgpqySsL6JpUUgeOhIaZvbIZwOt0Q&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQOhE4r3znNPY5L0ZxM7ajOKTxnnN4dTuQlNbbjEcz0RZA&oe=6AC5CE68",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/834948217_28717696227923186_4390935502730817669_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=YaEsQwy0R4AQ7kNvwG8E7q_&_nc_oc=AdqetwsV2GJcldp-gZDYtcKffbod5DunBA9zbKrRYT_jnatikW2YEmumhrxki5G1It4&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQPH0zMrFnHaYFTJEIbhtNAi_Nxk5zi2gjKN205qUbSF6A&oe=6AC5CB1B",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/830968568_28717696357923173_9166932619806820808_n.jpg?stp=dst-jpg_tt6&cstp=mx936x624&ctp=s936x624&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=ooYdcXK9fYUQ7kNvwH-e0Pf&_nc_oc=AdqnFbmqdwTbEvx6vmZwuiO3uw9OjUmcG6Rsae_yPwe4WQE3il3-tet4FxNFdNe6P7M&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQODn8DbMTIqGCLRe5B5nuvkzKjJX3agiEa68C3Cmmc2Zg&oe=6AC5A496",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/830873397_28717696434589832_4017355009367639116_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=946e27&_nc_ohc=asNvxQtc33oQ7kNvwEDBcLc&_nc_oc=AdrGXq3BG_RuwPxsP_vep7EQioSvRcX4qfLQ_xSM1iLDA02P0Ej1w3K-I80PbJtBGGg&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQPhcDgskT4C-hTrkeJNiu2i27DU1xcqtIoabhmv3-2Xyw&oe=6AC5BEBC",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/830513824_28717696541256488_4980888953151069509_n.jpg?stp=dst-jpg_tt6&cstp=mx936x624&ctp=s936x624&_nc_cat=101&ccb=1-7&_nc_sid=946e27&_nc_ohc=JnGl-xXGAw4Q7kNvwEwP0EE&_nc_oc=AdpIFK0U01yeOKyWSgJf9Co1GceY01PD_C6JVDf6dTzhL9sLXBttixIi66kj-uOboOk&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQNawO5w59dMEJJnX_xlQssDNoInDIlMMXrrR7GIUsLHCg&oe=6AC5D28C",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/832634800_28717696687923140_1438811924968594407_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=9BqdOmt7_EwQ7kNvwHpY5iF&_nc_oc=AdqTBCgKuoBmTFA2pOF5c2o64VZ91d3BrXovBWwcpqJS3rpNmvn3xB8NOHULC9Vetdk&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQMaAK1PaNZUbjNLCtG_A3I6-lk_qtjNv9Ivc4_HbQLOCg&oe=6AC5C767",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/831455666_28717696777923131_8494793635250723262_n.jpg?stp=dst-jpg_tt6&cstp=mx1280x960&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=MDR8cdCTgLAQ7kNvwEfuaKS&_nc_oc=AdqzOOOVRi2oZI0nPcktdvYvv18gfuOhIEs67Bf7S1gHoizM2pX-0p5na4Cs2dGVsgI&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQMx4Cg-35whixsEllQczdyvHI0XJwcSYesFuR9d0mbLUQ&oe=6AC5AE3A",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/831195413_28717696874589788_1148634897043741887_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=C9E098j9WQIQ7kNvwFH73RJ&_nc_oc=AdodGM3gQYPeZjDMS3oYR0n9H-MgsflEpTPk51L7pv_Ev-m8fyYc-KHtLFm9P4pI_Pg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQPcLlPVR8Zn1oKdPnPvq1H6OB1QvI6VfI7lez3DrhS8tw&oe=6AC5C685",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/833262311_28717696984589777_3145606444807684353_n.jpg?stp=dst-jpg_tt6&cstp=mx936x624&ctp=s936x624&_nc_cat=103&ccb=1-7&_nc_sid=946e27&_nc_ohc=FWh65kZGWHsQ7kNvwGUXidl&_nc_oc=AdpYn3GU7gWhum5TTMBVrrzQrz8XUWxmgLtfOOLttVlW-Aci_hLShSMrB2kg9LQjjkk&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQN8PO3UDb6qtal5MU9dXUujhtDWwz83ysvXsr505SJQpA&oe=6AC5A81B",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/832514891_28717697044589771_4752137344860158174_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=QSb8SnTNG3gQ7kNvwGt0huV&_nc_oc=AdoRHG51xlVByrMkZX_bc5yvIWGUFK41UN6gtGvU30g3bA36Vyz5kJwvE2hXsU8J-RE&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQP5-bSpchAXDwThjtrsz3rnKc2kehD0PlKHAPYF83M7Xw&oe=6AC5C5DA",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/832780048_28717697227923086_6560397535980553652_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=kjrEVIol6DIQ7kNvwGayI8A&_nc_oc=AdpXko8t7LJm86CftwHPx80kcyFVeajwO6dOyz1kRM_-eCdfuIQQnCh4E6j6EutzBIY&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=qz1cZ9LJlE9ZjGQBQ_mrwg&_nc_ss=792a8&oh=00_AQO7YBzHBjFYHtwvxcSXQVnXjpe1iJ2nmFRKZWyLzBGACQ&oe=6AC5A7EB"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.500 · 2 quartos · São Francisco, Camboriú · prédio Alameda Provence): 2 quartos 3 banheiros – Apartamento\n\nCamboriu - Bairro São Francisco \n2 suites \n1 vaga \nEdifício Alameda Provençe\nÁrea lazer \nSalão festa \nAcademia \nPiscina\n\n5500 já com condomínio e IPTU. \nPaga a mais somente os consumos"
+  },
+  {
+   "chave": "F1761619225072908",
+   "id": "F1761619225072908",
+   "url": "https://www.facebook.com/marketplace/item/1761619225072908/",
+   "folhas": [
+    "026-a.jpg",
+    "026-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.84726-6/831962997_1815530149466989_437515131153302650_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=101&ccb=1-7&_nc_sid=92e707&_nc_ohc=xNlq47xd1xEQ7kNvwGhQSxi&_nc_oc=AdqvIM_6WeyDmTCUVCqfKMG6hDVEwVAaZOFJC5RQSEGlolPGeHSbAoNrIrUBb2fBdCs&_nc_zt=14&_nc_ht=scontent-iad3-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQNllrgHdtcefqnhiSaPRj14qYjgVCskJeNiptkrmV6yaw&oe=6AC5BE88",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/832898221_1092593046713489_7351798072560980443_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=M7BA8Cae8oIQ7kNvwEBHRdX&_nc_oc=Adq8IT_WYtVKdmuyuxQnzP68nGs7PIrJPj_oL6CZfx_q0P0FsFxxIPnVfwc9yy-Qjzo&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQMKWVXxg4gCSagt2dkgMcByTkWqlar3usCzpVFB59UT0w&oe=6AC5B37E",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/825269224_2267447150702972_8913474496003481457_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=111&ccb=1-7&_nc_sid=247b10&_nc_ohc=w9GOJo7VUl4Q7kNvwHli27v&_nc_oc=AdpNp6enVfMSC8694OOu1_gR7P2r7pHdV7rZurIbdF5LubjB0lGvRjTYMrtQTPFAdfY&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQPM_Nm1s4EdyCAKZck2Zzv69Qq9J_yNCjAurOwlDncDJA&oe=6AC5D289",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/832679129_4443360452647384_6241891761151878140_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=QnL97NxtVUkQ7kNvwHe4xYG&_nc_oc=AdqUEEfznqv8AKX61XMvHpGFzepOY-i9fw2oXOeVMRGXuMyOogd_0D_8RInAK50t6Ps&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQNUIJfB7LLRSfccWt-6w8xqrgBbiQc-jySd5IHBbW1dyg&oe=6AC5C6F3",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/834251513_1622055686224247_3469487223263258518_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=108&ccb=1-7&_nc_sid=247b10&_nc_ohc=38bKSblIIRUQ7kNvwHyMFSm&_nc_oc=Adr9s-cNWZLPGQAvx2ITxHAbm-MddNCm1iP6DWmMlel0YgEN-I3t7jxP2UoE3gImYGw&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQN-uox7SqQoBYl4BBTl01XQTmiVyUZkvx7kTDmgOx1VtA&oe=6AC5AF19",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/830988317_2166529400605761_6345684717163082535_n.jpg?stp=dst-jpg_p720x720_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=1_tgAxutdfwQ7kNvwEfivEA&_nc_oc=AdomMBY83_6a3-lHERb72cmgl1oFkQS_5Xmh_44wIcRB9-RzFepX5DKheDcNHFrUxnE&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQMa78eAZbNvUWlxie06iCwy5-svOuEbAKVa_TBhDjW97w&oe=6AC5B6BB",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/825756411_2373266776815399_7505025374915724909_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=HcAOnPDVQ0EQ7kNvwHdfNRp&_nc_oc=Adr3yw4OPXJ6yDuJeHcB5mJsGYEg0p1H80urEDmlpNrAdkXRaSqhzM5eNK_Jl-RUGlc&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQMkgdIjlcmxf8SQZUmUNDJyJ6xvMQgP3hRIhBvx4wZ_RA&oe=6AC5C757",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/830978769_1101257699195220_1861520183898856344_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=i8sgKwOWqOsQ7kNvwFj88s1&_nc_oc=AdoNkt6pBHA2rb-r8Pf8VhOOTVCvM1soT8aBRn5eTP5gShWlXc_2A8sLmfc5nZI9hUA&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQOWbtM1ba6UEV0TMs03oid_DG4DAEZb8BBT8shmG-QZvg&oe=6AC5D23D",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/825269290_1618882649913507_5366819834497726138_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=5DYx9Jd6VTMQ7kNvwGfcumP&_nc_oc=AdpRKzJieB0CF1oIXAlnPAIPB5aEjTR_Wczq3VqeSVjXZpK0Iyb0pjVjM4LGlJ7fups&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQN9PQL3cEh6u2CmY2yx05GJKsDdWwkWVeZwP860Z8biTQ&oe=6AC5C9FA",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/830068159_1552637133570226_37783660609679599_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=UwVPjnhcQBQQ7kNvwFb02Bl&_nc_oc=AdrJhUC_Q66LcnxU8WjDtTaqWAYxi79T-L8YmRw_U2MuAXCrGjRdHRN_N_8NxCkDu0c&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQPR_dNXcZM0M3Hy1z9bkbbj8XeunvhHCsnVNOPZ1jcktA&oe=6AC5BC70",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/830116480_1108774994885181_1837869122583466243_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=105&ccb=1-7&_nc_sid=247b10&_nc_ohc=xDsX1Q6ynAgQ7kNvwHLJKDn&_nc_oc=Adr65lCBnCDdScgFSzGFoHi_H4jFe4PdQdixIUa4Ewnv3adHouvNFkGXa4-q6HXsWdg&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQNxtW2rR6mk5e77s-RMvnwT0ZGdUzWYwjlFqOk6UiMrpQ&oe=6AC5C51B",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825270963_1101984922279406_6610191054643276106_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=tmoIjIGUkb0Q7kNvwEDUwv_&_nc_oc=Adp49c7NnCnB09PmnZITxmzUPNb3hSCqLdtpYgA3SdYVZHoaqfa_o-PbI4W1_ROGuFg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=TP4I9BaTS5s0kBr341hmsw&_nc_ss=792a8&oh=00_AQOq834NCZjuovqLJP64kOyxCB3r757llGgGC2VoIF5ehQ&oe=6AC5CAED"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.500 + condomínio R$ 590 · 2 quartos · Praia Brava, Itajaí): 2 quartos 2 banheiros Apartamento\n\nO APARTAMENTO\n\n✔️ Praia Brava;\n🛏️ 2 quartos, sendo 1 suíte;\n✨ Mobiliado;\n✔️ Ideal para quem tem pet;\n✔️ Apartamento diferenciado;\n✔️ Excelente localização, próximo à praia;\n✔️ Uma excelente opção para morar ou investir, unindo conforto, praticidade e o estilo de vida da Praia Brava.\n\n📍 Localizado no Bairro Praia Brava, em Itajaí.\n\n💰 Valor de locação: R$ 5.500,00\n\n🏢 Condomínio: R$ 590,00\n\nEntre em contato com a equipe da Nox Imobiliária e agende sua visita. Essa pode ser a oportunidade ideal para você!"
+  },
+  {
+   "chave": "F28393009300353844",
+   "id": "F28393009300353844",
+   "url": "https://www.facebook.com/marketplace/item/28393009300353844/",
+   "folhas": [
+    "027-a.jpg",
+    "027-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/813698778_3550467988461780_8376741345472448029_n.jpg?stp=dst-jpg_tt6&cstp=mx1290x1734&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=454cf4&_nc_ohc=sp55Xn09ar4Q7kNvwFtuJJn&_nc_oc=Adr68Ypa-7A5ZBbTb0dZqLC_6GbIj1Kd-UuEuaeg_h6MUXScU-YI-_dbkRk0fX_c46E&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQMDsfgSokalqHo-wXdRUP4xTE3q8Sw2yrZOTyWFJDh1MA&oe=6AC5CC00",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/813583071_3550443165130929_3319222103372740512_n.jpg?stp=dst-jpg_tt6&cstp=mx1290x1686&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=m6uenO3ydoMQ7kNvwFA9ebs&_nc_oc=AdqtkYszeiz_vVnWrc-JFG-LZeGHfahIOcQjnzEmDOrg_L3nd9yoKSANAsUrre4ovK0&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQOuxorZyduQ6vWQkiPeDQW0rYetpua9KvBPBFYUemZmdQ&oe=6AC5C2D0",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/813756237_3550442848464294_3408435804040203651_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=CwNTIUsz9BAQ7kNvwHBV34J&_nc_oc=Adoo3ofllNa-O7JNFU5ZpQhNs-yx-fxJzLBkoilXhXCTLmt-smV4gxFIXhqww6Qg1Mg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQO_JXQBV8mTPJLXVaP8IAQC2P1CCnwJdo3kQX3KkJQ6GA&oe=6AC5A40F",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/813790802_3550443111797601_2731427422593017796_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=wpwgav3iS94Q7kNvwEmyya1&_nc_oc=AdpEDqzhbYBcGMqphZQ0bmPzv0ZePhgqPgUSExIxV2W-4c-SozMK6Xz4WZe5UJ6poo4&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQNxXTDH0DZMhmQKFqWibbpwegTVqznBuTrC8VcPpy0r7A&oe=6AC5C01C",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/814584729_3550443135130932_564765481762096978_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=946e27&_nc_ohc=8IrFH_wYeRkQ7kNvwEimu_V&_nc_oc=AdpbIWZBhL8kuWKIcQr-1mSkdddR-gVwKGRbwxQmLphI6kVxUhoMn1n6Z9Cbvklm6g0&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQMcL9rH2c3rrXzYw6ipT7t5XjGH6-A5QkidpaEYLWG2Jw&oe=6AC5CB19",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/813661240_3550442865130959_3268204438277612923_n.jpg?stp=dst-jpg_tt6&cstp=mx960x1280&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=_4o88-4gJmkQ7kNvwEkZAZm&_nc_oc=AdrjqLxa0XPMQuBSfqjs_ZF6flhlRAzqyoZe6XKpi3d75HxOpO1Ws_RPuJWTcaN9MwU&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQPIGfhRYyrLNTfUpWoy4vkL6Zzk0FGyqUlrTu8am3MpFQ&oe=6AC5A3E3",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/813817857_3550443161797596_2307838208335410543_n.jpg?stp=dst-jpg_tt6&cstp=mx1290x1758&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=946e27&_nc_ohc=WOvMfYvPiKYQ7kNvwGtKAdM&_nc_oc=AdrTawhm3YglWNF40FZ3KCTE-GZDdwmeGktzD3ESR7xDpQilCb0vqa9uNzfAGEblKUk&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQPB_WtB3jfA6TTAu1vRaGY8IeDcWpwtnxzOoA-ZIbGOYA&oe=6AC5C927",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t39.30808-6/814034537_3550443098464269_5134195137333724619_n.jpg?stp=dst-jpg_tt6&cstp=mx1290x983&ctp=s960x960&_nc_cat=111&ccb=1-7&_nc_sid=946e27&_nc_ohc=XqEPAolffbQQ7kNvwFA45VH&_nc_oc=Adq6RKTgcSZgjAxrJ8Jk3H99fS4nCrQTKZTvSDbL26LIMyJy8JVnoX78g7LL-qkmTqs&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQP9gx5G4F0fBFeZMu_OxHkcThgOt4rJsxyzCCDz3acEdg&oe=6AC59CC2",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/814800432_3550443031797609_5544132712426671457_n.jpg?stp=dst-jpg_tt6&cstp=mx1290x844&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=DojCaltgWqcQ7kNvwEnx0xx&_nc_oc=AdoDojfo7IOsSOc8tHVqY_7CLa-8WlgCF-71s9Ekq8pEDiJCd5JvVV6Q7aokx9Od1nU&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQPqrkdRfH8uRXdsFtzCjmVY5BwNrYFMvbr0_45sDiTeow&oe=6AC5B901",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/814339481_3550443185130927_6162332000390775640_n.jpg?stp=dst-jpg_tt6&cstp=mx1290x1305&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=LK-7ZH1fpRwQ7kNvwEvZLlM&_nc_oc=AdrxV04ac4zAisZijHCWgS8zrHyN0OVG9ss1ueqNB1G7yAKETnOycHZbPQKFiiA4uqg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQOksE5UqbqCDlDPJRup8RUVZemeNxd4a5reBDhkvToSjg&oe=6AC5B2CB",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/813428688_3550442845130961_1329259482658047970_n.jpg?stp=dst-jpg_tt6&cstp=mx1290x977&ctp=s960x960&_nc_cat=109&ccb=1-7&_nc_sid=946e27&_nc_ohc=av1HMskfa-AQ7kNvwGNFhQC&_nc_oc=AdrLJBghcRlXpfot4YTZK9HX34U4JjxT55JoN4kD8ED0x6K6nipPHmDur3SqLAmWmXQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQMjCw3oziBxIoM9G2_NIVc60XTLs90Uk3GM8DvfQj_V2w&oe=6AC5D229",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/814754764_3550442815130964_3494133662513497993_n.jpg?stp=dst-jpg_tt6&cstp=mx1290x805&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=pAhGWpZjl-AQ7kNvwEImpkL&_nc_oc=Ado5WUDvI_tFk6282SDKhYNaR86ZVYE2bcrxvYE0JYDFnzW3r4bUFdnMu9I-qM3T1Vg&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=UPRxGpJvgDQtPS0pNyAHpw&_nc_ss=792a8&oh=00_AQMA9m1sJ9juuglnowz4rpNCTSnnK7vh4DNR9TSSnZ5GDQ&oe=6AC5C900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 · 2 quartos · Praia Brava, Itajaí · prédio Brava Hill): 2 quartos 2 banheiros – Apartamento\n\nApto para alugar na Praia Brava - Edifício Brava Hill \n\nVista mar da Brava \n\nMobiliado e decorado, pronto para morar.\n\n-1 suíte e 1 semi-suite\n-1 vaga \n\n-Três ares\n\n-Fechamento sacada \n\n-Box até o teto\n\n-Água quente em todas torneiras \n\n-Sacada integrada com churrasqueira a carvão \n\n-lavanderia externa equipada máquina lava e seca \n\n-Cozinha completa planejada (Lavadora de louças 16 serviços, Refrigerador porta dupla Brastemp, Forno, microondas, coifa, cervejeira, adega climatizada).\n\n\n*Predio com *\n\n-Porteiro 24 horas\n-Espaço Pet \n-Car wash \n-Salão de festas\n-Área gourmet \n-Piscina aquecida com prainha \n-Quiosques com churrasqueira \n-Terraço vista mar da Brava no andar 31 com lounges e lareira.\n-Academia completa \n- Sauna\n-Salão de jogos \n-Mercado 24h;\n-Lavanderia profissional.\n\n*finamente mobiliado tudo de primeira linha *\n\nValor do aluguel: R$6.000 + condomínio + taxas de água, luz, gás, internet e IPTU. "
+  },
+  {
+   "chave": "F1622430756240123",
+   "id": "F1622430756240123",
+   "url": "https://www.facebook.com/marketplace/item/1622430756240123/",
+   "folhas": [
+    "028-a.jpg",
+    "028-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.84726-6/828840808_1154435150346406_6187087932750767605_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=92e707&_nc_ohc=i674gFuQpp8Q7kNvwE4ktQk&_nc_oc=Adpt2TZHDO1JZPOftPzAE-XBkVfopzIhIosvBA6f5NJb61FSqyaKcZ-eYBQuybiv-i8&_nc_zt=14&_nc_ht=scontent-iad3-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQM_gmLh8G7BezarjomYcMw9FhXBIqShR9u-xql7013tlg&oe=6AC5B957",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/828679573_1078972551507746_1597624562651008821_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=depLy9vBqf0Q7kNvwFSUcJP&_nc_oc=AdoqWpZykJhAK-fJ37OGCG2BSyrvGvowsePwgQGl8NS3AexM7V1zGwRFXSWndiuQQOo&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQNBNNF-CQpOBcmUv7p4PZwxrVd9W4HPpUWyuH_Od9Sh7Q&oe=6AC5A4BD",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/831034961_1661911728877469_4677480610665731499_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=GT2WlduavsYQ7kNvwGNlyCW&_nc_oc=AdoWFPu-X50dtt4QWc4EL1qTbxz9-TiJIsTZj8sQFWK6QyklcoqfhE5CU0lFxnKHSiM&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQP-NmRFwR2HyDwLcSzFHb7fHjnfPjGKb9mPQn_vSNvRxg&oe=6AC5D216",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/828365115_28358400513840755_2719307455114430538_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=0oQjEFGMM-UQ7kNvwFoqVEI&_nc_oc=AdrBYgKD2MhDo9MxUpu4H6mShi6yYXG_zIm7ngHniyGI6-XwmV69GnJI-6r_r-luZaw&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQOovFsu9DyUepslYAAqJv0MXc2Dw9B2PcTi8F9wsFsiyQ&oe=6AC5AB67",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/831155444_1476126171230959_5137822280969671593_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=sHGBUvPQ9O8Q7kNvwHXp5e6&_nc_oc=AdplvneShjM8nMFInLAO_Ek5qViY3iAK4egaVulrnNRN3knH3Ag-ACyX78K7TrDYSpY&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQNnVkcftqajDaavwwIWQ1KvGMhhpk23bTlZFizyLlpwhw&oe=6AC5C557",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825288811_931058969717543_1265320284849678451_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=102&ccb=1-7&_nc_sid=247b10&_nc_ohc=W6EEWtyQPX4Q7kNvwEOgDre&_nc_oc=AdrG19FWWVT798xUQFxaGSQspSJsAOEaSr5aWYxY80h7CxSwcxjXWMC089itKjuiPvI&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQPr_GVjX60pW_0trKlvg-MG9_eeeVMjvQHYFshTYloA7g&oe=6AC5CC67",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/825288909_1859209058827606_7994880229643191924_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=mlO35ogTzi4Q7kNvwHKYukb&_nc_oc=AdqU2Y0txfruz79Po4_wLTvcvX7BsyeYMXKkBrEI0UFHYenfXI9ROKmoEaZQ63EDtio&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQNuUhvlu3Gr8m6trt_Ux1Sd157Jt8VzJlk95F0mQkqUjg&oe=6AC5AC4A",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/828392173_2043038579679160_3133145228079751889_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=q3o_PdHo0_MQ7kNvwE9j1-D&_nc_oc=AdpeMX0X6LJpsQ7dhmrfsCwQVQsi-1R8qN8JoT4wPTo2RUTEWtHhWHRSJp_8R2YzAFY&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQMpWvMTw4kXbVsOC97yNiiUXPGobUeeXGEuMAJH251S4g&oe=6AC5AD6A",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/829793405_3698090743693555_5362957920419548616_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=111&ccb=1-7&_nc_sid=247b10&_nc_ohc=B89RenUhgcoQ7kNvwFbXe-c&_nc_oc=Adrq2M5W49Axsn7etBTRXZn9QHLZPnvCN315QYRaoIvZ3xgFFfjxmyrOR0eZB66raks&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQM-QmomLycOL08NlKNcQ6tJrUkc60mHmIUNc0eOWowEiA&oe=6AC5CA73",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/825288889_1808553356854656_1245965589677612147_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=HZkKPYoIyUkQ7kNvwEriG8G&_nc_oc=AdocC_xOC9zWuEgGrOO4td5d-P8TxsA-lTx3p2-kLSbDpwL5VB_rsgTtpjdWfzH5a4E&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQMmU4LWlSbT2gvQz5K_BL76MagZCYjryB7CXAJZxcoGGg&oe=6AC5A7C1",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/828257269_1637084908054245_1045348622399484908_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=110&ccb=1-7&_nc_sid=247b10&_nc_ohc=JRv-tJOLTO0Q7kNvwHzJqDU&_nc_oc=AdppFkmV8OMZMfFzbj59fOXkjk_S_LsiM9TTCyj9VAc029I256gcMfa0nSlbJYHAroU&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQOQDm1kbvS2x0w6naHKU21ryJOUPdYFNZRF44Wg_0IejA&oe=6AC5C591",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/825288876_1117508757361241_181601529914716574_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=107&ccb=1-7&_nc_sid=247b10&_nc_ohc=Yg57aGvWMMQQ7kNvwGT2vXl&_nc_oc=AdrsH-hIvxk7fgKnqPS-mQRo76uxIn5pAKmcF3et7SLJBNXdSCfn1XSG5xW3fqntaxs&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=XdKOJatlLT_8NQ-xJmO4Cg&_nc_ss=792a8&oh=00_AQOyjZOFHfH9FqNx2qVxrfy71Tn8a9wI2a4TOVT6a_ytiw&oe=6AC5CEA5"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 · 2 quartos · Balneário Camboriú): Locação Anual 2 DORMT AV dos estados laser completa\n\nLOCAÇÃO ANUAL EM  BALNEÁRIO CAMBORIÚ 🔥\n✔️ 2 dormitórios  um suite \n✔️ cozinha /sala \n✔️ lazer Completo \n✔️  VAGA DE GARAGEN \nVALOR $ 6.000 INCLUSO TAXAS \n🏢 Excelente laser \n💰 R$ 6.000,00\nApto está todo automatizado. Se tiver Alexa, liga e desliga todos os aparelhos (TV, Ar, aparelho de som, celular) e luzes [que mudam de cor se quiser].\nCRECI 42570 João [hidden information]7"
+  },
+  {
+   "chave": "F2889215611446306",
+   "id": "F2889215611446306",
+   "url": "https://www.facebook.com/marketplace/item/2889215611446306/",
+   "folhas": [
+    "029-a.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.84726-6/795645067_1130349419326952_5195524761064356094_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=108&ccb=1-7&_nc_sid=92e707&_nc_ohc=oKWrkV57ZykQ7kNvwFgFwf8&_nc_oc=Adr8O3XA4EYw6f8i0xsL1fnSzppdqEvuixNNci4cYvhfFMgGremH4Wny9Noe0bLFvCc&_nc_zt=14&_nc_ht=scontent-iad3-1.xx&_nc_gid=3RSCohxiDSOd6rMUwRnt2Q&_nc_ss=792a8&oh=00_AQNeOi48lZaCYbjYIgr_GIQAKAfEkqkViFhkAmVuPkMxEg&oe=6AC59D3D",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t45.5328-4/807926531_2516277985450031_9024268644838484120_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=104&ccb=1-7&_nc_sid=247b10&_nc_ohc=9vbWEUJAKWQQ7kNvwF5d7ag&_nc_oc=Adqk7rHybDelmeaYkVFIepxE02Hqnt04Kpr2ICuw2A-o4gSV0P38fVeFt2BHH22DHz8&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=3RSCohxiDSOd6rMUwRnt2Q&_nc_ss=792a8&oh=00_AQPZpxlLxf4CR5ESbL514N16kQKmTdosepCoJQHcja_w6A&oe=6AC5A3DF",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/824044595_1583917739358557_2116825057973213013_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=109&ccb=1-7&_nc_sid=247b10&_nc_ohc=v3f_lEZSTQEQ7kNvwEvUZRd&_nc_oc=Adpt-YpsG1gOJPX1uoEDJWOjD0ih4W2fIeRLbbNn9yTOHfJkxhSYvEPdrPmEMy7NjC8&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=3RSCohxiDSOd6rMUwRnt2Q&_nc_ss=792a8&oh=00_AQMBvXTdJo-JOvdwx9C5Q67zQoi9Z3qRSzk8tIDFLHxt1g&oe=6AC5AA13",
+    "https://scontent-iad3-2.xx.fbcdn.net/v/t45.5328-4/817524621_1780070556498124_2165784057358047022_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=103&ccb=1-7&_nc_sid=247b10&_nc_ohc=aQ-R8f24WwgQ7kNvwFTRSVm&_nc_oc=Adq7u0AmO-wpsfUM0vXGnhoQTkijcWaFym4LNSFP9XEnR8qB7r8q3VzBIt9ZngkmAFs&_nc_zt=23&_nc_ht=scontent-iad3-2.xx&_nc_gid=3RSCohxiDSOd6rMUwRnt2Q&_nc_ss=792a8&oh=00_AQOEDuJn_Li_0EOw5MJF6f88KOy0b3nTft8UYNqtPGQb5w&oe=6AC59D7A",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t45.5328-4/824025264_2280632009458774_7270572987993544666_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=106&ccb=1-7&_nc_sid=247b10&_nc_ohc=6M6DcL2DJhQQ7kNvwGAqRA2&_nc_oc=AdqWmaNqrAqxLVuTzIRQ2FvbYll6PT-qXtQ47a_weM5pIwasemo-0hesZWnf9sfMnQY&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=3RSCohxiDSOd6rMUwRnt2Q&_nc_ss=792a8&oh=00_AQPO2B9p8ObA7qeOdTkb3aQhSW7RRJuQaqbNmVDeA9vDfA&oe=6AC5D196"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 3.800 · 2 quartos · Balneário Camboriú): 2 quartos 2 banheiros Apartamento\n\nAPARTAMENTO MOBILIADO PARA LOCAÇÃO ANUAL\n\n📍 Rua 906 – Balneário Camboriú\n\n* 02 dormitórios, sendo 01 suíte\n* ⁠2 banheiros\n* ⁠1 vaga\n* ⁠Mobiliado\n* ⁠Sacada\n* ⁠Televisão\n* ⁠Cozinha Completa\n\n* 💰 R$ 3.800,00 (CONDOMÍNIO E IPTU INCLUSOS) A parte só consumos\n\n* 🔑 Disponível a partir de 15 de outubro\n\n✅Garantia: somente seguro-fiança\n\n\n📞[hidden information]\nNATHALI CASSOL CRECI SC 53836\nPOR IMOBILIÁRIA NUESTRA CASA IMOVEIS"
+  },
+  {
+   "chave": "F1442643947723268",
+   "id": "F1442643947723268",
+   "url": "https://www.facebook.com/marketplace/item/1442643947723268/",
+   "folhas": [
+    "030-a.jpg",
+    "030-b.jpg"
+   ],
+   "fotos": [
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/792235755_28457544043904126_2138843166918137675_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=107&ccb=1-7&_nc_sid=454cf4&_nc_ohc=sYsvhMkkkyQQ7kNvwFMbfKd&_nc_oc=AdqlMqFZZRv-5SRciMtlks4gw5sDHdZBU73f6BDBS9tkm0ZK1xcvNcdV8P8vs3h_MVQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQP_T34YnI9GptpnNzAngAf0tXwAYju5uANHWebidsvx5g&oe=6AC5BB72",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/799843825_28457518097240054_3940665876034841256_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=p2jl2_hiUMkQ7kNvwHdlZYu&_nc_oc=Adp8YmBFUmNu6QVgJGBhZ2blrDdeFYiOuyvTIJMqECQSOE08KzBBu_wXimBkPg92f2k&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQOafA2hSW-9sH2gh_6zHjImZVHDwGa7-dVPYRI2tzR_zg&oe=6AC59C82",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/814785801_28457518090573388_7598218763560107817_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=t0BLAD_8qY4Q7kNvwFYQsvJ&_nc_oc=AdrtNjTBVXI1MhcQI8AZVU5ZO9nssksBrbJg1d-0Uor4dOzw2npcLSy8O-gaSsqngYQ&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQNl8WfNqY9q0xj8ijdo_dyJisA1dSNvwcdFnZ1sUiOb9Q&oe=6AC5C311",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/817551901_28457518227240041_7208236221431181790_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=-IbNMTqIvLsQ7kNvwEkI692&_nc_oc=Adqvo7fyqdEuiEbQBMsqZWJOt9WwQA5djY-k7ra5-4lQfGmcVnR9ux7Nmg6-zSwF_1Q&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQN1KTHXJY-zUKyyCT9TEVoqVgfrUwRxKoQGTgcR6a5ZOQ&oe=6AC5A30B",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/797724968_28457518263906704_4151439452164890792_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=hTgDhbG9bP8Q7kNvwG04MVG&_nc_oc=AdoqB7NasIE9n3EKB0nm8cysowDrxyIClbDmBFot_2ZSyXu-VtP62rCiZMB0bPM2QQ8&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQMZxkEEhA-bdbQyvhGsN3qv6MVtZ7XcvGHBBAywurWlUg&oe=6AC5B5A6",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/796573082_28457518367240027_3640700584738915813_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=fv7dCkjKCa8Q7kNvwHZ-V_c&_nc_oc=Adprg_BW2psKWb2qxDqWz1CeeBWAJmRx49o3v9GC7RIfb6xPhwp-4NLJQfqfitbpoBc&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQNTEhuBzyGcTG6F87Da8gLFKg66ZbXE1JBA3H3Q8lQEow&oe=6AC5AE31",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/807384807_28457518443906686_7495223115047073805_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=106&ccb=1-7&_nc_sid=946e27&_nc_ohc=48df9sUlW4cQ7kNvwEaMGOg&_nc_oc=AdpI05Piy3lnvbxU2MAJAOhY6ySAZ_WPo-FI3UI66XvExmfzI_Bnym4GHOOtbHPnWpw&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQOAvTacnxl5RNB6haEDzM9lkMTUI2-kK_zt1boPtxk22A&oe=6AC5B25E",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/797841635_28457518537240010_7910912451778983975_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=dm4nlddX8rUQ7kNvwH8LOMq&_nc_oc=AdrxUNZTESiI6Me0-SRCtyMPhkSiV-d49dLBomqRkW2h2q7IcKSYQrG8Mj1if4-Tthw&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQP8ZSravXFIbvGerMlBadZju815A0yCP3FMsc7I30rx2Q&oe=6AC5C98E",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/807759584_28457518597240004_4618330167916429491_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=110&ccb=1-7&_nc_sid=946e27&_nc_ohc=B4ekpdWroQYQ7kNvwHRZvtu&_nc_oc=AdpEU0NJDsVp8RgpOESOiRTfgLherTZskhLJmpJY9rm9mtPIkPJG8wxOM6U-8jJPUz4&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQNHQDJ5hvsfKw84lLw0k4GvfjDpufaDt55YVAp_zeZqFQ&oe=6AC5BDCC",
+    "https://scontent-iad3-1.xx.fbcdn.net/v/t39.30808-6/795431293_28457518763906654_1674434528005241350_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=108&ccb=1-7&_nc_sid=946e27&_nc_ohc=FJ3ez06a32YQ7kNvwFoutAM&_nc_oc=AdpCySbw1wiFqUwPcEbTPJl046rEYz59V61FMf0mP7FwCT3DrMxaXHVXT06tls5ZgAw&_nc_zt=23&_nc_ht=scontent-iad3-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQPAA0XE64_i8uXpqVGPWXvY-QC75Agv6X1yeXETDm8INg&oe=6AC5B727",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/799675946_28457518913906639_7734914137520484537_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=102&ccb=1-7&_nc_sid=946e27&_nc_ohc=6Fvawbi9OCsQ7kNvwH72CqU&_nc_oc=AdoW40sh3D6MLQQ1v4FnwSL4pk2JzwHfUSK5ReB1tGUHvL8J0kTYR5-UvV0StXmQAFw&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQNGVOhsbGQvO6MmC49sx37U1HxGoPd180wpcgzTw7FmJQ&oe=6AC59EC5",
+    "https://scontent-iad6-1.xx.fbcdn.net/v/t39.30808-6/817532669_28457518940573303_7959338776691469000_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s960x960&_nc_cat=100&ccb=1-7&_nc_sid=946e27&_nc_ohc=17vv6H65VoUQ7kNvwHUR3MI&_nc_oc=AdpKqfuNJRfOiT1ISSQzXVDwcihuxgUgBFqOqTAmk9Xn8mYCDADCZxqI66ecIOHXIUE&_nc_zt=23&_nc_ht=scontent-iad6-1.xx&_nc_gid=vM7ET70XvC0wN8inEhY3ug&_nc_ss=792a8&oh=00_AQOqbnID5GdaxX-L3-QUs00sJqXR_BlxO09I1BO8OUjP4w&oe=6AC5A103"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 3.500 · 2 quartos · Balneário Camboriú): 2 quartos 2 banheiros – Apartamento\n\n🏡 **Aluga-se apartamento – próximo à Praia Central**\n\n• 2 dormitórios sendo  1 deles suíte \n• Sala\n• Cozinha\n• Área de serviço\n• 2 banheiro\n• Sacada\n\n📍 Localização excelente, próximo à Praia Central, com fácil acesso a mercados, farmácias e lojas.\n+ Taxas\nIPTU : 96,00\nÁgua: 60,00\nLixo: 80:00 ( única parcela anual)\nCondomínio já incluso\n\n📄 Formas de locação: seguro fiança ou cauções.\n\n📞 Contato: [hidden information]"
+  }
+ ],
+ "pedido_endereco": "Estes anúncios do perfil não dão o endereço (o app mostra \"Bairro não informado\"). Para cada um, descubra onde fica: pelo texto, ache o nome do prédio (\"no Brava Bells\", \"Edifício X\", \"Residencial Y\") ou outra pista (rua, esquina, ponto de referência); pesquise na internet (ferramenta WebSearch) o endereço desse prédio em Balneário Camboriú, Camboriú ou Itajaí. Grave só o que uma fonte confirmar (construtora, imobiliária, mapa, outro anúncio do mesmo prédio com endereço); na dúvida, grave tudo vazio. Campos: predio (o nome do prédio; \"\" se o anúncio não cita), rua (rua e número, ex.: \"Rua 3100, 255\" ou \"Avenida Atlântica, 3500\"; \"\" se não achou), bairro, cidade (\"Balneário Camboriú\", \"Camboriú\" ou \"Itajaí\"; \"\" se não achou) e fonte (o link que confirma; \"\" se não achou).",
+ "enderecos": [
+  {
+   "id": "F1131958009335803",
+   "url": "https://www.facebook.com/marketplace/item/1131958009335803/",
+   "anuncio": "Anúncio (aluguel R$ 3.600 · 2 quartos · Balneário Camboriú): 2 quartos 1 banheiro – Apartamento\n\n"
+  },
+  {
+   "id": "F1318410580257273",
+   "url": "https://www.facebook.com/marketplace/item/1318410580257273/",
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Balneário Camboriú): 2 quartos 2 banheiros – Apartamento\n\n"
+  },
+  {
+   "id": "F1097834599329669",
+   "url": "https://www.facebook.com/marketplace/item/1097834599329669/",
+   "anuncio": "Anúncio (aluguel R$ 4.600 · 2 quartos · Balneário Camboriú): 2 quartos 2 banheiros – Apartamento\n\n"
+  },
+  {
+   "id": "F1119556607134181",
+   "url": "https://www.facebook.com/marketplace/item/1119556607134181/",
+   "anuncio": "Anúncio (aluguel R$ 4.508 · 2 quartos · Balneário Camboriú): 2 quartos 1 banheiro – Apartamento\n\n"
+  },
+  {
+   "id": "F1866276677506917",
+   "url": "https://www.facebook.com/marketplace/item/1866276677506917/",
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Barra Sul, Balneário Camboriú): 2 quartos 1 banheiro Apartamento\n\nAPARTAMENTO  para LOCAÇÃO na BARRA SUL  de  ➡️ Balneário Camboriú SC \n\n150m da Praia \n\nValor R$ 4.500,00 (incluso condomínio ) +IPTU + Consumos (Água, Energia Elétrica e Gás) + Seguro incêndio anual + Taxa de lixo\n\n🟢LOCAÇÃO ATRAVÉS DE SEGURO FIANÇA 🟢\n\n⚠️ AVISO 👉🏻 visitas só serão agendadas após análise de crédito ( aprovada )por se tratar de seguro fiança.\n\n - 02 dormitórios \n- Cozinha planejada com bancada \n- Mobiliado \n- Banheiro social\n- 01 vaga de garagem\n-Prédio com portaria\n-02 elevadores\n-Salão de festas"
+  },
+  {
+   "id": "F1854617572624587",
+   "url": "https://www.facebook.com/marketplace/item/1854617572624587/",
+   "anuncio": "Anúncio (aluguel R$ 5.500 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 3 banheiros – Apartamento\n\nREF.5500\nRequisitos SPC e Serasa sem restrições.\nCondições caução ou seguro,\ndefinição após validação análise CPF.\n\nApartamento mobiliado anual quadra mar.\n2 suítes \nSala estar e jantar \nCozinha e lavanderia \n1 vaga garagem \n\nAluguel 5500,00\nCondomínio média 700,00\n"
+  },
+  {
+   "id": "F1438311148151937",
+   "url": "https://www.facebook.com/marketplace/item/1438311148151937/",
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Balneário Camboriú): LOCACÃO ANUAL 2 DORMITORIOS AV CENTRAL I\n\nLOCAÇÃO ANUAL CENTRO de BC \n  02 dormitórios sendo 01 suíte \ncozinha \nbanheiro social \nsacada\nvaga de garagem \nR$ 4.500 com taxas \nCRECI 42570 João [hidden information]7"
+  },
+  {
+   "id": "F1116745574378405",
+   "url": "https://www.facebook.com/marketplace/item/1116745574378405/",
+   "anuncio": "Anúncio (aluguel R$ 4.700 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 5 banheiros – Apartamento\n\nApartamento para locação\nANUAL\n📍Avenida Atlântica, Centro de Balneário Camboriú, SC\n Frente ao mar.\n\n02 dormitórios sendo 1 suíte\nSala \n02 Banheiros\nSem garagem \n\nValor R$ 4.700 mensais \nTaxas inclusas"
+  },
+  {
+   "id": "F1679251663712792",
+   "url": "https://www.facebook.com/marketplace/item/1679251663712792/",
+   "anuncio": "Anúncio (aluguel R$ 5.000 + condomínio R$ 599 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 2 banheiros Apartamento\n\nLuar do Atlântico Sul - Av. Brasil, 3590, Centro de Balneário Camboriú (próximo ao Carrefour), a cerca de 400 m da praia.\n\nApartamento amplo e bem distribuído, em uma das regiões mais práticas da cidade.\n\n✔ 87 m² privativos (129 m² total)\n✔ 2 dormitórios, sendo 1 suíte\n✔ 2 banheiros\n✔ Living confortável com sala de estar e jantar\n✔ Sacada com vista para a Av. Brasil\n✔ Móveis planejados\n✔ 1 vaga de garagem privativa\n\n💰 Aluguel: R$ 5.000,00\n🏢 Condomínio: R$ 599,00\n📄 IPTU: R$ 257,00/mês\n\nAgende sua visita!"
+  },
+  {
+   "id": "F2152126839063576",
+   "url": "https://www.facebook.com/marketplace/item/2152126839063576/",
+   "anuncio": "Anúncio (aluguel R$ 5.000 + condomínio R$ 500 · 2 quartos · Centro, Balneário Camboriú · prédio Marajoara): 2 quartos 1 banheiro Apartamento\n\nApartamento de 2 dormitórios no Centro de Balneário Camboriú, a apenas 400 m da praia (5 min a pé) - Ed. Marajoara.\n\n✔ 81 m² privativos\n✔ 2 dormitórios + banheiro social\n✔ Cozinha com armários e despensa\n✔ Piso em porcelanato\n✔ Ponto de internet\n✔ 1 vaga de garagem\n\n💰 Aluguel: R$ 5.000,00\n🏢 Condomínio: aprox. R$ 500 a R$ 600\n\nAgende sua visita!"
+  }
+ ]
+}
