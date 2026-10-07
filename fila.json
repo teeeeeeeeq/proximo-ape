@@ -1,0 +1,787 @@
+{
+ "gerada": "2026-10-06 21:52",
+ "versao": 4,
+ "pedido": "Você confere anúncios de apartamento para alugar em Balneário Camboriú (e arredores) para quem procura um apartamento para morar, com acabamento muito bom e a cozinha integrada à sala. As fotos vêm numeradas, e depois vem o anúncio. Responda:\n\n- acabamento: a nota do acabamento e do estado do apartamento, pelas fotos de dentro.\n  \"excelente\": impecável. Tudo novo ou recém-reformado, materiais de qualidade e bem feitos: porcelanato ou madeira bem assentados, de rejunte fino; bancadas de pedra ou quartzo; marcenaria planejada sob medida, bem acabada, na cozinha e nos quartos; banheiro moderno (box de vidro, metais e louças atuais); iluminação embutida, gesso ou sanca. Bem conservado e com bom gosto: dá vontade de morar.\n  \"bom\": atual e bem cuidado, com planejados e piso atual, mas sem o capricho do excelente (mais simples, algum detalhe datado, gasto ou de gosto duvidoso).\n  \"comum\": apartamento comum ou datado: acabamento antigo, móveis soltos ou cansados, cerâmica ou azulejo antigos, rejunte grosso, banheiro antigo.\n  \"ruim\": malconservado, feio ou desagradável.\n  \"sem foto\": as fotos não mostram o apartamento por dentro (só fachada, áreas comuns ou planta).\n- cozinha_integrada (obrigatório para servir): a cozinha é aberta para a sala, na mesma área (cozinha americana, bancada ou ilha voltada para a sala, sem parede nem porta entre as duas)? \"sim\", \"nao\" (cozinha fechada, separada da sala) ou \"incerto\" (as fotos não deixam ver).\n- chance: a chance de o apartamento ter acabamento bom ou excelente e cozinha integrada. Se as fotos mostram tudo, \"alta\" quando tem e \"baixa\" quando não tem. Quando faltam fotos de dentro ou da cozinha, estime pelo que dá para ver: prédio novo ou antigo, padrão do que aparece, o texto, e o preço para o tamanho e o lugar (barato demais para a região costuma ser apartamento antigo).\n- melhor_foto: o número da foto que melhor mostra o apartamento por dentro: de preferência a cozinha integrada com a sala na mesma foto; senão a sala ou a cozinha; 0 se nenhuma mostra o interior.\n- resumo: uma ou duas frases curtas em português sobre o acabamento (piso, marcenaria, bancadas, banheiro), a cozinha e a sala, e o que falta ver (ex.: \"Tudo novo: porcelanato claro de rejunte fino, marcenaria sob medida em toda a casa, bancada de quartzo e cozinha aberta para a sala; banheiro com box de vidro.\" ou \"Só fotos da fachada e dos quartos; prédio dos anos 90, a cozinha não aparece.\").\n\nAs fotos mandam; o texto do anúncio ajuda. Fotos de áreas comuns do prédio (piscina, academia, fachada) não contam como foto do apartamento.",
+ "resposta": {
+  "type": "object",
+  "properties": {
+   "acabamento": {
+    "type": "string",
+    "enum": [
+     "excelente",
+     "bom",
+     "comum",
+     "ruim",
+     "sem foto"
+    ]
+   },
+   "cozinha_integrada": {
+    "type": "string",
+    "enum": [
+     "sim",
+     "nao",
+     "incerto"
+    ]
+   },
+   "chance": {
+    "type": "string",
+    "enum": [
+     "alta",
+     "media",
+     "baixa"
+    ]
+   },
+   "melhor_foto": {
+    "type": "integer"
+   },
+   "resumo": {
+    "type": "string"
+   }
+  },
+  "required": [
+   "acabamento",
+   "cozinha_integrada",
+   "chance",
+   "melhor_foto",
+   "resumo"
+  ],
+  "additionalProperties": false
+ },
+ "itens": [
+  {
+   "chave": "3800|80|centro",
+   "id": "Z2916218064",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-lavanderia-coletiva-1-quadra-do-mar-balneario-camboriu-sc-80m2-id-2916218064/",
+   "folhas": [
+    "001-a.jpg",
+    "001-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/1822bd8160525d4026e6ac18bba74c6c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/1caac1ca77375815edfc23d255b4747b/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/dcbf6317ec0a16df8a9c45be8f8903c6/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/b57e76776cdbe81a10373251c9192c2a/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/04c44e7908c32b6657e2982620aa85ae/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/5f20e37f90a917ff1ce6718cda5efb35/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/a00f5925ff7ef4207cc06800c6ef2b31/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/223adcd249dfe9f5534b7e1141c3cc05/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/b6567f640d6575c9bcb64058811bc88a/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/0a7c107a5d12441dc7763d0aa7b266eb/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/9442ddc86dbc52ee7e4afe3a8771e5e0/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/8e8d9d8cef90abcd6a6215dba7c6bdbf/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 3.800 · 80 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento para alugar com 80 m², 2 quartos, 2 banheiros, 1 vaga\n\nExcelente opção para quem busca morar próximo à praia, com praticidade e fácil acesso a toda a infraestrutura de Balneário Camboriú.\nO apartamento é semimobiliado e conta com 2 dormitórios, sendo 1 suíte, sala para dois ambientes com rack, cozinha com armários, fogão e micro-ondas, banheiro social, sacada e lavanderia ampla. O imóvel dispõe ainda de 1 vaga de garagem coberta.\nA localização na quadra do mar é um dos principais diferenciais, permitindo aproveitar a proximidade da praia e a facilidade de acesso aos comércios e serviços da região.\nUma ótima opção para quem procura conforto, funcionalidade e a conveniência de morar a poucos passos do mar."
+  },
+  {
+   "chave": "4400|85|nacoes",
+   "id": "C47455730",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-nacoes-85m2-RS4400/id-47455730/",
+   "folhas": [
+    "002-a.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/124219/47455730/sc-balneario-camboriu-nacoes-rua-siria-apartamento-para-alugar-2-quartos-6ac557b0-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/124219/47455730/sc-balneario-camboriu-nacoes-rua-siria-apartamento-para-alugar-2-quartos-6ac557b0-2.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/124219/47455730/sc-balneario-camboriu-nacoes-rua-siria-apartamento-para-alugar-2-quartos-6ac557b0-3.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/124219/47455730/sc-balneario-camboriu-nacoes-rua-siria-apartamento-para-alugar-2-quartos-6ac557b0-4.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.400 · 85 m² · 2 quartos · Nações, Balneário Camboriú · prédio Ortega Tamay): Edifício Ortega Tamay | Apartamento Semimobiliado com 1 Suíte, 85 m² e 2 Vagas\n\nApartamento semimobiliado com 85 m², oferecendo uma planta funcional e confortável para quem busca praticidade no dia a dia.\n\nO imóvel conta com 1 suíte + 1 dormitório, sacada com churrasqueira a carvão e 2 vagas de garagem privativas, proporcionando mais conforto e comodidade aos moradores.\n\nValores da locação:\n\nAluguel: R$ 4.400,00\nTaxas: inclusas\nConsumos: à parte\n\nUma excelente opção para quem busca um apartamento espaçoso, semimobiliado e com duas vagas de (link removido) à Imobiliária em Balneário Camboriú e Praia Brava\nA Felicità Imóveis é referência em imóveis prontos e lançamentos em Balneário Camboriú e Itajaí. Mais de 40 corretores especialistas, 3 lojas físicas e estrutura completa para conduzir sua negociação com segurança. Fale com a Felicità e agende sua visita."
+  },
+  {
+   "chave": "5000|55|praia dos amores",
+   "id": "O1541885074",
+   "url": "https://sc.olx.com.br/norte-de-santa-catarina/imoveis/apartamento-mobiliado-na-praia-dos-amores-1541885074",
+   "folhas": [
+    "003-a.jpg",
+    "003-b.jpg"
+   ],
+   "fotos": [
+    "https://img.olx.com.br/images/77/776623571019930.jpg",
+    "https://img.olx.com.br/images/79/792659576785813.jpg",
+    "https://img.olx.com.br/images/80/805640572109817.jpg",
+    "https://img.olx.com.br/images/83/837651577854523.jpg",
+    "https://img.olx.com.br/images/84/843684453102910.jpg",
+    "https://img.olx.com.br/images/86/861604094282283.jpg",
+    "https://img.olx.com.br/images/87/876649331921050.jpg",
+    "https://img.olx.com.br/images/88/881668454223786.jpg",
+    "https://img.olx.com.br/images/89/893622456466771.jpg",
+    "https://img.olx.com.br/images/91/912685695842933.jpg",
+    "https://img.olx.com.br/images/92/922626457032612.jpg",
+    "https://img.olx.com.br/images/93/930688212566827.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.000 · 55 m² · 2 quartos · Praia dos Amores, Balneário Camboriú): APARTAMENTO MOBILIADO NA PRAIA DOS AMORES\n\nElegância, praticidade e localização privilegiada na Praia dos Amores! ?\n\nConheça este incrível apartamento totalmente mobiliado, ideal para quem busca um imóvel moderno com acabamentos de alto padrão e decoração no estilo industrial.\n\nDiferenciais do Imóvel:\n? 55 m² bem distribuídos\n? 2 Suítes aconchegantes\n? Mobiliado: Sala integrada com iluminação em trilho e pendentes decorativos\nCozinha planejada: Equipada com cooktop, depurador, microondas e forno embutidos, geladeira, mesa e cadeiras, sofá, TV e na área de serviço máquina de lavar e varal de teto.\n\nEstá incluso internet fibra óptica.\n\n? Banheiros modernos com box até o teto/design sofisticado\n? 1 Vaga de garagem\n? Localização: Praia dos Amores, Balneário Camboriú (a poucos minutos da praia e da Brava)"
+  },
+  {
+   "chave": "4000|70|centro",
+   "id": "Z2916140582",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-mobiliado-centro-balneario-camboriu-sc-70m2-id-2916140582/",
+   "folhas": [
+    "004-a.jpg",
+    "004-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/8ece5bee1b6325b93149826b37af1230/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/d8e2285e3fec9d9ec2e9f317f6c60d3f/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/8d070d12bc7c93d30a10669c2b049515/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e2a38b53f50b7c19267622ebb9e162c5/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c976cc85d18331f9bb7f5bdd724116cf/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c2767f7d9fe4b3a244091cc72d039caa/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/b7bd40235e6e967267d6f05cc608c716/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/be62b1674eb6d420beedd92fd68f2574/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/9a7c7d845d9f74c840c0a4e06a4056e8/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.000 · 70 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento para alugar com 70 m², 2 quartos, 1 banheiro\n\nO imóvel no bairro Centro tem 70 metros quadrados com 2 quartos e 1 banheiro\nVai lhe possibilitar todo o conforto do ar condicionado nos dias mais quentes.Elevador para mais praticidade no dia-a-dia.\nJá está com os móveis."
+  },
+  {
+   "chave": "4500|59|praia brava",
+   "id": "Z2915993916",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-praia-brava-de-itajai-itajai-sc-60m2-id-2915993916/",
+   "folhas": [
+    "005-a.jpg",
+    "005-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/d24620cf527f5005e6981bb51f6e6b77/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/04c7068d71bb41dea60b290b17324c2c/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/9aaee18fd893b0453a124b01c16c43f9/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/a90e052abba8979820189302655dc180/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/496026e288274e0361c491707de5b9b5/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e3f05dee9c0d928e98f7cf65d006fc20/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/ec53ec61d17443ad707fce0fdebe5855/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6274aa61da98c3717938f6ac57431b1f/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6c01225f6d3b9f77c89b63610e6fa49d/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/f4ef72fc0161728ff76a17276c7ae83e/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/2e4ad76736b0629124050b117b87125d/foto.jpg?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6690873383bd8351ef8f25398dec93b0/foto.jpg?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 + condomínio R$ 500 · 59 m² · 2 quartos · Praia Brava, Itajaí · prédio Brava Hil): \n\nAPARTAMENTO NO EDIFÍCIO BRAVA HIL - PRAIA BRAVA, ITAJAÍ\n\n Viva o estilo de vida exclusivo da Praia Brava em um apartamento semi-mobiliado, pronto para morar e com excelente estrutura de lazer a poucos metros do mar e do comércio local. O imóvel conta com ambientes bem distribuídos e um living integrado, ideal para quem busca conforto, praticidade e qualidade de vida. \n\nCaracterísticas do imóvel:\n\n2 dormitórios\nBanheiro social e living integrado\nCozinha e banheiros com móveis planejados (semi-mobiliado)\nSacada integrada\n1 vagas de garagem privativas e exclusivas\nÓtima iluminação natural vista para o condominio e sol da tarde.\n\nLazer do empreendimento:\n\nAcademia / Espaço Fitness\nPiscina adulto e infantil com bar molhado\nEspaço gourmet e salão de festas montado\nSala de jogos\nEspaço Kids / Brinquedoteca\nPlayground externo com casa da árvore\n\nLocalização privilegiada:\n\nPraia Brava – Itajaí/SC (Rua Suécia, a aproximadamente 800 metros do mar)\n\nValores:\n\nValor do aluguel: R$ 4.500,00\n\nCondomínio: R$ 500,00\n\nIPTU: R$ 100,00\n\n📲 Gostou? Agende já sua visita e conheça as vantagens que a Brava Norte Imobiliária tem para você!\n\nWhatsApp:"
+  },
+  {
+   "chave": "4800|68|nacoes",
+   "id": "C47434765",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-nacoes-105m2-RS4800/id-47434765/",
+   "folhas": [
+    "006-a.jpg",
+    "006-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-3.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-6.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-8.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-13.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-15.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-18.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-20.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-22.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-25.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434765/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc0e-27.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.800 · 68 m² · 2 quartos · Nações, Balneário Camboriú · prédio Pronto): Apartamento com 2 quartos para alugar na Rua Peru, Nações, Balneário Camboriú\n\nPara locação no bairro Nações, em Balneário Camboriú-SC, este apartamento residencial pronto para morar oferece 68 m² de área privativa e uma planta funcional com 2 dormitórios, sendo 1 suíte, além de sala de estar, sala de jantar, cozinha e área de serviço. O imóvel é semi-mobiliado e conta com 1 vaga de garagem.\n\nEntre os diferenciais, o apartamento reúne ambientes integrados, ar-condicionado, armário na cozinha, sacada e varanda gourmet com churrasqueira. A posição solar voltada para o sol da manhã complementa a proposta, assim como o gás individual, o hidrômetro individual e o elevador.\n\nO condomínio oferece academia de ginástica, bicicletário, brinquedoteca, salão de festas, sala de jogos e churrasqueira, com estrutura pensada para o dia a dia. Na região, há escola, farmácia, supermercado e transporte público. Entre em contato pelo formulário do site para saber mais ou agendar uma visita.\n\nChave do anúncio: hjOYTEq25IcPw8Og"
+  },
+  {
+   "chave": "4800|83|nacoes",
+   "id": "C47434777",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-nacoes-138m2-RS4800/id-47434777/",
+   "folhas": [
+    "007-a.jpg",
+    "007-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-4.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-6.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-9.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-14.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-17.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-19.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-22.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-25.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-27.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/25808/47434777/sc-balneario-camboriu-nacoes-rua-peru-apartamento-para-alugar-2-quartos-6ac4bc58-30.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.800 + condomínio R$ 480 · 83 m² · 2 quartos · Nações, Balneário Camboriú): Apartamento com 2 quartos para alugar na Rua Peru, Nações, Balneário Camboriú\n\nO EMPREENDIMENTO\nLocalizado a duas quadras do mar e próximo a grandes mercados, farmácias e restaurantes, o empreendimento possui 24 apartamentos disponíveis, sendo que cada um conta com medidor individual de água, gás e luz. o condomínio ainda possui:\nSISTEMA DE CAPTAÇÃO DE ÁGUA DAS CHUVAS\nCHURRASQUEIRAS A CARVÃO\nÁREAS SOCIAIS DECORADAS E MOBILIADAS\nBICICLETÁRIO\nVAGAS PRIVATIVAS\nÁREA DE LAZER EQUIPADA E DECORADA\n02 SALOES DE FESTAS\n02 ÁREAS ESTAR EXTERNAS\nBRINQUEDOTECA\nPLAYGROUND\nACADEMIA\nSALA DE JOGOS\n\nAs informações estão sujeitas a alterações. Consulte o corretor responsável.\n\nChave do anúncio: NoPIgXZPuY6iIIwG"
+  },
+  {
+   "chave": "4600|89|nacoes",
+   "id": "Z2915996353",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-mobiliado-nacoes-balneario-camboriu-sc-89m2-id-2915996353/",
+   "folhas": [
+    "008-a.jpg",
+    "008-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/61a3b376b5cf20fe2bf6dc5d9fb7de61/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/988406508e55721f2516604b6f8b6fc9/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/99b0f18882bc55f64aa8a7168942f1e2/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/754f9cfa17b94837bcde204eb62148ae/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/cd3ab928425ee56d2041605e9c10801d/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/2e7884cadf945a5648d0d51785fc79d1/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/2e3a5ebef8134b852c0a6072e9a3a04e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/344ff7ae11085f3d767bb81b84043d71/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c301f87e9426469f6429f72be7c851fb/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6cf95c90ed142c71b7324772601d91fa/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/560a009e672da6eb4f3e729d3404d94a/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/cc46f6a744cf288ac5333b9440ad2c9b/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.600 + condomínio R$ 400 · 89 m² · 2 quartos · Nações, Balneário Camboriú · prédio Floriano): Apartamento para alugar com 89 m², 2 quartos, 3 banheiros, 2 vagas\n\nAPARTAMENTO NO EDIFÍCIO FLORIANO - NAÇÕES, BALNEÁRIO CAMBORIÚ\n\nDestaques do imóvel:\n\n89 m² de área privativa\n2 suítes\n3 banheiros\nMobiliado\nSacada com churrasqueira a carvão\n2 vagas individuais de garagem\nBox de praia\n\nLazer e Condomínio:\n\nSalão de festas\n Sala de jogos e brinquedoteca\nAcademia\n Bicicletário\n\nValores\nAluguel: R$ 4.600,00\nCondomínio: R$ 400,00\n\n Energia, água e gás: por conta do locatário\n\n📲 Gostou? Agende já sua visita e conheça as vantagens que a Brava Norte Imóveis tem para você!\nWhatsApp:"
+  },
+  {
+   "chave": "5800|74|praia brava",
+   "id": "Z2875565981",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-mobiliado-praia-brava-de-itajai-itajai-sc-74m2-id-2875565981/",
+   "folhas": [
+    "009-a.jpg",
+    "009-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e2e81969ba877f966d0e121ca84bd3c0/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/ac8f40e95c75286ba1cea292cfb72f62/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c96eafe0027ea753f94365abe8874210/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/d020b9b7d750a383fc9ecfbd4fe14963/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/3102ba5afdf4f3a4fdf43256ee7706fb/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6bbeb1ca8110e2964190d29305dc816e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/054820b70965ab9ee198b28709c9ecf9/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/8ed9a3e3a925dd4e880f5ce516d9f4aa/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/f7c8cee53edf4dc26de0b77ecb2e55ca/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/70a06dd7889b8f13abbb1ce639339c1c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/26f953b1ca95b5240a6f6ac63d389cd5/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/2e3fbdb9ba6282140adbeef726f9da30/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.800 + condomínio R$ 750 · 74 m² · 2 quartos · Praia Brava, Itajaí): Apartamento para alugar com 74 m², 2 quartos, 2 banheiros, 1 vaga\n\nApartamento com 74 m², totalmente mobiliado e equipado pronto para morar.\n• 2 dormitórios sendo 1 suíte\n• Sala de estar e jantar integradas à cozinha\n• Sacada com churrasqueira\n• 1 vaga de garagem coberta\n• Ar-condicionado nos quartos\n• Móveis planejados \n• Condomínio com estrutura de lazer completa"
+  },
+  {
+   "chave": "5300|74|praia brava",
+   "id": "Z2887413784",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-mobiliado-praia-brava-de-itajai-itajai-sc-74m2-id-2887413784/",
+   "folhas": [
+    "010-a.jpg",
+    "010-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/8d24a57c27a7a5451af22bfe8ed2f714/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/fe7ce60d525ebe02f4cc4cc74907eb1e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/2e7e4446d279d66daaf5b13f122117cd/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/7b20ffac5ab77077235b63d75a17e4e0/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/ba6586a42e0e85163ddae6f49789d2aa/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/1bd8f58a345a7f625f61418a4241f982/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/bba1b131c61d77dd58beed5c53091b4c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c53f75fc1169c6609b92eacb01ed0421/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e51c620dd882ec0376d17feda1ab1336/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e1b603263bfdbac431b3524e410ed1eb/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/beef8307b60eefc98bb409620458bcc7/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/169debc9c356b701ada2707343e3a9da/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.300 · 74 m² · 2 quartos · Praia Brava, Itajaí): Apartamento para alugar com 74 m², 2 quartos, 2 banheiros, 1 vaga\n\nApartamento com 74 m², semi mobiliado\n• 2 dormitórios sendo 1 suíte\n• Sala de estar e jantar integradas à cozinha\n• Sacada com churrasqueira\n• 1 vaga de garagem coberta\n• Ar-condicionado nos quartos\n• Móveis planejados \n• Condomínio com estrutura de lazer completa"
+  },
+  {
+   "chave": "4500|60|praia brava",
+   "id": "Z2914288634",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-mobiliado-praia-brava-itajai-sc-60m2-id-2914288634/",
+   "folhas": [
+    "011-a.jpg",
+    "011-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/5e5c6b1a5c43e9b82be53c1156f1717b/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/1a7ed2f2985e282b121d7a873c001e0d/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/9fc090279614879c0bc87de2fb3d8f26/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/bb2f2794e145a699e3e2b55696e71491/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6b5a90a9b451f7cc129eb33fa44534e8/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/5a0b1c985f74d54b0b5332113c591e79/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/012d7a69305272eedef578a04566056f/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e8727442326e829dcb02ca3be25c2edd/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/1efb84fbcc749936b0fafda4b7a0c9bb/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/ededeb035ef104a20d13e2bb604f6286/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/677a10938d44c710aadac47165b98920/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/843e9c0c9a18988fcb776b4711c40f97/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 + condomínio R$ 560 · 60 m² · 2 quartos · Praia Brava, Itajaí): Apartamento para alugar com 60 m², 2 quartos, 2 banheiros, 1 vaga\n\nO imóvel no bairro Praia Brava de Itajaí com 60 metros quadrados com 2 quartos sendo 1 suite e 2 banheiros\nPossui área de fitness, espaço gourmet, área de brinquedo para as crianças, salão para festas e eventos.\nVai lhe possibilitar curtir os dias mais quentes na piscina, todo o conforto do ar condicionado nos dias mais quentes.Espaço reservado para preparar o seu churrasco.\nElevador que garante o transporte das suas malas e compras.\nEncontra-se na privacidade de um condomínio fechado.\nÉ mobiliado."
+  },
+  {
+   "chave": "5500|95|centro",
+   "id": "O1541541622",
+   "url": "https://sc.olx.com.br/norte-de-santa-catarina/imoveis/apartamento-2-dormitorios-para-locacao-em-balneario-camboriu-barra-sul-2-dormitorios-1-1541541622",
+   "folhas": [
+    "012-a.jpg",
+    "012-b.jpg"
+   ],
+   "fotos": [
+    "https://img.olx.com.br/images/19/196661816245552.jpg",
+    "https://img.olx.com.br/images/84/842688459117724.jpg",
+    "https://img.olx.com.br/images/54/549617092173782.jpg",
+    "https://img.olx.com.br/images/13/130694452414809.jpg",
+    "https://img.olx.com.br/images/56/565677094677782.jpg",
+    "https://img.olx.com.br/images/85/854655573293834.jpg",
+    "https://img.olx.com.br/images/44/446665576669281.jpg",
+    "https://img.olx.com.br/images/50/507641575708219.jpg",
+    "https://img.olx.com.br/images/54/545687577672294.jpg",
+    "https://img.olx.com.br/images/48/484650336831141.jpg",
+    "https://img.olx.com.br/images/24/243614814018437.jpg",
+    "https://img.olx.com.br/images/56/567637812250323.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.500 + condomínio R$ 800 · 95 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento 2 dormitórios para Locação em Balneário Camboriú, Barra Sul, 2 dormitórios, 1\n\nCódigo do anúncio: Bal5544_2-4459465\n\nO apartamentos possui 75m² privativos, com dois dormitórios, sendo uma suíte, uma vaga de garagem privativa, living amplo para dois ambientes, e sacada com churrasqueira a carvão com vista para toda orla de Balneário Camboriú. \n Além disso, o edifício possui área de lazer completa, com piscina de frente para o mar, salão de festas, sala de jogos, espaço fitness, e a fachada recentemente revitalizada. \n\n O Edifício fica localizado na Avenida Atlântica, na região da Barra Sul, área nobre de Balneário Camboriú, de frente para o mar. Uma das regiões mais valorizadas, no metro quadrado mais valorizado do Brasil. \n\n Fica a menos de dez minutos da BR-101 com acesso facilitado às cidades vizinhas e próximo das praias da região da Interpraias. A distância para o aeroporto de Navegantes é de aproximadamente 35 minutos de carro. \n\n Está próximo de todas as comodidades necessárias, como supermercados, comércio em geral, farmácias, serviços essenciais, escolas, bares e restaurantes, além de todo entretenimento aos seus pés. \n\n As opções de lazer vão desde o Molhe da Barra Sul, ao Parque Unipraias, ao aquário Oceanic Aquarium, a passarela da Barra, o museu Classic Car Show, e ainda as casas noturnas para quem curte."
+  },
+  {
+   "chave": "4200|70|centro",
+   "id": "Z2891899589",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-centro-balneario-camboriu-sc-70m2-id-2891899589/",
+   "folhas": [
+    "013-a.jpg",
+    "013-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/eb22b291c254f69467fb0373805928f5/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/051020bd1212ecbb77378ff45af826cc/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/5d98da12da389beefbfe16ac1c246ca4/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/224146b8a334162107f5bc038ce344ce/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/95564504749f3d95233a840b526d2990/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/96cb00256213d90fb0e5b277a99780fe/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/5157fdb748985d1ab65d3f24567888f8/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/653fe4a106462b373350320dd3fbf318/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/281454f6aac6c92368ce28dbda5322c5/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/25809d654b73c7f011b2f3c9d5ec0d43/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e8298d90c5c016c3eb18397854090aaa/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.200 + condomínio R$ 671 · 70 m² · 2 quartos · Centro, Balneário Camboriú · prédio Edifício República Argentina): Apartamento para alugar com 2 quartos, 1 banheiro, 70 m² e 1 vaga na garagem em\n\nApartamento mobiliado para Locação Anual - Edifício República Argentina\n\n? Localização privilegiada\nAv. Brasil, a apenas 1 quadra do mar \nRegião valorizada, com fácil acesso a comércios, serviços e tudo que você precisa no dia a dia\n\n Detalhes do imóvel\n\nTotalmente mobiliado , pronto para morar\n2 dormitórios\nVaranda aconchegante\nAr-condicionado (2 unidades) na sala e no quarto do casal\n\n Diferenciais que fazem a diferença\n1 vaga de garagem rotativa com manobrista\n\nPet friendly\nAceita pet de pequeno porte\n\nValores mensais\nAluguel: R$ 4.200,00 \nCondomínio: R$ 670,96\nIPTU: R$ 246,16\nTaxa de lixo: R$ 62,00\nInternet: R$ 100,00\n\nPerfeito para quem busca\nMorar perto do mar\nConforto e praticidade\n\nModalidade de garantia locatícia\n\nSomente com seguro fiança.\nVistoria terceirizada cobrada do inquilino.\n\nEntre em contato e agende já a sua visita!!\nGM7 Assessoria Imobiliária\nCRECI: 8733J"
+  },
+  {
+   "chave": "5700|74|praia brava",
+   "id": "Z2831356732",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-mobiliado-praia-brava-de-itajai-itajai-sc-74m2-id-2831356732/",
+   "folhas": [
+    "014-a.jpg",
+    "014-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/9c60070ea4396d7d0f79884e5204f320/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/39a91cbfa1bbce652991de5083cfdcae/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/b996e5f1ea4f9cee9ed86d076557a79c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/404e6bd6d1b75c084172353034b7be6c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/777f25ece1ff09b05a5765d6b47bafce/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/f8e268d05772f3ef12513b78da292a2b/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c153a13de73671f62e8dfc077a8bda3a/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c2ccd8de624968a598257a37fd8d2f78/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.700 + condomínio R$ 700 · 74 m² · 2 quartos · Praia Brava, Itajaí): Apartamento para alugar com 74 m², 2 quartos, 2 banheiros, 1 vaga\n\nConforto e praticidade em um excelente apartamento de 74 metros quadrados na Praia Brava - SC\n 1 suíte + 1 dormitório\n Living integrado e cozinha funcional\n Área de serviço e banheiro social\n Sacada com churrasqueira a carvão\n1 vaga de garagem\n\nO empreendimento oferece área de lazer completa:\n🏊 Piscina\n🎉 Salão de festas\n🍖 Espaço gourmet com churrasqueira\n🧘 Espaço zen\n\n📍 Localização privilegiada na Praia Brava, fácil acesso a mercado, farmácia, posto de combustível e demais serviços.\n\n💬 Agende sua visita e venha conhecer!"
+  },
+  {
+   "chave": "5400|74|praia brava",
+   "id": "Z2887410711",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-mobiliado-praia-brava-de-itajai-itajai-sc-74m2-id-2887410711/",
+   "folhas": [
+    "015-a.jpg",
+    "015-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/809a737116de9f611de33fba1e147778/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/96e25ad64b4545e303e9be66ac128f2c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/2061cdae93b284ca4c9cab40f9727041/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/fa85fb75630dc8b38de3394ddbdeb80a/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/45f4c101f5807ea050f904056524fb23/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/9e631f51fd3216823ddc92e29818f336/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/bc48d694011ddaa50e21436a1051ed40/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/2bb7a6c32a1d63a39f813d640a2cc233/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6116c21ee03bc1be7e5516cf5aea8652/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/b49e0b437c8f9799c94350abf359de7c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/01fce50910ccaebf450a38152b4922f4/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/f62f37f6a6403062b6065e783653ec28/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.400 + condomínio R$ 750 · 74 m² · 2 quartos · Praia Brava, Itajaí): Apartamento para alugar com 2 quartos, 1 suíte, 74 m², 2 banheiros e 1 vaga na garagem em\n\nApartamento com 74 m², totalmente mobiliado e equipado pronto para morar.\n• 2 dormitórios sendo 1 suíte\n• Sala de estar e jantar integradas à cozinha\n• Sacada com churrasqueira\n• 1 vaga de garagem coberta\n• Ar-condicionado nos quartos\n• Móveis planejados \n• Condomínio com estrutura de lazer completa"
+  },
+  {
+   "chave": "5500|88|centro",
+   "id": "Z2915633639",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-piscina-centro-balneario-camboriu-sc-88m2-id-2915633639/",
+   "folhas": [
+    "016-a.jpg",
+    "016-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/0a13f5f1637fa126538d30096bf7b60f/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/978d2f1e8db4683227079d2a9db6b40b/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6f1ad10b1ce6fac7823d99259cc0bd7a/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/4820743ab8171429e8ab5e2cd01b2592/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/415321ea5bc7711806e2ec2d4827a535/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c8a9e967e803ad49067a601408baf91e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/ce1e0b468d81cecf69d8542edabf21cb/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/dcdb9186bd180f3e3f136347ef26d51c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e00a96e2779904c97655cf7dc4cac5e0/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/46b239e2c5824913356f2a8031517ba7/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/3ce3d40dcbe2db91f079f8d0e4ca4b3b/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/31b1a31d3d29964e0d02f228fcbdcb9e/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.500 + condomínio R$ 790 · 88 m² · 2 quartos · Centro, Balneário Camboriú · prédio Golden Dreams): Apartamento para alugar com 88 m², 2 quartos, 2 banheiros, 1 vaga\n\nLocalizado na Terceira Avenida, esquina com a Rua 2870, próximo das panificadoras, mercados e restaurantes da cidade.\n\nEdifício Golden Dreams.\n\nApartamento localizado no último andar/cobertura.\n\nO apartamento:\n02 dormitórios sendo 01 suíte;\nChurrasqueira à carvão;\nMóveis planejados;\nÁrea de serviço;\nCozinha;\nSala de estar e jantar;\nAquecimento à gás;\nBanheiro social;\n02 vagas de garagem.\n\nO empreendimento:\n02 elevadores;\nSalão de festas;\nAcademia;\nPiscina.\n\nValor da locação: R$ 5.500,00 (aluguel) + R$ 790,00 (condomínio) + taxas de consumo.\n\nGarantia locatícia: Seguro fiança ou fiador.\n\nImóvel atualizado em \n\nCaracterísticas do imóvel\nAcademia\nAr condicionado\nÁrea de serviço\nArmário de Cozinha\nArmário embutido\nChurrasqueira no apartamento\nCopa\nCozinha\nElevador\nInterfone\nLavanderia\nPiscina\nPortão eletrônico\nRecirculação de água quente\nSala de almoço\nSala de estar\nSala de jantar\nSala de TV\nSalão de festas\nVaranda"
+  },
+  {
+   "chave": "4250|70|nacoes",
+   "id": "O1511139696",
+   "url": "https://sc.olx.com.br/norte-de-santa-catarina/imoveis/apartamento-semi-mobiliado-com-2-dormitorios-aluguel-anual-nas-nacoes-em-balneario-cambori-1511139696",
+   "folhas": [
+    "017-a.jpg",
+    "017-b.jpg"
+   ],
+   "fotos": [
+    "https://img.olx.com.br/images/69/696663450697217.jpg",
+    "https://img.olx.com.br/images/69/692630813506848.jpg",
+    "https://img.olx.com.br/images/70/703692215142457.jpg",
+    "https://img.olx.com.br/images/69/694633218832844.jpg",
+    "https://img.olx.com.br/images/69/695606937336675.jpg",
+    "https://img.olx.com.br/images/69/695610455940137.jpg",
+    "https://img.olx.com.br/images/69/697662331532379.jpg",
+    "https://img.olx.com.br/images/70/707642338007033.jpg",
+    "https://img.olx.com.br/images/70/703642092822730.jpg",
+    "https://img.olx.com.br/images/69/699617215955614.jpg",
+    "https://img.olx.com.br/images/69/698623210699133.jpg",
+    "https://img.olx.com.br/images/69/698679330180909.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.250 + condomínio R$ 447 · 70 m² · 2 quartos · Nações, Balneário Camboriú): Apartamento SEMI mobiliado com 2 dormitórios aluguel anual nas Nações em Balneário Cambori\n\nCódigo do anúncio: GMI349\n\nApartamento SEMI mobiliado com 2 dormitórios aluguel anual nas Nações em Balneário Camboriú.\n\nLocalização do imóvel: Rua Tailândia - Nações - Balneário Camboriú.\n\nCARACTERÍSTICA DO IMÓVEL;\nSemi Mobiliado\n2 dormitórios (sendo uma suíte)\n2 Vagas de garagens\nBanheiro social;\nCozinha;\nChurrasqueira à carvão;\nÁrea de serviço;\nSala de estar;\n\nEMPREENDIMENTO;\n\nPiscina;\nSalão de festas;\n\nVALORES;\nAluguel R$ 4250,00 mais taxas\nCondomínio:R$447,31\nIPTU: R$100,00\nAmbiental (Taxa de lixo)R$31,05\n\nModalidade de garantia locatícia\n\nTrabalhamos somente com seguro fiança.\nVistoria terceirizada cobrada do inquilino.\n\nEntre em contato conosco e agende já a sua visita!!\nGM7 Assessoria Imobiliária\nCRECI: 8733J"
+  },
+  {
+   "chave": "5000|92|pioneiros",
+   "id": "C46522153",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-pioneiros-92m2-RS5000/id-46522153/",
+   "folhas": [
+    "018-a.jpg",
+    "018-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-2.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-4.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-5.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-7.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-8.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-11.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-13.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-14.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-16.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/1406592/46522153/sc-balneario-camboriu-barra-norte-ed-vicenza-barra-norte-apartamento-para-alugar-2-quartos-6aa0b318-17.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.000 + condomínio R$ 905 · 92 m² · 2 quartos · Pioneiros, Balneário Camboriú · prédio Vicenza): LOCAÇÃO Apartamento 2 Suítes, 92m² com Vaga – Barra Norte, 350m do Mar\n\nLocação Anual — Ed. Vicenza, Barra Norte | Balneário Camboriú Morar a 350 metros do mar, num bairro tranquilo e com tudo resolvido a pé. É isso que a Barra Norte entrega — e o Vicenza é um dos endereços mais bem localizados dela. São 92m² privativos com planta funcional: duas suítes (uma delas com sacada fechada, que vira um segundo estar), sala ampla em dois ambientes e cozinha planejada. A orientação solar é privilegiada, então o apartamento recebe luz natural o dia inteiro — diferença que se sente na conta de luz e no clima da casa. O apartamento: • 92m² de área privativa • 2 suítes (1 com sacada fechada) • Sala em dois ambientes • Cozinha planejada • Churrasqueira a carvão • 1 vaga de garagem • Posição solar privilegiada O edifício: • Salão de festas • Elevador • Portaria com porteiro eletrônico • Medidores individuais de água e luz A localização: mercado, farmácia, academia, restaurantes e comércio no entorno imediato. Acesso rápido às principais vias e à Avenida Atlântica. Barra Norte é o bairro de quem quer praia sem o barulho do centro. Agende sua visita. Kolodi Imóveis — Encontrando o lar perfeito para você."
+  },
+  {
+   "chave": "6000|80|praia brava",
+   "id": "C21450557",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-itajai-praia-brava-80m2-RS6000/id-21450557/",
+   "folhas": [
+    "019-a.jpg",
+    "019-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-4.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-6.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-9.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-14.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-17.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-19.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-22.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-25.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-27.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/44397/21450557/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6ac4153e-30.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 + condomínio R$ 800 · 80 m² · 2 quartos · Praia Brava, Itajaí · prédio Costa Rica Residence): Apartamento com 2 quartos - vista mar - mobiliado - locacao - praia brava itajai/sc\n\nApartamentos no Edifício Costa Rica Residence na Praia Brava – Itajaí Imóvel com 2 dormitórios, sacada com churrasqueira a carvão e localizado na Praia Brava. O Apartamento no Costa Rica Residence: - 1 Suíte + 1 Dormitório - Living - Sacada Com Churrasqueira a Carvão - Banheiro - Cozinha - Área de Serviço - 2 Vagas de Garagem - Área Privativa: 73M² - Mobiliado e Equipado O Edifício Costa Rica Residence: - 15 Pavimentos - 7 Apartamentos Por Andar - 2 Elevadores - Piscina Adulto e Infantil - Salão de Festa e Espaço Gourmet Com Terraços Exclusivos - Spa - Playground - Espaço Fitness - Sala de Jogos - Brinquedoteca - Lavanderia Compartilhada - Entregue Pela Macon Empreendimentos em Fevereiro de 2022 - Localizado na Rua Suécia, Bem Perto do Supermercado Angelina – Praia Brava - Fácil Deslocamento Entre Itajaí e Balneário Camboriú e a Apenas Mil Metros da Praia - Localização Super Privilegiada Perante ao Novo Binário Que Irá Ligar Itajaí e Balneário Camboriú Disponivel para locação anual - valor do anuncio + taxas Agende ja sua visita! Código do Anúncio: 30 Este imóvel tem as seguintes características: Lazer: Academia, Churrasqueira, Espaço Kids, Piscina, Piscina Infantil, Salão de Festas, Salão de Jogos Serviços Próximos: Academias de ginástica, Açougue, Avenida, Banca de revistas , Banco, Bistrô com adega, Cinemas, Cursinho, Escola 1º Grau, Escola 2º Grau, Faculdade, Farmácia, Feiras, Hospital, Igreja Católica , Igreja Evangélica, Lojas, Mc Donalds, Mercado, Mini Campo, Panificadora, Pizzaria, Ponto de circular, Posto de Gasolina, Praça/Parque, Praia, Restaurante, Sacolão, Shopping, Sorveteria Básico: Acesso a Deficientes, Água, Elevador, Energia, Esgoto, Pavimentação Destaques: Alarme, Alto Padrão, Aquecimento Central, Ar Condicionado, Decorado, Internet, Litoral, Portão Eletrônico, Sistema de Incêndio Estrutura: Área de Serviço, Cozinha, Cozinha Americana, Cozinha Independente, Cozinha Planejada, Elevador de Serviço, Gás Natural, Lavanderia, Portaria 24h, Zelador Acabamento: Granito, Mármore, Piso Frio"
+  },
+  {
+   "chave": "5700|72|nacoes",
+   "id": "O1541544738",
+   "url": "https://sc.olx.com.br/norte-de-santa-catarina/imoveis/locacao-anual-apartamento-com-2-dormitorios-e-1-vaga-balneario-camboriu-1541544738",
+   "folhas": [
+    "020-a.jpg",
+    "020-b.jpg"
+   ],
+   "fotos": [
+    "https://img.olx.com.br/images/87/878613575407875.jpg",
+    "https://img.olx.com.br/images/86/865616575785983.jpg",
+    "https://img.olx.com.br/images/86/863677811039193.jpg",
+    "https://img.olx.com.br/images/87/879608692439820.jpg",
+    "https://img.olx.com.br/images/86/867663575651365.jpg",
+    "https://img.olx.com.br/images/87/873674697214494.jpg",
+    "https://img.olx.com.br/images/87/875686817738656.jpg",
+    "https://img.olx.com.br/images/87/871622219473198.jpg",
+    "https://img.olx.com.br/images/12/121651455133259.jpg",
+    "https://img.olx.com.br/images/85/851691577308563.jpg",
+    "https://img.olx.com.br/images/87/871670457921512.jpg",
+    "https://img.olx.com.br/images/87/876676690854483.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.700 · 72 m² · 2 quartos · Nações, Balneário Camboriú): Locação Anual - Apartamento com 2 dormitórios e 1 vaga - Balneário Camboriú\n\nLocação Anual - Apartamento Novo\n***Centro, próximo da Av. Central e prefeitura\n\nApartamento novo e moderno com ar condicionado em todos os ambientes\n\n2 dormitórios sendo 1 suite\nSacada com churrasqueira a carvão\n1 vaga de garagem privativa\nBox de praia\nCarregador para carros híbridos\n\nSalão de festa gourmet\nAcademia completa \nSalão de festa\nElevador \n _______________________________________\nValor R$ 5700,00 ( Incluso condomínio) \n\nMais informações envie WhatsApp para Fabiana 47 99208-9317\n**** Valor e disponibilidade sujeito a alteração sem aviso prévio \n05/10/26"
+  },
+  {
+   "chave": "O1541343456",
+   "id": "O1541343456",
+   "url": "https://sc.olx.com.br/norte-de-santa-catarina/imoveis/1-suite-1-dormitorio-mobiliado-localizacao-muito-boa-1541343456",
+   "folhas": [
+    "021-a.jpg",
+    "021-b.jpg"
+   ],
+   "fotos": [
+    "https://img.olx.com.br/images/18/188625216736488.jpg",
+    "https://img.olx.com.br/images/19/190622570194610.jpg",
+    "https://img.olx.com.br/images/20/205648459887226.jpg",
+    "https://img.olx.com.br/images/21/216616571140214.jpg",
+    "https://img.olx.com.br/images/22/221625575949689.jpg",
+    "https://img.olx.com.br/images/23/231642094245074.jpg",
+    "https://img.olx.com.br/images/24/245685936934402.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.000 · 2 quartos · Nações, Balneário Camboriú): 1 suíte + 1 dormitório | Mobiliado | Localização muito boa\n\n2 DORMITÓRIOS | Próximo a Prefeitura e Igreja Família do Reino\n\n? Balneário Camboriú/SC | Nações \n\n? 2 dormitórios, sendo 1 suíte\n? 1 vaga de garagem privativa e muito boa\n? Sacada com possibilidade de adaptação para um 3º dormitório\n? Imóvel ensolarado e com ótima ventilação\n? Estendal no terraço\n\nEstrutura do condomínio:\n? Salão de festas\n? Churrasqueira a carvão\n\n? Localização próxima à Prefeitura de Balneário Camboriú.\n\n? Valor: R$ 4.000 mensais + taxas\n? Garantia: caução ou seguro-fiança\n\nEntre em contato:\n47999445503 \n\nMarcelo Dalla Ronqui\nCRECI-SC 76583 F"
+  },
+  {
+   "chave": "4500|80|centro",
+   "id": "Z2893380121",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-churrasqueira-centro-balneario-camboriu-sc-80m2-id-2893380121/",
+   "folhas": [
+    "022-a.jpg",
+    "022-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e4d799f8f92fed7ca3350ad2f881b25d/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c7ed19776fb553077d16c5a1dbe60453/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/4c5ebae9b2512d7041cea5807bbe1baa/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c35b435c20cfafbe4f79e7a0f5ff8015/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/ac1c42a5985144be1ace64f0202e17b3/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/3e677605a207aa3fc03d26848c974e47/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/dfb0784dad038e3470f6f45cbe278604/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/de4fe5a729784d763cbc0d67e3905eaa/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/0af7f910ace263f3ce09a0bfa7795b51/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6dcfa199777a790cec0f5456d547affa/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e3a3fb649a40cc8d803cad28c7f4503e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/90db08731e4bf03ac74194f4fe28d052/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 + condomínio R$ 680 · 80 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento para alugar com 2 quartos, 2 suítes, 2 vagas na garagem e 80 m² em\n\nApartamento mobiliado para locação anual em excelente localização no Centro de Balneário Camboriú, próximo à praia e aos principais comércios e serviços da cidade. O imóvel conta com 02 suítes, lavabo, sala de estar e jantar, cozinha equipada, área de serviço, sacada com churrasqueira a carvão e 02 vagas de garagem privativas. Possui ar-condicionado na sala e nos quartos.\n\ncondominio oferece elevador, salão de festas e piscina.\n\nValores:\nAluguel: R$ 4.500,00\nCondomínio: R$ 680,00\nIPTU: A CONSULTAR\nTaxa de lixo: R$ 62,08/mês\n\nConsumos de luz, água, gás e taxa de lixo por conta do locatário. Seguro incêndio obrigatório. Garantia locatícia: Seguro Fiança. Taxa de vistoria: a consultar.\nAgende sua visita: .\n\n• Apartamento mobiliado para locação anual em excelente localização no Centro de Balneário Camboriú, próximo à praia e aos principais comércios e serviços da cidade. O imóvel conta com 02 suítes, lavabo, sala de estar e jantar, cozinha equipada, área de serviço, sacada com churrasqueira a carvão e 02 vagas de garagem privativas. Possui ar-condicionado na sala e nos quartos.\n\n• condominio oferece elevador, salão de festas e piscina.\n\n Valores: \n\n• Aluguel: R$ 4.500,00\n\n• Condomínio: R$ 680,00\n\n• IPTU: A CONSULTAR\n\n• Taxa de lixo: R$ 62,08/mês\n\n• Consumos de luz, água, gás e taxa de lixo por conta do locatário. Seguro incêndio obrigatório. Garantia locatícia: Seguro Fiança. Taxa de vistoria: a consultar.\n\n• Agende sua visita: .\n\n Características: \n\n• Andar Alto\n\n• Área de Serviço\n\n• Cozinha Americana\n\n• Lavabo\n\n• Piscina\n\n• Sacada com Churrasqueira\n\n• Sala de Estar\n\n• Sala de Jantar\n\n• Sala para 2 Ambientes"
+  },
+  {
+   "chave": "O1541153680",
+   "id": "O1541153680",
+   "url": "https://sc.olx.com.br/norte-de-santa-catarina/imoveis/frente-mar-incrivel-na-av-atlantica-com-churrasqueira-carvao-1541153680",
+   "folhas": [
+    "023-a.jpg",
+    "023-b.jpg"
+   ],
+   "fotos": [
+    "https://img.olx.com.br/images/88/884639816842205.jpg",
+    "https://img.olx.com.br/images/88/884694934250306.jpg",
+    "https://img.olx.com.br/images/89/894669572638775.jpg",
+    "https://img.olx.com.br/images/90/909640097751753.jpg",
+    "https://img.olx.com.br/images/91/919648332651171.jpg",
+    "https://img.olx.com.br/images/91/916670813404656.jpg",
+    "https://img.olx.com.br/images/92/922644812490067.jpg",
+    "https://img.olx.com.br/images/93/930608931369429.jpg",
+    "https://img.olx.com.br/images/94/945638814361338.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.500 · 2 quartos · Centro, Balneário Camboriú): FRENTE MAR INCRÍVEL NA AV. ATLÂNTICA COM CHURRASQUEIRA CARVÃO ?\n\nContato: 4799944-5503\nFRENTE MAR com 02 dormitórios (01 suíte)\n01 banheiro social\n01 vaga privativa podendo ter mais\n\nSacada com churrasqueira carvão ? \nAcademia, piscina, salão de festas, 2 elevadores. Prédio recém reformado.\n\nEntrada facilitada! Será alugado em poucos dias.\n\nR$ 5.500 + taxas ou R$ 6.500 taxas inclusas"
+  },
+  {
+   "chave": "4400|70|centro",
+   "id": "Z2904000470",
+   "url": "https://www.zapimoveis.com.br/imovel/aluguel-apartamento-2-quartos-com-ar-condicionado-centro-balneario-camboriu-sc-70m2-id-2904000470/",
+   "folhas": [
+    "024-a.jpg",
+    "024-b.jpg"
+   ],
+   "fotos": [
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/c40a7459997a97b1de7d31e1d843773e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/84b189534f4e0d2c3c6b8fe4c44cab46/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/ba58a12a754fa2756c0558ca80b0cf7c/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/80ba0b83cbfe58ab0493314d7877be44/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/5510ce64887472253e88849291b8b424/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/0486a2c7082e795db151696d36c4b9f9/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/1f2c1099b4365e48882f0fdb6a83a16e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/94c8027d1776e6265912f7f15e31cf2e/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/fc5287e6908ce91a2a9de496f3148311/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/721bc4c3a100d51c8da1a6705709635d/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/e21ebb9a4202ad466c704bf10a0f4017/foto.webp?action=fit-in&dimension=1200x900",
+    "https://resizedimgs.zapimoveis.com.br/img/vr-listing/6f0c8bb7ccf3fbc965c89a5f084e6b59/foto.webp?action=fit-in&dimension=1200x900"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.400 + condomínio R$ 250 · 70 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento para alugar com 70 m², 2 quartos, 1 banheiro, 1 vaga\n\nApartamento Semi-Mobiliado na Região Central de Balneário Camboriú\n\nExcelente apartamento para locação anual, localizado no coração da cidade de Balneário Camboriú, poucos metros da praia, próximo a restaurantes, Shopping, conveniências e comércio em geral.\n\nO imóvel conta com aproximadamente 70m² de área privativa, distribuídos de forma inteligente para oferecer conforto, amplitude e funcionalidade.\n\nCaracterísticas do apartamento:\n\nSemi-mobiliado\n2 dormitórios\n1 banheiro social\nSala com porta-janela e guarda-corpo\nCozinha\n1 vaga de garagem\nMóveis que podem ser retirados\nAr condicionado\nPoucos metros da Av. Brasil\n\nInfraestrutura:\n\nEscadas\nHall de entrada com acesso restrito de moradores por blocos\nZelador\n\nValor da locação:\nR$ 4.400,00 mais Condomínio (IPTU e Lixo isentos)\n\nGarantia locatícia: Seguro Fiança ou Título Capitalização\n\nUma excelente opção para quem busca morar com conforto, sofisticação e em localização privilegiada.\n\nPara mais informações e agendamento de visita, entre em contato."
+  },
+  {
+   "chave": "4500|105|centro",
+   "id": "C45286849",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-centro-105m2-RS4500/id-45286849/",
+   "folhas": [
+    "025-a.jpg",
+    "025-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-00.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-01.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-02.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-03.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-04.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-05.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-06.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-07.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-08.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-09.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45286849/sc-balneario-camboriu-centro-rua-700-apartamento-para-alugar-2-quartos-6a6e61a2-10.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 105 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento para locação no centro de Balneário Camboriú, 2 quartos, suíte, sacada\n\nApartamento espaçoso e mobiliado para locação anual bem no centro de Balneário Camboriú.\nCom 105 m2 privativos, 2 quartos, sendo um com suíte, sacada, vaga de garagem...\nExcelente localização na rua 700 no centro bem perto da praia, comercios, igreja, etc...\n\nLocação anual por R$ 4.500,00 mensal ja incluso o condominio.\nExige deposito de caução como garantia da locação.\n\nMais detalhes e visita entre em contato no fone/whatsapp\n47 -\nCreci 54195F"
+  },
+  {
+   "chave": "5000|66|praia brava",
+   "id": "C45219964",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-itajai-praia-brava-de-itajai-66m2-RS5000/id-45219964/",
+   "folhas": [
+    "026-a.jpg",
+    "026-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-00.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-01.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-03.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-04.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-05.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-07.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-08.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-11.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-14.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45219964/sc-itajai-balneario-santa-clara-rua-suecia-apartamento-para-alugar-6a6b9af1-15.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 5.000 + condomínio R$ 550 · 66 m² · 2 quartos · Praia Brava, Itajaí): Apartamento para locação na Praia Brava, 2 quartos, suíte, mobiliado\n\nApartamento com 2 dormitórios, suíte, 2 banheiros, sacada fechada em vidro, churrasqueira a carvão, todo mobiliado, equipado (eletros e tv) ar condicionado, fechadura eletronica, vaga de garagem coberta...pronto para mudar...\n\nPrédio com 3 elevadores, hall de entrada, acesso por biometria, academia, piscina, salão de festa e 2 salão gourmet, brinquedoteca, playground, coworking, mercadinho, bicicletário, lavanderia..\n\nDisponivel para locação anual\nR$ 5.000,00 ( mais taxas )\n\nObs. Exige seguro fiança.\n\nVisita entrar em contato 47/"
+  },
+  {
+   "chave": "6000|66|praia brava",
+   "id": "C45287080",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-itajai-praia-brava-120m2-RS6000/id-45287080/",
+   "folhas": [
+    "027-a.jpg",
+    "027-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a709277-00.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a709277-02.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6a17-04.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6a17-06.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6a17-08.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6ae7-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6ae7-11.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6ae7-13.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6ae7-15.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6ae7-17.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a6e6ae7-18.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/563256/45287080/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6a709277-19.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 + condomínio R$ 750 · 66 m² · 2 quartos · Praia Brava, Itajaí): Apartamento garden para locação na Praia Brava, 2 quartos, moveis planejados\n\nApartamento com uma grande área gardem, para locação na Praia Brava.\n[ A segurança e praticidade de morar num apartamento com o espaço externo de uma casa...]\n\nEsse apartamento garden na Praia Brava tem 2 quartos, sendo um com suíte, semimobiliado com moveis planejados, condicionado, garagem coberta, churrasqueira....\n\nDisponivel para locação anual.\nR$ 6.000,00 ( mais taxas )\n\nObs. Garantia locaticia pode ser Caução ou Seguro Fiança.\n\nAgende sua visita em 47 -"
+  },
+  {
+   "chave": "C47369374",
+   "id": "C47369374",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-centro-RS4500/id-47369374/",
+   "folhas": [
+    "028-a.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/nopic-i.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Centro, Balneário Camboriú): Apartamento com 2 quartos para alugar na Rua 701, Centro, Balneário Camboriú\n\nChave do anúncio: y5hR2NqrMvvCighT"
+  },
+  {
+   "chave": "6000|80|praia dos amores",
+   "id": "C47228477",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-balneario-camboriu-praia-dos-amores-95m2-RS6000/id-47228477/",
+   "folhas": [
+    "029-a.jpg",
+    "029-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-3.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-4.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-6.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-7.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-9.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-13.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-15.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-16.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228477/sc-balneario-camboriu-praia-dos-amores-rua-clarice-lispector-apartamento-para-alugar-2-quartos-6abc7d29-18.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 6.000 + condomínio R$ 750 · 80 m² · 2 quartos · Praia dos Amores, Balneário Camboriú): Apartamento com 2 quartos para alugar na Rua Clarice Lispector, 77, Praia dos Amores, Balneário Camboriú\n\nApartamento mobiliado para Locação Anual\nPraia dos Amores, Balneário Camboriú\n80,00 m² Úteis | 95,00 m² Total\n\nLindo apartamento a 700m do mar, com excelente localização, próximo aos comércios locais.\n\nApartamento, mobiliado, equipado e decorado, possuindo:\n\n2 dormitórios sendo 1 suíte\nSala de estar e jantar integradas\nCozinha com churrasqueira\nBanheiro Social\n2 vagas de garagem privativa descoberta\nCondomínio não possui salão de festas ou elevador\n\nEste apartamento oferece a combinação ideal de conforto, localização e funcionalidade, tornando sua estadia ainda mais agradável."
+  },
+  {
+   "chave": "3900|67|praia brava",
+   "id": "C47228476",
+   "url": "https://www.chavesnamao.com.br/imovel/apartamento-para-alugar-2-quartos-com-garagem-sc-itajai-praia-brava-90m2-RS3900/id-47228476/",
+   "folhas": [
+    "030-a.jpg",
+    "030-b.jpg"
+   ],
+   "fotos": [
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-1.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-2.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-4.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-5.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-6.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-7.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-9.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-10.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-11.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-12.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-14.jpg",
+    "https://www.chavesnamao.com.br/imn/1200x0800/N/70/imoveis/713255/47228476/sc-itajai-praia-brava-rua-suecia-apartamento-para-alugar-2-quartos-6abc7d28-15.jpg"
+   ],
+   "anuncio": "Anúncio (aluguel R$ 3.900 + condomínio R$ 550 · 67 m² · 2 quartos · Praia Brava, Itajaí): Apartamento com 2 quartos para alugar na Rua Suécia, 300, Praia Brava, Itajaí\n\nApartamento para Locação Anual Praia Brava | Itajaí\nLocalizado na Praia Brava, próximo ao Mercado Angelina da Osvaldo Reis, com fácil acesso a Balneário Camboriú e ao Centro de Itajaí.\n\nO apartamento:\nTotalmente mobiliado\n02 dormitórios sendo uma suíte\nAr-condicionado\nBanheiro social\nCozinha funcional\nSala de estar\nSacada com churrasqueira\nExcelente circulação de ar\n01 Vaga privativa\n\nIdeal para quem busca conforto e praticidade em uma das regiões mais valorizadas do litoral.\nÁrea de lazer completa:\n\nPiscina\nSalão de festas\nEspaço gourmet externo\nSala de jogos\nAcademia\nBrinquedoteca\nPlayground\n\nCondomínio com infraestrutura completa para morar com qualidade de vida o ano inteiro."
+  }
+ ],
+ "pedido_endereco": "Estes anúncios do perfil não dão o endereço (o app mostra \"Bairro não informado\"). Para cada um, descubra onde fica: pelo texto, ache o nome do prédio (\"no Brava Bells\", \"Edifício X\", \"Residencial Y\") ou outra pista (rua, esquina, ponto de referência); pesquise na internet (ferramenta WebSearch) o endereço desse prédio em Balneário Camboriú, Camboriú ou Itajaí. Grave só o que uma fonte confirmar (construtora, imobiliária, mapa, outro anúncio do mesmo prédio com endereço); na dúvida, grave tudo vazio. Campos: predio (o nome do prédio; \"\" se o anúncio não cita), rua (rua e número, ex.: \"Rua 3100, 255\" ou \"Avenida Atlântica, 3500\"; \"\" se não achou), bairro, cidade (\"Balneário Camboriú\", \"Camboriú\" ou \"Itajaí\"; \"\" se não achou) e fonte (o link que confirma; \"\" se não achou).",
+ "enderecos": [
+  {
+   "id": "O1541541622",
+   "url": "https://sc.olx.com.br/norte-de-santa-catarina/imoveis/apartamento-2-dormitorios-para-locacao-em-balneario-camboriu-barra-sul-2-dormitorios-1-1541541622",
+   "anuncio": "Anúncio (aluguel R$ 5.500 + condomínio R$ 800 · 95 m² · 2 quartos · Centro, Balneário Camboriú): Apartamento 2 dormitórios para Locação em Balneário Camboriú, Barra Sul, 2 dormitórios, 1\n\nCódigo do anúncio: Bal5544_2-4459465\n\nO apartamentos possui 75m² privativos, com dois dormitórios, sendo uma suíte, uma vaga de garagem privativa, living amplo para dois ambientes, e sacada com churrasqueira a carvão com vista para toda orla de Balneário Camboriú. \n Além disso, o edifício possui área de lazer completa, com piscina de frente para o mar, salão de festas, sala de jogos, espaço fitness, e a fachada recentemente revitalizada. \n\n O Edifício fica localizado na Avenida Atlântica, na região da Barra Sul, área nobre de Balneário Camboriú, de frente para o mar. Uma das regiões mais valorizadas, no metro quadrado mais valorizado do Brasil. \n\n Fica a menos de dez minutos da BR-101 com acesso facilitado às cidades vizinhas e próximo das praias da região da Interpraias. A distância para o aeroporto de Navegantes é de aproximadamente 35 minutos de carro. \n\n Está próximo de todas as comodidades necessárias, como supermercados, comércio em geral, farmácias, serviços essenciais, escolas, bares e restaurantes, além de todo entretenimento aos seus pés. \n\n As opções de lazer vão desde o Molhe da Barra Sul, ao Parque Unipraias, ao aquário Oceanic Aquarium, a passarela da Barra, o museu Classic Car Show, e ainda as casas noturnas para quem curte."
+  },
+  {
+   "id": "O1541153680",
+   "url": "https://sc.olx.com.br/norte-de-santa-catarina/imoveis/frente-mar-incrivel-na-av-atlantica-com-churrasqueira-carvao-1541153680",
+   "anuncio": "Anúncio (aluguel R$ 5.500 · 2 quartos · Centro, Balneário Camboriú): FRENTE MAR INCRÍVEL NA AV. ATLÂNTICA COM CHURRASQUEIRA CARVÃO ?\n\nContato: 4799944-5503\nFRENTE MAR com 02 dormitórios (01 suíte)\n01 banheiro social\n01 vaga privativa podendo ter mais\n\nSacada com churrasqueira carvão ? \nAcademia, piscina, salão de festas, 2 elevadores. Prédio recém reformado.\n\nEntrada facilitada! Será alugado em poucos dias.\n\nR$ 5.500 + taxas ou R$ 6.500 taxas inclusas"
+  },
+  {
+   "id": "F1131958009335803",
+   "url": "https://www.facebook.com/marketplace/item/1131958009335803/",
+   "anuncio": "Anúncio (aluguel R$ 3.600 · 2 quartos · Balneário Camboriú): 2 quartos 1 banheiro – Apartamento\n\n"
+  },
+  {
+   "id": "F1318410580257273",
+   "url": "https://www.facebook.com/marketplace/item/1318410580257273/",
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Balneário Camboriú): 2 quartos 2 banheiros – Apartamento\n\n"
+  },
+  {
+   "id": "F1097834599329669",
+   "url": "https://www.facebook.com/marketplace/item/1097834599329669/",
+   "anuncio": "Anúncio (aluguel R$ 4.600 · 2 quartos · Balneário Camboriú): 2 quartos 2 banheiros – Apartamento\n\n"
+  },
+  {
+   "id": "F1119556607134181",
+   "url": "https://www.facebook.com/marketplace/item/1119556607134181/",
+   "anuncio": "Anúncio (aluguel R$ 4.508 · 2 quartos · Balneário Camboriú): 2 quartos 1 banheiro – Apartamento\n\n"
+  },
+  {
+   "id": "F1866276677506917",
+   "url": "https://www.facebook.com/marketplace/item/1866276677506917/",
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Barra Sul, Balneário Camboriú): 2 quartos 1 banheiro Apartamento\n\nAPARTAMENTO  para LOCAÇÃO na BARRA SUL  de  ➡️ Balneário Camboriú SC \n\n150m da Praia \n\nValor R$ 4.500,00 (incluso condomínio ) +IPTU + Consumos (Água, Energia Elétrica e Gás) + Seguro incêndio anual + Taxa de lixo\n\n🟢LOCAÇÃO ATRAVÉS DE SEGURO FIANÇA 🟢\n\n⚠️ AVISO 👉🏻 visitas só serão agendadas após análise de crédito ( aprovada )por se tratar de seguro fiança.\n\n - 02 dormitórios \n- Cozinha planejada com bancada \n- Mobiliado \n- Banheiro social\n- 01 vaga de garagem\n-Prédio com portaria\n-02 elevadores\n-Salão de festas"
+  },
+  {
+   "id": "F1854617572624587",
+   "url": "https://www.facebook.com/marketplace/item/1854617572624587/",
+   "anuncio": "Anúncio (aluguel R$ 5.500 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 3 banheiros – Apartamento\n\nREF.5500\nRequisitos SPC e Serasa sem restrições.\nCondições caução ou seguro,\ndefinição após validação análise CPF.\n\nApartamento mobiliado anual quadra mar.\n2 suítes \nSala estar e jantar \nCozinha e lavanderia \n1 vaga garagem \n\nAluguel 5500,00\nCondomínio média 700,00\n"
+  },
+  {
+   "id": "F1438311148151937",
+   "url": "https://www.facebook.com/marketplace/item/1438311148151937/",
+   "anuncio": "Anúncio (aluguel R$ 4.500 · 2 quartos · Balneário Camboriú): LOCACÃO ANUAL 2 DORMITORIOS AV CENTRAL I\n\nLOCAÇÃO ANUAL CENTRO de BC \n  02 dormitórios sendo 01 suíte \ncozinha \nbanheiro social \nsacada\nvaga de garagem \nR$ 4.500 com taxas \nCRECI 42570 João [hidden information]7"
+  },
+  {
+   "id": "F1116745574378405",
+   "url": "https://www.facebook.com/marketplace/item/1116745574378405/",
+   "anuncio": "Anúncio (aluguel R$ 4.700 · 2 quartos · Centro, Balneário Camboriú): 2 quartos 5 banheiros – Apartamento\n\nApartamento para locação\nANUAL\n📍Avenida Atlântica, Centro de Balneário Camboriú, SC\n Frente ao mar.\n\n02 dormitórios sendo 1 suíte\nSala \n02 Banheiros\nSem garagem \n\nValor R$ 4.700 mensais \nTaxas inclusas"
+  }
+ ]
+}
