@@ -1,9 +1,10 @@
 name: Coletar anúncios
 
 on:
-  schedule:
-    - cron: '17 * * * *'   # a cada hora (o GitHub às vezes atrasa alguns minutos); só a faixa do perfil, uns 5 min
-  workflow_dispatch:   # e quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
+  # sem agendamento: o apartamento foi achado (out/2026); para voltar, recoloque
+  #   schedule:
+  #     - cron: '17 * * * *'
+  workflow_dispatch:   # só quando pedido (botão "Buscar agora" no app ou Actions → Run workflow)
     inputs:
       somente:
         description: 'Só estas fontes (ex.: facebook, olx). Vazio = todas; "nenhuma" = só publicar (vereditos novos do Claude e o aviso)'
